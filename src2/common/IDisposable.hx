@@ -1,0 +1,18 @@
+/**
+ * Created by Anton Nefjodov on 26.01.2016.
+ */
+package common;
+
+
+/**
+* Any object that need to be disposed to free memory can implement this interface.
+*/
+interface IDisposable extends IDisposableImmutable
+{
+
+    /**
+    * Removes all references, objects. After that object is ready to be cleaned by GC.
+    */
+    function dispose():Void;
+}
+
