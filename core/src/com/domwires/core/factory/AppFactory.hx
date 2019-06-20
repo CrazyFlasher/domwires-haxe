@@ -59,7 +59,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 			instanceMapping.set(type, new Map());
 		}
 
-		if (_verbose)
+		if (_verbose && instanceMapping.get(type).exists(name))
 		{
 			trace("Warning: type " + type  + "$" + name + " is mapped to instance " + instanceMapping[type][name] + ". Remapping" + " to " + to);
 		}
@@ -71,17 +71,17 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function hasTypeMappingForType(type:Class<Dynamic>, name:String = null):Bool
 	{
-		return typeMapping.get(type) != null;
+		return typeMapping.exists(type);
 	}
 
 	public function hasValueMappingForType(type:Class<Dynamic>, name:String = null):Bool
 	{
-		return instanceMapping.get(type) != null && instanceMapping.get(type).get(name) != null;
+		return instanceMapping.exists(type) && instanceMapping.get(type).exists(name);
 	}
 
 	public function unmapType(type:Class<Dynamic>):IAppFactory
 	{
-		if (typeMapping.get(type) != null)
+		if (typeMapping.exists(type))
 		{
 			typeMapping.remove(type);
 		}
@@ -91,7 +91,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function unmapValue(type:Class<Dynamic>, name:String = null):IAppFactory
 	{
-		if (instanceMapping.get(type) != null && instanceMapping.get(type).get(name) != null)
+		if (instanceMapping.exists(type) && instanceMapping.get(type).exists(name))
 		{
 			instanceMapping.get(type).remove(name);
 		}
@@ -121,8 +121,6 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 	public function getInstance(type:Class<Dynamic>, constructorArgs:Dynamic = null, name:String = null, ignorePool:Bool = false):Dynamic
 	{
 		var obj:Dynamic = getInstanceFromInstanceMap(type, name);
-//		trace(instanceMapping.get(type).get(name));
-		trace(obj);
 
 		if (obj != null)
 		{
@@ -161,7 +159,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	private function getInstanceFromInstanceMap(type:Class<Dynamic>, name:String, require:Bool = false):Dynamic
 	{
-		if (instanceMapping.get(type) != null && instanceMapping.get(type).get(name) != null)
+		if (instanceMapping.exists(type) && instanceMapping.get(type).exists(name))
 		{
 			return instanceMapping.get(type).get(name);
 		}
@@ -170,8 +168,6 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		{
 			throw Error.Custom("Instance mapping for " + Type.getClassName(type) + "$" + name + " not found!");
 		}
-
-		trace(instanceMapping.get(type).get(name));
 
 		return null;
 	}
@@ -405,9 +401,12 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		var isOptional:Bool;
 		var type:Class<Dynamic>;
 		var name:String;
+		var variable:InjectionVariableVo;
 
-		for (variable in injectionData.variables)
+		for (objVar in injectionData.variables.keys())
 		{
+			variable = injectionData.variables.get(objVar);
+
 			isOptional = variable.optional;
 			type = variable.type;
 			name = variable.name;
@@ -417,7 +416,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 				if (fromInstanceMap != null)
 				{
-					Reflect.setField(instance, name, fromInstanceMap);
+					Reflect.setField(instance, objVar, fromInstanceMap);
 				}
 			} catch (e:Dynamic)
 			{

@@ -25,15 +25,16 @@ class AppFactoryTest
 	}
 
 	@Test
+	@TestDebug
 	public function testUnmapClass():Void
 	{
 		factory.mapToType(IMyType, MyType1);
 		factory.mapToValue(BaseClass, new BaseClass());
 
-//		var o:IMyType = factory.getInstance(IMyType, [5, 7]);
-//		factory.unmapType(IMyType);
+		var o:IMyType = factory.getInstance(IMyType, [5, 7]);
+		factory.unmapType(IMyType);
 
-//		Assert.isFalse(factory.hasTypeMappingForType(IMyType));
+		Assert.isFalse(factory.hasTypeMappingForType(IMyType));
 	}
 
 	/*@Test
