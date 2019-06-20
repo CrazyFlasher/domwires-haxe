@@ -9,6 +9,7 @@ package com.domwires.core.factory;
 * See last example in <code>IAppFactory</code>
 * @see IAppFactory#appendMappingConfig
 */
+import Reflect;
 import com.domwires.core.factory.DependencyVo;
 
 class MappingConfigDictionary
@@ -24,7 +25,7 @@ class MappingConfigDictionary
 			var key:String;
 			for (key in Reflect.fields(json))
 			{
-				_map.set(key, new DependencyVo(json.key));
+				_map.set(key, new DependencyVo(Reflect.field(json, key)));
 			}
 		}
 	}

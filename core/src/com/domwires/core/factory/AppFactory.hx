@@ -554,7 +554,8 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function appendMappingConfig(config:MappingConfigDictionary):IAppFactory
 	{
-		var i:Class<Dynamic>;
+		var i:Dynamic;
+//		var i:Class<Dynamic>;
 		var c:Class<Dynamic>;
 		var name:String = null;
 		var interfaceDefinition:String;
@@ -574,7 +575,8 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 				interfaceDefinition = splitted[0];
 			}
 
-			i = Type.resolveClass(interfaceDefinition);
+//			i = Type.resolveClass(interfaceDefinition);
+			i = interfaceDefinition;
 
 			if (d.value != null)
 			{

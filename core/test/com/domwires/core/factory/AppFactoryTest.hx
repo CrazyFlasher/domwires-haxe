@@ -366,7 +366,7 @@ class AppFactoryTest
 		Assert.areEqual(o.t, 3);
 	}
 
-	/*@TestDebug
+	@TestDebug
 	public function testMappingViaConfig():Void
 	{
 		SuperCoolModel;
@@ -374,12 +374,12 @@ class AppFactoryTest
 
 		var json:Dynamic =
 		{
-			"com.domwires.core.factory.IDefault$def" : {
-				implementation : "com.domwires.core.factory.Default",
+			"com.domwires.core.testObject.IDefault$def" : {
+				implementation : "com.domwires.core.testObject.Default",
 				newInstance : true
 			},
-			"com.domwires.core.factory.ISuperCoolModel" : {
-				implementation : "com.domwires.core.factory.SuperCoolModel"
+			"com.domwires.core.testObject.ISuperCoolModel" : {
+				implementation : "com.domwires.core.testObject.SuperCoolModel"
 			},
 			"int$coolValue" : {
 				value : 7

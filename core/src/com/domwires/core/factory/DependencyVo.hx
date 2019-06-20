@@ -16,6 +16,8 @@ class DependencyVo
 
 	public function new(json:Dynamic)
 	{
+		trace(json);
+
 		if (json.implementation == null)
 		{
 			trace("'implementation' is not set in json!");
