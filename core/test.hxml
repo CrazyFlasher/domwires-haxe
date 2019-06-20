@@ -9,6 +9,7 @@
 -cp test
 -swf-version 11
 -swf build/as3_test.swf
+#--macro include('com.domwires.core.factory')
 
 --next
 

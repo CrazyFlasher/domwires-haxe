@@ -3,6 +3,7 @@
  */
 package com.domwires.core.factory;
 
+import Std;
 import com.domwires.core.common.AbstractDisposable;
 import haxe.Constraints.Function;
 import haxe.io.Error;
@@ -18,11 +19,12 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 	public var autoInjectDependencies(never, set):Bool;
 	public var verbose(never, set):Bool;
 
-	private static var injectionMap:Dictionary<Class<Dynamic>, InjectionDataVo> = new Dictionary() /*Class, InjectionDataVo*/ ;
+	private static var injectionMap:Dictionary<Class<Dynamic>, InjectionDataVo> = new Dictionary<Class<Dynamic>, InjectionDataVo>();
 
-	private var typeMapping:Dictionary<Class<Dynamic>, Class<Dynamic>> = new Dictionary() /*Class, Class*/ ;
-	private var instanceMapping:Dictionary<Class<Dynamic>, Map<String, Dynamic>> = new Dictionary() /*Class, Dictionary/*String, Object*/ ;
-	private var pool:Dictionary<Class<Dynamic>, PoolModel> = new Dictionary() /*Class, PoolModel*/ ;
+	private var typeMapping:Dictionary<Class<Dynamic>, Class<Dynamic>> = new Dictionary<Class<Dynamic>, Class<Dynamic>>();
+	private var instanceMapping:Dictionary<Dynamic, Dictionary<String, Dynamic>> = new Dictionary<Dynamic, Dictionary<String, Dynamic>>();
+	private var primitiveInstanceMapping:Dictionary<String, Dictionary<String, Dynamic>> = new Dictionary<String, Dictionary<String, Dynamic>>();
+	private var pool:Dictionary<Class<Dynamic>, PoolModel> = new Dictionary<Class<Dynamic>, PoolModel>();
 
 	private var _autoInjectDependencies:Bool = true;
 
@@ -47,24 +49,42 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		return this;
 	}
 
-	public function mapToValue(type:Class<Dynamic>, to:Dynamic, name:String = null):IAppFactory
+	public function mapToValue(type:Dynamic, to:Dynamic, name:String = null):IAppFactory
 	{
+		trace("mapToValue " + type, to, name);
+
 		if (to == null)
 		{
 			throw Error.Custom("Cannot map type to null value!");
 		}
 
-		if (instanceMapping.get(type) == null)
+		if (Std.is(type, String))
 		{
-			instanceMapping.set(type, new Map());
-		}
+			if (primitiveInstanceMapping.get(type) == null)
+			{
+				primitiveInstanceMapping.set(type, new Dictionary<String, Dynamic>());
+			}
 
-		if (_verbose && instanceMapping.get(type).exists(name))
+			if (_verbose && primitiveInstanceMapping.get(type).exists(name))
+			{
+				trace("Warning: type " + type  + "$" + name + " is mapped to instance " + primitiveInstanceMapping[type][name] + ". Remapping" + " to " + to);
+			}
+
+			primitiveInstanceMapping.get(type).set(name, to);
+		} else
 		{
-			trace("Warning: type " + type  + "$" + name + " is mapped to instance " + instanceMapping[type][name] + ". Remapping" + " to " + to);
-		}
+			if (instanceMapping.get(type) == null)
+			{
+				instanceMapping.set(type, new Dictionary<String, Dynamic>());
+			}
 
-		instanceMapping.get(type).set(name, to);
+			if (_verbose && instanceMapping.get(type).exists(name))
+			{
+				trace("Warning: type " + type  + "$" + name + " is mapped to instance " + instanceMapping[type][name] + ". Remapping" + " to " + to);
+			}
+
+			instanceMapping.get(type).set(name, to);
+		}
 
 		return this;
 	}
@@ -118,7 +138,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		return this;
 	}
 
-	public function getInstance(type:Class<Dynamic>, constructorArgs:Dynamic = null, name:String = null, ignorePool:Bool = false):Dynamic
+	public function getInstance(type:Dynamic, constructorArgs:Dynamic = null, name:String = null, ignorePool:Bool = false):Dynamic
 	{
 		var obj:Dynamic = getInstanceFromInstanceMap(type, name);
 
@@ -157,11 +177,20 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		return obj;
 	}
 
-	private function getInstanceFromInstanceMap(type:Class<Dynamic>, name:String, require:Bool = false):Dynamic
+	private function getInstanceFromInstanceMap(type:Dynamic, name:String, require:Bool = false):Dynamic
 	{
-		if (instanceMapping.exists(type) && instanceMapping.get(type).exists(name))
+		if (Std.is(type, String))
 		{
-			return instanceMapping.get(type).get(name);
+			if (primitiveInstanceMapping.exists(type) && primitiveInstanceMapping.get(type).exists(name))
+			{
+				return primitiveInstanceMapping.get(type).get(name);
+			}
+		} else
+		{
+			if (instanceMapping.exists(type) && instanceMapping.get(type).exists(name))
+			{
+				return instanceMapping.get(type).get(name);
+			}
 		}
 
 		if (require)
@@ -173,9 +202,11 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 	}
 
 	@:allow(com.domwires.core.factory)
-	private function getNewInstance(type:Class<Dynamic>, constructorArgs:Dynamic = null):Dynamic
+	private function getNewInstance(type:Dynamic, constructorArgs:Dynamic = null):Dynamic
 	{
-		var t:Class<Dynamic>;
+		trace("getNewInstance " + type);
+
+		var t:Dynamic;
 
 		if (typeMapping.get(type) == null)
 		{
@@ -193,9 +224,9 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		try
 		{
 			return returnNewInstance(t, constructorArgs);
-		} catch (errorMessage:String)
+		} catch (error:Dynamic)
 		{
-			var defImplClassName:String = StringTools.replace(Type.getClassName(type), "::I", ".");
+			var defImplClassName:String = Type.getClassName(type).split(".I").join(".");
 
 			if (_verbose)
 			{
@@ -209,15 +240,17 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		}
 	}
 
-	private static function returnNewInstance(type:Class<Dynamic>, constructorArgs:Dynamic = null):Dynamic
+	private static function returnNewInstance(type:Dynamic, constructorArgs:Dynamic = null):Dynamic
 	{
 		if (constructorArgs == null || (Std.is(constructorArgs, Array) && constructorArgs.length == 0))
 		{
+			trace("1 " + constructorArgs + type);
 			return Type.createInstance(type, []);
 		}
 
 		if (Std.is(constructorArgs, Array))
 		{
+			trace("2");
 			return Type.createInstance(type, constructorArgs);
 		}
 
@@ -372,15 +405,16 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 			pool.get(poolModel).dispose();
 		}
 
-		pool = new Dictionary();
+		pool = new Dictionary<Class<Dynamic>, PoolModel>();
 
 		return this;
 	}
 
 	public function clearMappings():IAppFactory
 	{
-		typeMapping = new Dictionary();
-		instanceMapping = new Dictionary();
+		typeMapping = new Dictionary<Class<Dynamic>, Class<Dynamic>>();
+		instanceMapping = new Dictionary<Dynamic, Dictionary<String, Dynamic>>();
+		primitiveInstanceMapping = new Dictionary<String, Dictionary<String, Dynamic>>();
 
 		return this;
 	}
@@ -395,11 +429,13 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function injectDependencies(instance:Dynamic):Dynamic
 	{
-		var instanceClass:Class<Dynamic> = Type.getClass(instance);
+		var instanceClass:Dynamic = Type.getClass(instance);
 		var injectionData:InjectionDataVo = getInjectionData(instanceClass);
 
+		trace("injectDependencies");
+
 		var isOptional:Bool;
-		var type:Class<Dynamic>;
+		var type:Dynamic;
 		var name:String;
 		var variable:InjectionVariableVo;
 
@@ -412,20 +448,19 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 			name = variable.name;
 			try
 			{
+				trace("isOptional " + isOptional);
+				trace("type " + type);
+				trace("name " + name);
 				var fromInstanceMap:Dynamic = getInstanceFromInstanceMap(type, name, !isOptional);
 
 				if (fromInstanceMap != null)
 				{
+					trace("setField " + instance);
 					Reflect.setField(instance, objVar, fromInstanceMap);
 				}
 			} catch (e:Dynamic)
 			{
-				var typeToString:String = Type.getClassName(type);
-				if (typeToString == null)
-				{
-					typeToString = "Class<Dynamic>";
-				}
-
+				var typeToString:String = Std.is(type, String) ? type : Type.getClassName(type);
 				throw Error.Custom("Cannot inject all required dependencies to " + Type.getClassName(instanceClass) + ". Instance mapping for " + typeToString + "$" + name + " not found!");
 			}
 		}
@@ -467,8 +502,15 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 					{
 						isOptional = metadata.params.length > 1 ? (metadata.params[1] == "true") : false;
 
+						trace("field.type " + field.type + " " + CTypeTools.toString(field.type));
+
+						var type:Dynamic = Type.resolveClass(CTypeTools.toString(field.type));
+						if (type == null)
+						{
+							type = CTypeTools.toString(field.type);
+						}
 						injectionData.variables.set(field.name, new InjectionVariableVo(
-							Type.resolveClass(CTypeTools.toString(field.type)),
+							type,
 							metadata.params.length > 0 ? metadata.params[0] : null, isOptional
 						));
 					}
@@ -597,15 +639,15 @@ class InjectionDataVo
 class InjectionVariableVo
 {
 	public var optional(get, never):Bool;
-	public var type(get, never):Class<Dynamic>;
+	public var type(get, never):Dynamic;
 	public var name(get, never):String;
 
-	private var _type:Class<Dynamic>;
+	private var _type:Dynamic;
 	private var _name:String;
 	private var _optional:Bool;
 
 	@:allow(com.domwires.core.factory)
-	private function new(type:Class<Dynamic>, name:String, optional:Bool)
+	private function new(type:Dynamic, name:String, optional:Bool)
 	{
 		_type = type;
 
@@ -622,7 +664,7 @@ class InjectionVariableVo
 		return _optional;
 	}
 
-	private function get_type():Class<Dynamic>
+	private function get_type():Dynamic
 	{
 		return _type;
 	}

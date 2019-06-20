@@ -41,7 +41,7 @@ interface IAppFactoryImmutable extends IDisposableImmutable
 	 * @return
 	 * @see #injectDependencies()
 	 */
-	function getInstance(type:Class<Dynamic>, constructorArgs:Dynamic = null, name:String = null, ignorePool:Bool = false):Dynamic;
+	function getInstance(type:Dynamic, constructorArgs:Dynamic = null, name:String = null, ignorePool:Bool = false):Dynamic;
 
 	/**
 	 * Returns true, if <code>IAppFactory</code> has registered pool for provided type.

@@ -303,7 +303,7 @@ interface IAppFactory extends IAppFactoryImmutable extends IDisposable
 	 * @see #mapToType()
 	 * @return
 	 */
-	function mapToValue(type:Class<Dynamic>, to:Dynamic, name:String = null):IAppFactory;
+	function mapToValue(type:Dynamic, to:Dynamic, name:String = null):IAppFactory;
 
 	/**
 	 * Unmaps current type.
