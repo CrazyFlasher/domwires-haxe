@@ -121,6 +121,8 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 	public function getInstance(type:Class<Dynamic>, constructorArgs:Dynamic = null, name:String = null, ignorePool:Bool = false):Dynamic
 	{
 		var obj:Dynamic = getInstanceFromInstanceMap(type, name);
+//		trace(instanceMapping.get(type).get(name));
+		trace(obj);
 
 		if (obj != null)
 		{
@@ -168,6 +170,8 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		{
 			throw Error.Custom("Instance mapping for " + Type.getClassName(type) + "$" + name + " not found!");
 		}
+
+		trace(instanceMapping.get(type).get(name));
 
 		return null;
 	}
