@@ -19,6 +19,7 @@ class AppFactoryTest
 	@Before
 	public function setUp():Void
 	{
+		trace("setUp");
 		factory = new AppFactory();
 		factory.verbose = true;
 	}
@@ -26,7 +27,9 @@ class AppFactoryTest
 	@After
 	public function tearDown():Void
 	{
+		trace("tearDown");
 		factory.clear();
+		factory = null;
 	}
 
 	@Test
@@ -129,7 +132,7 @@ class AppFactoryTest
 		Assert.isFalse(factory.hasPoolForType(IMyType));
 	}
 
-	@Test
+	@TestDebug
 	public function testAutowiredAutoInject():Void
 	{
 		var factory:AppFactory = new AppFactory();
@@ -295,6 +298,7 @@ class AppFactoryTest
 	@Test
 	public function testBooleanMapping():Void
 	{
+		var factory:IAppFactory = new AppFactory();
 		factory.mapToValue(Bool, true);
 
 		var value:Bool = factory.getInstance(Bool);
@@ -306,14 +310,14 @@ class AppFactoryTest
 		Assert.isFalse(value);
 	}
 
-	@Test
+	@TestDebug
 	public function testBooleanMapping2():Void
 	{
+		var factory:IAppFactory = new AppFactory();
+
 		var condition:Bool = false;
 
 		factory.mapToValue("Bool", condition, "popa");
-
-		var c:Dynamic = condition;
 
 		var myObj:MySuperCoolObj2 = factory.getInstance(MySuperCoolObj2);
 		Assert.areEqual(myObj.b, false);
@@ -366,7 +370,8 @@ class AppFactoryTest
 		Assert.areEqual(o.t, 3);
 	}
 
-	@TestDebug
+	@Ignore
+	@Test
 	public function testMappingViaConfig():Void
 	{
 		SuperCoolModel;
