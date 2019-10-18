@@ -1,26 +1,9 @@
-## Flash 9+
--main TestMain
 -lib munit
 -lib hamcrest
--lib openfl
--lib dox
--cp src
-
--cp test
--swf-version 11
--swf build/as3_test.swf
-#--macro include('com.domwires.core.factory')
-
---next
 
 ## JavaScript
 -main TestMain
--lib munit
--lib hamcrest
--lib openfl
--lib dox
 -cp src
-
 -cp test
 -js build/js_test.js
 
@@ -28,15 +11,8 @@
 
 ## Neko
 -main TestMain
--lib munit
--lib hamcrest
--lib openfl
--lib dox
 -cp src
-
 -cp test
 -neko build/neko_test.n
 
 --next
-
-

@@ -1,5 +1,7 @@
 package com.domwires.core.common;
+import mock.MockDisposable;
 import massive.munit.Assert;
+
 class DisposableTest
 {
 	private var d:IDisposable;
@@ -21,7 +23,7 @@ class DisposableTest
 	@Before
 	public function setup():Void
 	{
-		d = new AbstractDisposable();
+		d = new MockDisposable();
 	}
 
 	@After
