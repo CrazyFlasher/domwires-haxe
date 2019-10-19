@@ -38,7 +38,7 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
             {
                 child.parent.remove(child);
             }
-            (try cast(child, AbstractHierarchyObject) catch (e:Dynamic) null).setParent(this);
+            cast(child, AbstractHierarchyObject).setParent(this);
         }
 
         return this;
@@ -82,7 +82,7 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
                 }
                 else
                 {
-                    child.dispose();
+                    cast(child, IHierarchyObject).dispose();
                 }
             }
             else
@@ -141,7 +141,7 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
                 } else
                 if (Std.is(child, IHierarchyObject))
                 {
-                    child.handleMessage(message);
+                    cast(child, IHierarchyObject).handleMessage(message);
                 }
             }
         }
