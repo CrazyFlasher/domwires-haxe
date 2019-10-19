@@ -8,7 +8,8 @@ class AbstractHierarchyObject extends MessageDispatcher implements IHierarchyObj
 
     private var _parent:IHierarchyObjectContainer;
 
-    public function setParent(value:IHierarchyObjectContainer):Void
+    @:allow(com.domwires.core.mvc.hierarchy.HierarchyObjectContainer)
+    private function setParent(value:IHierarchyObjectContainer):Void
     {
         var hasParent:Bool = _parent != null;
 

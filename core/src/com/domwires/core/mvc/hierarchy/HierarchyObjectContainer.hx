@@ -1,13 +1,16 @@
 package com.domwires.core.mvc.hierarchy;
 
+import com.domwires.core.utils.ArrayUtils;
 import com.domwires.core.mvc.message.IMessage;
 import haxe.io.Error;
 
 class HierarchyObjectContainer extends AbstractHierarchyObject implements IHierarchyObjectContainer
 {
-    public var children(get, never):Array<IHierarchyObjectImmutable>;
+    public var children(get, never):Array<IHierarchyObject>;
+    public var childrenImmutable(get, never):Array<IHierarchyObjectImmutable>;
 
-    private var _childrenList:Array<IHierarchyObjectImmutable> = [];
+    private var _childrenList:Array<IHierarchyObject> = [];
+    private var _childrenListImmutable:Array<IHierarchyObjectImmutable> = [];
 
     public function add(child:IHierarchyObject, index:Int = -1):IHierarchyObjectContainer
     {
@@ -22,9 +25,11 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
         {
             if (contains)
             {
-                _childrenList.splice(index, 1)[0];
+                _childrenList.remove(child);
+                _childrenListImmutable.remove(child);
             }
             _childrenList.insert(index, child);
+            _childrenListImmutable.insert(index, child);
         }
 
         if (!contains)
@@ -32,6 +37,7 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
             if (index == -1)
             {
                 _childrenList.push(child);
+                _childrenListImmutable.push(child);
             }
 
             if (child.parent != null)
@@ -46,11 +52,10 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
 
     public function remove(child:IHierarchyObject, dispose:Bool = false):IHierarchyObjectContainer
     {
-        var childIndex:Int = _childrenList.indexOf(child);
-
-        if (childIndex != -1)
+        if (contains(child))
         {
-            _childrenList.splice(childIndex, 1)[0];
+            _childrenList.remove(child);
+            _childrenListImmutable.remove(child);
 
             if (dispose)
             {
@@ -79,13 +84,11 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
                 if (Std.is(child, IHierarchyObjectContainer))
                 {
                     cast(child, IHierarchyObjectContainer).disposeWithAllChildren();
-                }
-                else
+                } else
                 {
-                    cast(child, IHierarchyObject).dispose();
+                    child.dispose();
                 }
-            }
-            else
+            } else
             {
                cast(child, AbstractHierarchyObject).setParent(null);
             }
@@ -93,7 +96,8 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
 
         if (_childrenList != null)
         {
-            _childrenList.splice(0, _childrenList.length);
+            ArrayUtils.clear(_childrenList);
+            ArrayUtils.clear(_childrenListImmutable);
         }
 
         return this;
@@ -104,6 +108,7 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
         removeAll();
 
         _childrenList = null;
+        _childrenListImmutable = null;
 
         super.dispose();
     }
@@ -120,13 +125,19 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
         removeAll(true);
 
         _childrenList = null;
+        _childrenListImmutable = null;
 
         super.dispose();
     }
 
-    private function get_children():Array<IHierarchyObjectImmutable>
+    private function get_children():Array<IHierarchyObject>
     {
         return _childrenList;
+    }
+
+    private function get_childrenImmutable():Array<IHierarchyObjectImmutable>
+    {
+        return _childrenListImmutable;
     }
 
     public function dispatchMessageToChildren(message:IMessage):Void
@@ -141,7 +152,7 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
                 } else
                 if (Std.is(child, IHierarchyObject))
                 {
-                    cast(child, IHierarchyObject).handleMessage(message);
+                    child.handleMessage(message);
                 }
             }
         }
@@ -149,7 +160,7 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
 
     public function contains(child:IHierarchyObjectImmutable):Bool
     {
-        return _childrenList != null && _childrenList.indexOf(child) != -1;
+        return _childrenListImmutable != null && _childrenListImmutable.indexOf(child) != -1;
     }
 
     public function new()

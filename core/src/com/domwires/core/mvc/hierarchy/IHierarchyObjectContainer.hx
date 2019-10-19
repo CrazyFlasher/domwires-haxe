@@ -9,6 +9,11 @@ import com.domwires.core.mvc.message.IMessage;
 interface IHierarchyObjectContainer extends IHierarchyObjectContainerImmutable extends IHierarchyObject extends IBubbleMessageHandler
 {
     /**
+     * Returns all children of current container.
+     */
+    var children(get, never):Array<IHierarchyObject>;
+
+    /**
      * Adds object to hierarchy. Object becomes a part of hierarchy branch.
      * @param child
      * @param index

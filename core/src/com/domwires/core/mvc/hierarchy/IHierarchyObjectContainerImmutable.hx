@@ -8,7 +8,7 @@ interface IHierarchyObjectContainerImmutable extends IHierarchyObjectImmutable
     /**
      * Returns all children of current container.
      */
-    var children(get, never):Array<IHierarchyObjectImmutable>;
+    var childrenImmutable(get, never):Array<IHierarchyObjectImmutable>;
 
     /**
      * Returns true, if current container has provided child.
