@@ -1,8 +1,7 @@
--lib munit
--lib hamcrest
-
 ## JavaScript
 -main TestMain
+-lib munit
+-lib hamcrest
 -cp src
 -cp test
 -js build/js_test.js
@@ -11,6 +10,8 @@
 
 ## Neko
 -main TestMain
+-lib munit
+-lib hamcrest
 -cp src
 -cp test
 -neko build/neko_test.n

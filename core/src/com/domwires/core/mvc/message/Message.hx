@@ -7,34 +7,34 @@ class Message implements IMessage
     public var target(get, never):Dynamic;
     public var currentTarget(get, never):Dynamic;
     public var previousTarget(get, never):Dynamic;
-    public var type(get, never):Enum;
+    public var type(get, never):EnumValue;
 
-    @:allow(com.domwires.core.mvc.message)
+    @:allow(com.domwires.core.mvc.message.MessageDispatcher)
     private var _data:Dynamic;
 
-    @:allow(com.domwires.core.mvc.message)
+    @:allow(com.domwires.core.mvc.message.MessageDispatcher)
     private var _bubbles:Bool;
 
-    @:allow(com.domwires.core.mvc.message)
+    @:allow(com.domwires.core.mvc.message.MessageDispatcher)
     private var _target:Dynamic;
 
-    @:allow(com.domwires.core.mvc.message)
+    @:allow(com.domwires.core.mvc.message.MessageDispatcher)
     private var _previousTarget:Dynamic;
 
-    @:allow(com.domwires.core.mvc.message)
-    private var _type:Enum;
+    @:allow(com.domwires.core.mvc.message.MessageDispatcher)
+    private var _type:EnumValue;
 
     private var _currentTarget:Dynamic;
 
-    @:allow(com.domwires.core.mvc.message)
-    private function new(type:Enum, data:Dynamic = null, bubbles:Bool = true)
+    @:allow(com.domwires.core.mvc.message.MessageDispatcher)
+    public function new(type:EnumValue, data:Dynamic = null, bubbles:Bool = true)
     {
         _type = type;
         _data = data;
         _bubbles = bubbles;
     }
 
-    @:allow(com.domwires.core.mvc.message)
+    @:allow(com.domwires.core.mvc.message.MessageDispatcher)
     private function setCurrentTarget(value:Dynamic):Dynamic
     {
         _previousTarget = _currentTarget;
@@ -44,7 +44,7 @@ class Message implements IMessage
         return _currentTarget;
     }
 
-    private function get_type():Enum
+    private function get_type():EnumValue
     {
         return _type;
     }

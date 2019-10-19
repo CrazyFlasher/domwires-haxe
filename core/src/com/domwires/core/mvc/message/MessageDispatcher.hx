@@ -5,32 +5,34 @@ import com.domwires.core.mvc.message.IMessage;
 
 class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
 {
-    private var _messageMap:Map<Enum<Dynamic>, Array<IMessage -> Void>>;
+    private var _messageMap:Map<EnumValue, Array<IMessage -> Void>>;
     private var _message:Message;
 
     private var isBubbling:Bool;
 
-    public function addMessageListener(type:Enum<Dynamic>, listener:IMessage -> Void):Void
+    public function addMessageListener(type:EnumValue, listener:IMessage -> Void):Void
     {
         if (_messageMap == null)
         {
-            _messageMap = new Map<Enum, Array<IMessage -> Void>>();
+            _messageMap = new Map<EnumValue, Array<IMessage -> Void>>();
         }
 
-        if (_messageMap.get(type) == null)
+        var messageMapForType:Array<IMessage -> Void> = _messageMap.get(type);
+        if (messageMapForType == null)
         {
-            _messageMap.get(type) = [];
+            messageMapForType = [];
             //To avoid check in this case, if vector contains element
-            _messageMap.get(type).push(listener);
-        }
-        else
-        if (_messageMap.get(type).indexOf(listener) == -1)
+            messageMapForType.push(listener);
+
+            _messageMap.set(type, messageMapForType);
+        } else
+        if (messageMapForType.indexOf(listener) == -1)
         {
-            _messageMap.get(type).push(listener);
+            messageMapForType.push(listener);
         }
     }
 
-    public function removeMessageListener(type:Enum<Dynamic>, listener:IMessage -> Void):Void
+    public function removeMessageListener(type:EnumValue, listener:IMessage -> Void):Void
     {
         if (_messageMap != null)
         {
@@ -58,23 +60,23 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
         }
     }
 
-    public function dispatchMessage(type:Enum<Dynamic>, data:Dynamic = null, bubbles:Bool = false):Void
+    public function dispatchMessage(type:EnumValue, data:Dynamic = null, bubbles:Bool = false):Void
     {
         if (isBubbling)
         {
             trace("WARNING: You try to dispatch '" + Std.string(type) + "' while '" + Std.string(_message.type) +
-            "' is bubbling. Making new instance of IMessage");
+                "' is bubbling. Making new instance of IMessage");
+        }
 
-            _message = getMessage(type, data, bubbles, isBubbling);
-            _message._target = this;
-            _message.setCurrentTarget(this);
+        _message = getMessage(type, data, bubbles, isBubbling);
+        _message._target = this;
+        _message.setCurrentTarget(this);
 
-            handleMessage(_message);
+        handleMessage(_message);
 
-            if (!isDisposed)
-            {
-                bubbleUpMessage(_message);
-            }
+        if (!isDisposed)
+        {
+            bubbleUpMessage(_message);
         }
     }
 
@@ -120,7 +122,7 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
             if (_messageMap.get(message.type) != null)
             {
                 var listener:IMessage -> Void;
-                for (listener in _messageMap(message.type))
+                for (listener in _messageMap.get(message.type))
                 {
                     listener(message);
                 }
@@ -128,7 +130,7 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
         }
     }
 
-    public function hasMessageListener(type:Enum<Dynamic>):Bool
+    public function hasMessageListener(type:EnumValue):Bool
     {
         if (_messageMap != null)
         {
@@ -138,7 +140,7 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
         return false;
     }
 
-    private function getMessage(type:Enum<Dynamic>, data:Dynamic, bubbles:Bool, forceReturnNew:Bool = false):Message
+    private function getMessage(type:EnumValue, data:Dynamic, bubbles:Bool, forceReturnNew:Bool = false):Message
     {
         if (_message == null || forceReturnNew)
         {
@@ -159,8 +161,12 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
         removeAllMessageListeners();
 
         _message = null;
-        _messageMap.clear();
-        _messageMap = null;
+
+        if (_messageMap != null)
+        {
+            _messageMap.clear();
+            _messageMap = null;
+        }
 
         super.dispose();
     }
