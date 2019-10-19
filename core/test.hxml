@@ -2,6 +2,7 @@
 -main TestMain
 -lib munit
 -lib hamcrest
+-lib hexinject:1.0.0-alpha7
 -cp src
 -cp test
 -js build/js_test.js
@@ -12,6 +13,7 @@
 -main TestMain
 -lib munit
 -lib hamcrest
+-lib hexinject:1.0.0-alpha7
 -cp src
 -cp test
 -neko build/neko_test.n
