@@ -1,6 +1,3 @@
-/**
- * Created by Anton Nefjodov on 27.05.2016.
- */
 package com.domwires.core.mvc.command;
 
 /**
@@ -12,12 +9,13 @@ package com.domwires.core.mvc.command;
  * <code>public static const LOG_EXECUTION_FAIL:Boolean = false;</code>
  * Considered as false, if not specified.
  */
-interface ICommand
-{
+import hex.di.IInjectorAcceptor;
 
-    /**
+interface ICommand extends IInjectorAcceptor
+{
+	/**
       * Executes command.
      */
-    function execute():Void;
+	function execute():Void;
 }
 

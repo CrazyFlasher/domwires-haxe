@@ -26,7 +26,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		return injector.getInstanceWithClassName(className, name, targetType, shouldThrowAnError);
 	}
 
-	public function getAllPoolItemsAreBusy(type:ClassRef<T>):Bool
+	public function getAllPoolItemsAreBusy<T>(type:ClassRef<T>):Bool
 	{
 		throw Error.Custom("Not implemented!");
 	}
@@ -34,6 +34,8 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 	public function clearMappings():IAppFactory
 	{
 		injector = new Injector();
+
+		return this;
 	}
 
 	public function increasePoolCapacity(type:Class<Dynamic>, additionalCapacity:Int):IAppFactory
@@ -43,7 +45,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function instantiateUnmapped<T>(type:Class<T>):T
 	{
-		injector.instantiateUnmapped(type);
+		return injector.instantiateUnmapped(type);
 	}
 
 	public function unmap<T>(type:ClassRef<T>, ?name:MappingName):Void
@@ -53,7 +55,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function getOrCreateNewInstance<T>(type:Class<T>):T
 	{
-		injector.getOrCreateNewInstance(type);
+		return injector.getOrCreateNewInstance(type);
 	}
 
 	public function getInstanceFromPool<T>(type:Class<T>):T
@@ -116,8 +118,8 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		injector.mapClassNameToValue(className, value, name);
 	}
 
-	public function registerPool<T>(type:ClassRef<T>, capacity:Int, instantiateNow:Bool, constructorArgs:Dynamic,
-								 isBusyFlagGetterName:String):IAppFactory
+	public function registerPool<T>(type:ClassRef<T>, capacity:Int = 5, instantiateNow:Bool = false, constructorArgs:Dynamic = null,
+									isBusyFlagGetterName:String = null):IAppFactory
 	{
 		throw Error.Custom("Not implemented!");
 	}

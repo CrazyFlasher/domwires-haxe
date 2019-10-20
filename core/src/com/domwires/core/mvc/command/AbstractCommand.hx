@@ -1,6 +1,3 @@
-/**
- * Created by Anton Nefjodov on 30.05.2016.
- */
 package com.domwires.core.mvc.command;
 
 class AbstractCommand implements ICommand

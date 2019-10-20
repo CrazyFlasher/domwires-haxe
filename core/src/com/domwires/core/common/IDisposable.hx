@@ -1,6 +1,8 @@
 package com.domwires.core.common;
 
-interface IDisposable extends IDisposableImmutable
+import hex.di.IInjectorAcceptor;
+
+interface IDisposable extends IDisposableImmutable extends IInjectorAcceptor
 {
 
     /**
