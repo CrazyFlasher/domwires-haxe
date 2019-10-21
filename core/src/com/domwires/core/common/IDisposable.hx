@@ -1,8 +1,8 @@
 package com.domwires.core.common;
 
-import hex.di.IInjectorAcceptor;
+import hex.di.IInjectorContainer;
 
-interface IDisposable extends IDisposableImmutable extends IInjectorAcceptor
+interface IDisposable extends IDisposableImmutable extends IInjectorContainer
 {
 
     /**
@@ -10,4 +10,3 @@ interface IDisposable extends IDisposableImmutable extends IInjectorAcceptor
      */
     function dispose():Void;
 }
-

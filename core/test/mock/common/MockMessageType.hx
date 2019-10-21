@@ -1,6 +1,6 @@
-package mock;
+package mock.common;
 
-enum MockMessage
+enum MockMessageType
 {
     Hello;
     GoodBye;

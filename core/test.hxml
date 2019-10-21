@@ -6,6 +6,8 @@
 -cp src
 -cp test
 -js build/js_test.js
+-debug
+-D js-source-map
 
 --next
 
@@ -17,5 +19,6 @@
 -cp src
 -cp test
 -neko build/neko_test.n
+-debug
 
 --next

@@ -20,17 +20,19 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		factory.mapToValue(ICommandMapper, this);
 	}
 
-	public function map(messageType:EnumValue, commandClass:Class<Dynamic>, data:Dynamic, once:Bool, stopOnExecute:Bool):MappingConfig
+	public function map(messageType:EnumValue, commandClass:Class<Dynamic>, data:Dynamic = null, once:Bool = false,
+						stopOnExecute:Bool = false):MappingConfig
 	{
 		var mappingConfig:MappingConfig = new MappingConfig(commandClass, data, once, stopOnExecute);
 
 		var list:Array<MappingConfig> = commandMap.get(messageType);
+
 		if (list == null)
 		{
-			list = [];
+			list = [mappingConfig];
 			commandMap.set(messageType, list);
 		} else
-		if (!mappingListContains(list, commandClass))
+		if (mappingListContains(list, commandClass) == null)
 		{
 			list.push(mappingConfig);
 		}
@@ -38,10 +40,10 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		return mappingConfig;
 	}
 
-	public function map1(messageType:EnumValue, commandClassList:Array<Class<Dynamic>>, data:Dynamic, once:Bool,
-						 stopOnExecute:Bool):MappingConfigList
+	public function map1(messageType:EnumValue, commandClassList:Array<Class<Dynamic>>, data:Dynamic = null, once:Bool = false,
+						 stopOnExecute:Bool = false):MappingConfigList
 	{
-		var commandClass:Class;
+		var commandClass:Class<Dynamic>;
 		var mappingConfigList:MappingConfigList = new MappingConfigList();
 
 		for (commandClass in commandClassList)
@@ -53,10 +55,10 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		return mappingConfigList;
 	}
 
-	public function map2(messageTypeList:Array<EnumValue>, commandClass:Class<Dynamic>, data:Dynamic, once:Bool,
-						 stopOnExecute:Bool):MappingConfigList
+	public function map2(messageTypeList:Array<EnumValue>, commandClass:Class<Dynamic>, data:Dynamic = null, once:Bool = false,
+						 stopOnExecute:Bool = false):MappingConfigList
 	{
-		var messageType:Enum;
+		var messageType:EnumValue;
 		var mappingConfigList:MappingConfigList = new MappingConfigList();
 
 		for (messageType in messageTypeList)
@@ -68,11 +70,11 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		return mappingConfigList;
 	}
 
-	public function map3(messageTypeList:Array<EnumValue>, commandClassList:Array<Class<Dynamic>>, data:Dynamic, once:Bool,
-						 stopOnExecute:Bool):MappingConfigList
+	public function map3(messageTypeList:Array<EnumValue>, commandClassList:Array<Class<Dynamic>>, data:Dynamic = null, once:Bool = false,
+						 stopOnExecute:Bool = false):MappingConfigList
 	{
-		var commandClass:Class;
-		var messageType:Enum;
+		var commandClass:Class<Dynamic>;
+		var messageType:EnumValue;
 		var mappingConfigList:MappingConfigList = new MappingConfigList();
 
 		for (commandClass in commandClassList)
@@ -90,14 +92,14 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		return mappingConfigList;
 	}
 
-	private function mappingListContains(list:Array<MappingConfig>, commandClass:Class, ignoreGuards:Bool = false):MappingConfig
+	private function mappingListContains(list:Array<MappingConfig>, commandClass:Class<Dynamic>, ignoreGuards:Bool = false):MappingConfig
 	{
 		var mappingVo:MappingConfig;
 		for (mappingVo in list)
 		{
 			if (mappingVo.commandClass == commandClass)
 			{
-				var hasGuards:Bool = !ignoreGuards && mappingVo.guardList && mappingVo.guardList.length > 0;
+				var hasGuards:Bool = !ignoreGuards && mappingVo.guardList != null && mappingVo.guardList.length > 0;
 				return hasGuards ? null : mappingVo;
 			}
 		}
@@ -111,7 +113,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		if (list != null)
 		{
 			var mappingVo:MappingConfig = mappingListContains(list, commandClass, true);
-			if (mappingVo)
+			if (mappingVo != null)
 			{
 				list.remove(mappingVo);
 
@@ -143,12 +145,12 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		return this;
 	}
 
-	public function executeCommand(commandClass:Class<Dynamic>, data:Dynamic, guardList:Array<Class<Dynamic>>,
-								   guardNotList:Array<Class<Dynamic>>):Bool
+	public function executeCommand(commandClass:Class<Dynamic>, data:Dynamic = null, guardList:Array<Class<Dynamic>> = null,
+								   guardNotList:Array<Class<Dynamic>> = null):Bool
 	{
 		if (
-			(!guardList || (guardList && guardsAllow(guardList, data))) &&
-			(!guardNotList || (guardNotList && guardsAllow(guardNotList, data, true)))
+			(guardList == null || (guardList != null && guardsAllow(guardList, data))) &&
+			(guardNotList == null || (guardNotList != null && guardsAllow(guardNotList, data, true)))
 		)
 		{
 			if (data != null)
@@ -158,7 +160,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 
 			if (!factory.hasMapping(commandClass))
 			{
-				factory.mapToSingleton(commandClass);
+				factory.mapToValue(commandClass, Type.createInstance(commandClass, []));
 			}
 
 			var command:ICommand = cast factory.getInstance(commandClass);
@@ -225,7 +227,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		{
 			for (i in Reflect.fields(mappingData))
 			{
-				Reflect.field(messageData, i) = Reflect.field(mappingData, i);
+				Reflect.setField(messageData, i, Reflect.field(mappingData, i));
 			}
 		}
 
@@ -236,26 +238,47 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 	{
 		for (propertyName in Reflect.fields(data))
 		{
-			mapProperty(data, propertyName, map);
+			if (!isType(propertyName))
+			{
+				mapProperty(data, propertyName, map);
+			}
 		}
+	}
+
+	private function isType(propertyName:String):Bool
+	{
+		return propertyName.substr(0, 2) == "__";
 	}
 
 	private function mapProperty(data:Dynamic, propertyName:String, map:Bool):Void
 	{
 		var propertyValue:Dynamic = Reflect.field(data, propertyName);
-		var typeName:String = Type.getClassName(propertyValue);
-		if (map)
+		var propertyType:Dynamic = Reflect.field(data, "__" + propertyName);
+
+		if (propertyType != null)
 		{
-			factory.mapClassNameToValue(typeName, propertyValue, propertyName);
+			if (map)
+			{
+				factory.mapClassNameToValue(propertyType, propertyValue, propertyName);
+			} else
+			{
+				factory.unmapClassName(propertyType, propertyName);
+			}
 		} else
 		{
-			factory.unmapClassName(typeName, propertyName);
+			if (map)
+			{
+				factory.mapToValue(Type.getClass(propertyValue), propertyValue, propertyName);
+			} else
+			{
+				factory.unmap(Type.getClass(propertyValue), propertyName);
+			}
 		}
 	}
 
-	private function guardsAllow(guardList:Array<Class>, data:Dynamic = null, opposite:Bool = false):Bool
+	private function guardsAllow(guardList:Array<Class<Dynamic>>, data:Dynamic = null, opposite:Bool = false):Bool
 	{
-		var guardClass:Class;
+		var guardClass:Class<Dynamic>;
 		var guards:IGuards;
 
 		var guardsAllow:Bool = true;
@@ -269,7 +292,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 
 			if (!factory.hasMapping(guardClass))
 			{
-				factory.mapToSingleton(guardClass);
+				factory.mapToValue(guardClass, Type.createInstance(guardClass, []));
 			}
 
 			var guards:IGuards = cast factory.getInstance(guardClass);
@@ -298,4 +321,10 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		return this;
 	}
 
+	public function setMergeMessageDataAndMappingData(value:Bool):ICommandMapper
+	{
+		_mergeMessageDataAndMappingData = value;
+
+		return this;
+	}
 }

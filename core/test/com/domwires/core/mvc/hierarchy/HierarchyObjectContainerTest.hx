@@ -1,9 +1,9 @@
 package com.domwires.core.mvc.hierarchy;
 
-import mock.MockHierarchyObject;
-import massive.munit.Assert;
 import com.domwires.core.mvc.message.IMessage;
-import mock.MockMessage;
+import massive.munit.Assert;
+import mock.common.MockMessageType;
+import mock.hierarchy.MockHierarchyObject;
 class HierarchyObjectContainerTest
 {
     private var hoc:IHierarchyObjectContainer;
@@ -36,13 +36,13 @@ class HierarchyObjectContainerTest
     @Test
     public function testAddMessageListener():Void
     {
-        Assert.isFalse(hoc.hasMessageListener(MockMessage.Hello));
+        Assert.isFalse(hoc.hasMessageListener(MockMessageType.Hello));
 
         var eventHandler:IMessage -> Void = m -> {};
 
-        hoc.addMessageListener(MockMessage.Hello, eventHandler);
+        hoc.addMessageListener(MockMessageType.Hello, eventHandler);
 
-        Assert.isTrue(hoc.hasMessageListener(MockMessage.Hello));
+        Assert.isTrue(hoc.hasMessageListener(MockMessageType.Hello));
     }
 
     @Test
@@ -120,10 +120,10 @@ class HierarchyObjectContainerTest
     {
         var eventHandler:IMessage -> Void = m -> {};
 
-        hoc.addMessageListener(MockMessage.Hello, eventHandler);
-        hoc.removeMessageListener(MockMessage.Hello, eventHandler);
+        hoc.addMessageListener(MockMessageType.Hello, eventHandler);
+        hoc.removeMessageListener(MockMessageType.Hello, eventHandler);
 
-        Assert.isFalse(hoc.hasMessageListener(MockMessage.Hello));
+        Assert.isFalse(hoc.hasMessageListener(MockMessageType.Hello));
     }
 
     @Test
@@ -139,19 +139,19 @@ class HierarchyObjectContainerTest
     {
         var eventHandler:IMessage -> Void = m -> {};
 
-        hoc.addMessageListener(MockMessage.Hello, eventHandler);
-        hoc.addMessageListener(MockMessage.GoodBye, eventHandler);
-        hoc.addMessageListener(MockMessage.Shalom, eventHandler);
+        hoc.addMessageListener(MockMessageType.Hello, eventHandler);
+        hoc.addMessageListener(MockMessageType.GoodBye, eventHandler);
+        hoc.addMessageListener(MockMessageType.Shalom, eventHandler);
 
-        Assert.isTrue(hoc.hasMessageListener(MockMessage.Hello));
-        Assert.isTrue(hoc.hasMessageListener(MockMessage.GoodBye));
-        Assert.isTrue(hoc.hasMessageListener(MockMessage.Shalom));
+        Assert.isTrue(hoc.hasMessageListener(MockMessageType.Hello));
+        Assert.isTrue(hoc.hasMessageListener(MockMessageType.GoodBye));
+        Assert.isTrue(hoc.hasMessageListener(MockMessageType.Shalom));
 
         hoc.removeAllMessageListeners();
 
-        Assert.isFalse(hoc.hasMessageListener(MockMessage.Hello));
-        Assert.isFalse(hoc.hasMessageListener(MockMessage.GoodBye));
-        Assert.isFalse(hoc.hasMessageListener(MockMessage.Shalom));
+        Assert.isFalse(hoc.hasMessageListener(MockMessageType.Hello));
+        Assert.isFalse(hoc.hasMessageListener(MockMessageType.GoodBye));
+        Assert.isFalse(hoc.hasMessageListener(MockMessageType.Shalom));
     }
 
     @Test

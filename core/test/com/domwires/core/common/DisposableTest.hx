@@ -1,5 +1,5 @@
 package com.domwires.core.common;
-import mock.MockDisposable;
+import mock.common.MockDisposable;
 import massive.munit.Assert;
 
 class DisposableTest

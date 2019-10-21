@@ -1,7 +1,7 @@
 package com.domwires.core.mvc.message;
 
 import massive.munit.Assert;
-import mock.MockMessage;
+import mock.common.MockMessageType;
 
 class MessageDispatcherTest {
     private var d:MessageDispatcher;
@@ -29,21 +29,21 @@ class MessageDispatcherTest {
     @Test
     public function testDispatchMessage():Void {
         var gotMessage:Bool = false;
-        var gotMessageType:EnumValue = MockMessage.GoodBye;
+        var gotMessageType:EnumValue = MockMessageType.GoodBye;
         var gotMessageTarget:IMessageDispatcher = null;
         var gotMessageData:Dynamic = {};
 
-        d.addMessageListener(MockMessage.Hello, (event:IMessage) -> {
+        d.addMessageListener(MockMessageType.Hello, (event:IMessage) -> {
             gotMessage = true;
             gotMessageType = event.type;
             gotMessageTarget = cast(event.target, IMessageDispatcher);
             gotMessageData.prop = event.data.prop;
         });
 
-        d.dispatchMessage(MockMessage.Hello, {prop:"prop1"});
+        d.dispatchMessage(MockMessageType.Hello, {prop:"prop1"});
 
         Assert.isTrue(gotMessage);
-        Assert.areEqual(gotMessageType, MockMessage.Hello);
+        Assert.areEqual(gotMessageType, MockMessageType.Hello);
         Assert.areEqual(gotMessageTarget, d);
         Assert.areEqual(gotMessageData.prop, "prop1");
     }
@@ -51,55 +51,55 @@ class MessageDispatcherTest {
     @Test
     public function testAddMessageListener():Void
     {
-        Assert.isFalse(d.hasMessageListener(MockMessage.Hello));
-        d.addMessageListener(MockMessage.Hello, message -> {});
-        Assert.isTrue(d.hasMessageListener(MockMessage.Hello));
+        Assert.isFalse(d.hasMessageListener(MockMessageType.Hello));
+        d.addMessageListener(MockMessageType.Hello, message -> {});
+        Assert.isTrue(d.hasMessageListener(MockMessageType.Hello));
     }
 
     @Test
     public function testRemoveAllMessages():Void
     {
         var listener:IMessage -> Void = message -> {};
-        d.addMessageListener(MockMessage.Hello, listener);
-        d.addMessageListener(MockMessage.Shalom, listener);
-        Assert.isTrue(d.hasMessageListener(MockMessage.Hello));
-        Assert.isTrue(d.hasMessageListener(MockMessage.Shalom));
+        d.addMessageListener(MockMessageType.Hello, listener);
+        d.addMessageListener(MockMessageType.Shalom, listener);
+        Assert.isTrue(d.hasMessageListener(MockMessageType.Hello));
+        Assert.isTrue(d.hasMessageListener(MockMessageType.Shalom));
 
         d.removeAllMessageListeners();
-        Assert.isFalse(d.hasMessageListener(MockMessage.Hello));
-        Assert.isFalse(d.hasMessageListener(MockMessage.Shalom));
+        Assert.isFalse(d.hasMessageListener(MockMessageType.Hello));
+        Assert.isFalse(d.hasMessageListener(MockMessageType.Shalom));
     }
 
     @Test
     public function testRemoveMessageListener():Void
     {
-        Assert.isFalse(d.hasMessageListener(MockMessage.Hello));
+        Assert.isFalse(d.hasMessageListener(MockMessageType.Hello));
 
         var listener:IMessage -> Void = m -> {};
-        d.addMessageListener(MockMessage.Hello, listener);
-        Assert.isTrue(d.hasMessageListener(MockMessage.Hello));
-        Assert.isFalse(d.hasMessageListener(MockMessage.GoodBye));
+        d.addMessageListener(MockMessageType.Hello, listener);
+        Assert.isTrue(d.hasMessageListener(MockMessageType.Hello));
+        Assert.isFalse(d.hasMessageListener(MockMessageType.GoodBye));
 
-        d.addMessageListener(MockMessage.GoodBye, listener);
-        d.removeMessageListener(MockMessage.Hello, listener);
-        Assert.isFalse(d.hasMessageListener(MockMessage.Hello));
-        Assert.isTrue(d.hasMessageListener(MockMessage.GoodBye));
+        d.addMessageListener(MockMessageType.GoodBye, listener);
+        d.removeMessageListener(MockMessageType.Hello, listener);
+        Assert.isFalse(d.hasMessageListener(MockMessageType.Hello));
+        Assert.isTrue(d.hasMessageListener(MockMessageType.GoodBye));
 
-        d.removeMessageListener(MockMessage.GoodBye, listener);
-        Assert.isFalse(d.hasMessageListener(MockMessage.GoodBye));
+        d.removeMessageListener(MockMessageType.GoodBye, listener);
+        Assert.isFalse(d.hasMessageListener(MockMessageType.GoodBye));
     }
 
     @Test
     public function testDispose():Void
     {
-        d.addMessageListener(MockMessage.Hello, m -> {});
-        d.addMessageListener(MockMessage.GoodBye, m -> {});
-        d.addMessageListener(MockMessage.Shalom, m -> {});
+        d.addMessageListener(MockMessageType.Hello, m -> {});
+        d.addMessageListener(MockMessageType.GoodBye, m -> {});
+        d.addMessageListener(MockMessageType.Shalom, m -> {});
         d.dispose();
 
-        Assert.isFalse(d.hasMessageListener(MockMessage.Hello));
-        Assert.isFalse(d.hasMessageListener(MockMessage.GoodBye));
-        Assert.isFalse(d.hasMessageListener(MockMessage.Shalom));
+        Assert.isFalse(d.hasMessageListener(MockMessageType.Hello));
+        Assert.isFalse(d.hasMessageListener(MockMessageType.GoodBye));
+        Assert.isFalse(d.hasMessageListener(MockMessageType.Shalom));
 
         Assert.isTrue(d.isDisposed);
     }
@@ -108,8 +108,8 @@ class MessageDispatcherTest {
     public function testHasMessageListener():Void
     {
         var listener:IMessage -> Void = m -> {};
-        d.addMessageListener(MockMessage.Hello, listener);
-        Assert.isTrue(d.hasMessageListener(MockMessage.Hello));
+        d.addMessageListener(MockMessageType.Hello, listener);
+        Assert.isTrue(d.hasMessageListener(MockMessageType.Hello));
     }
 
     @Test
@@ -121,10 +121,10 @@ class MessageDispatcherTest {
         var listener_1:IMessage -> Void = m -> a = true;
         var listener_2:IMessage -> Void = m -> b = true;
 
-        d.addMessageListener(MockMessage.Hello, listener_1);
-        d.addMessageListener(MockMessage.Hello, listener_2);
+        d.addMessageListener(MockMessageType.Hello, listener_1);
+        d.addMessageListener(MockMessageType.Hello, listener_2);
 
-        d.dispatchMessage(MockMessage.Hello);
+        d.dispatchMessage(MockMessageType.Hello);
 
         Assert.isTrue(a);
         Assert.isTrue(b);

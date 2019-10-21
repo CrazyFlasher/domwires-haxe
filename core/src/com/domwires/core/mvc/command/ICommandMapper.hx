@@ -79,5 +79,14 @@ interface ICommandMapper extends ICommandMapperImmutable extends IDisposable
      */
 	function executeCommand(commandClass:Class<Dynamic>, data:Dynamic = null, guardList:Array<Class<Dynamic>> = null,
 							guardNotList:Array<Class<Dynamic>> = null):Bool;
+
+	/**
+	 * If true, then message data object will be merged with mapping data object. Mapping data will
+	 * be in priority. Otherwise mapping data will be replaced by message data (if has one).
+	 * By default is false, and mapping data will be replaced with message data (if has one).
+	 * @param value
+	 * @return
+	 */
+	function setMergeMessageDataAndMappingData(value:Bool):ICommandMapper;
 }
 

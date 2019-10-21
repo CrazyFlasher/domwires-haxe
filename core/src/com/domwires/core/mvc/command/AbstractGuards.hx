@@ -9,6 +9,7 @@ class AbstractGuards implements IGuards
         return false;
     }
 
+    @:allow(com.domwires.core.mvc.command.CommandMapper)
     private function new()
     {
     }

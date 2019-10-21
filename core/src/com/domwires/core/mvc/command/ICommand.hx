@@ -9,9 +9,9 @@ package com.domwires.core.mvc.command;
  * <code>public static const LOG_EXECUTION_FAIL:Boolean = false;</code>
  * Considered as false, if not specified.
  */
-import hex.di.IInjectorAcceptor;
+import hex.di.IInjectorContainer;
 
-interface ICommand extends IInjectorAcceptor
+interface ICommand extends IInjectorContainer
 {
 	/**
       * Executes command.

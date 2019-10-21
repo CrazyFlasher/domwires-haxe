@@ -1,4 +1,4 @@
-package mock;
+package mock.hierarchy;
 
 import com.domwires.core.mvc.hierarchy.AbstractHierarchyObject;
 

@@ -1,4 +1,4 @@
-package mock;
+package mock.common;
 
 import com.domwires.core.common.AbstractDisposable;
 

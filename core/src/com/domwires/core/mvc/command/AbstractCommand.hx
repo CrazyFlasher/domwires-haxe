@@ -8,6 +8,7 @@ class AbstractCommand implements ICommand
     {
     }
 
+    @:allow(com.domwires.core.mvc.command.CommandMapper)
     private function new()
     {
     }
