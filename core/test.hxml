@@ -7,7 +7,6 @@
 -cp test
 -js build/js_test.js
 -debug
--D js-source-map
 
 --next
 

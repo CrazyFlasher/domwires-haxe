@@ -1,7 +1,7 @@
 package com.domwires.core.mvc.hierarchy;
 
 import massive.munit.Assert;
-import mock.hierarchy.MockHierarchyObject;
+import mock.mvc.hierarchy.MockHierarchyObject;
 
 class HierarchyObjectTest
 {

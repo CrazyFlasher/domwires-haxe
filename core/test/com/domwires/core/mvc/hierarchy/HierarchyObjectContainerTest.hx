@@ -3,7 +3,7 @@ package com.domwires.core.mvc.hierarchy;
 import com.domwires.core.mvc.message.IMessage;
 import massive.munit.Assert;
 import mock.common.MockMessageType;
-import mock.hierarchy.MockHierarchyObject;
+import mock.mvc.hierarchy.MockHierarchyObject;
 class HierarchyObjectContainerTest
 {
     private var hoc:IHierarchyObjectContainer;

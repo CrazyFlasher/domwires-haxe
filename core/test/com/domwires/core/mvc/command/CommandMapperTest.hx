@@ -1,23 +1,23 @@
 package com.domwires.core.mvc.command;
 
-import mock.commands.MockCommand_2;
-import mock.commands.MockCommand_9;
-import mock.commands.MockCommand_8;
-import mock.commands.MockCommand_7;
-import mock.commands.MockCommand_6;
-import mock.commands.MockCommand_5;
+import mock.mvc.commands.MockCommand_2;
+import mock.mvc.commands.MockCommand_9;
+import mock.mvc.commands.MockCommand_8;
+import mock.mvc.commands.MockCommand_7;
+import mock.mvc.commands.MockCommand_6;
+import mock.mvc.commands.MockCommand_5;
 import mock.obj.MockVo_2;
-import mock.commands.MockCommand_4;
-import mock.commands.guards.MockAllowGuards_2;
-import mock.commands.guards.MockNotAllowGuards;
-import mock.commands.MockCommand_3;
+import mock.mvc.commands.MockCommand_4;
+import mock.mvc.commands.guards.MockAllowGuards_2;
+import mock.mvc.commands.guards.MockNotAllowGuards;
+import mock.mvc.commands.MockCommand_3;
 import mock.obj.MockVo;
-import mock.message.MockMessage;
+import mock.mvc.message.MockMessage;
 import com.domwires.core.factory.AppFactory;
 import com.domwires.core.factory.IAppFactory;
 import massive.munit.Assert;
-import mock.commands.guards.MockAllowGuards;
-import mock.commands.MockCommand_1;
+import mock.mvc.commands.guards.MockAllowGuards;
+import mock.mvc.commands.MockCommand_1;
 import mock.common.MockMessageType;
 import mock.obj.MockObj_1;
 

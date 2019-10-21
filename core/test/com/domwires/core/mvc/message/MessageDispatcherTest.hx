@@ -3,37 +3,45 @@ package com.domwires.core.mvc.message;
 import massive.munit.Assert;
 import mock.common.MockMessageType;
 
-class MessageDispatcherTest {
+class MessageDispatcherTest
+{
     private var d:MessageDispatcher;
 
     @BeforeClass
-    public function beforeClass():Void {
+    public function beforeClass():Void
+    {
     }
 
     @AfterClass
-    public function afterClass():Void {
+    public function afterClass():Void
+    {
     }
 
     @Before
-    public function setup():Void {
+    public function setup():Void
+    {
         d = new MessageDispatcher();
     }
 
     @After
-    public function tearDown():Void {
-        if (!d.isDisposed) {
+    public function tearDown():Void
+    {
+        if (!d.isDisposed)
+        {
             d.dispose();
         }
     }
 
     @Test
-    public function testDispatchMessage():Void {
+    public function testDispatchMessage():Void
+    {
         var gotMessage:Bool = false;
         var gotMessageType:EnumValue = MockMessageType.GoodBye;
         var gotMessageTarget:IMessageDispatcher = null;
         var gotMessageData:Dynamic = {};
 
-        d.addMessageListener(MockMessageType.Hello, (event:IMessage) -> {
+        d.addMessageListener(MockMessageType.Hello, (event:IMessage) ->
+        {
             gotMessage = true;
             gotMessageType = event.type;
             gotMessageTarget = cast(event.target, IMessageDispatcher);
@@ -52,14 +60,16 @@ class MessageDispatcherTest {
     public function testAddMessageListener():Void
     {
         Assert.isFalse(d.hasMessageListener(MockMessageType.Hello));
-        d.addMessageListener(MockMessageType.Hello, message -> {});
+        d.addMessageListener(MockMessageType.Hello, message ->
+        {});
         Assert.isTrue(d.hasMessageListener(MockMessageType.Hello));
     }
 
     @Test
     public function testRemoveAllMessages():Void
     {
-        var listener:IMessage -> Void = message -> {};
+        var listener:IMessage -> Void = message ->
+        {};
         d.addMessageListener(MockMessageType.Hello, listener);
         d.addMessageListener(MockMessageType.Shalom, listener);
         Assert.isTrue(d.hasMessageListener(MockMessageType.Hello));
@@ -75,7 +85,8 @@ class MessageDispatcherTest {
     {
         Assert.isFalse(d.hasMessageListener(MockMessageType.Hello));
 
-        var listener:IMessage -> Void = m -> {};
+        var listener:IMessage -> Void = m ->
+        {};
         d.addMessageListener(MockMessageType.Hello, listener);
         Assert.isTrue(d.hasMessageListener(MockMessageType.Hello));
         Assert.isFalse(d.hasMessageListener(MockMessageType.GoodBye));
@@ -92,9 +103,12 @@ class MessageDispatcherTest {
     @Test
     public function testDispose():Void
     {
-        d.addMessageListener(MockMessageType.Hello, m -> {});
-        d.addMessageListener(MockMessageType.GoodBye, m -> {});
-        d.addMessageListener(MockMessageType.Shalom, m -> {});
+        d.addMessageListener(MockMessageType.Hello, m ->
+        {});
+        d.addMessageListener(MockMessageType.GoodBye, m ->
+        {});
+        d.addMessageListener(MockMessageType.Shalom, m ->
+        {});
         d.dispose();
 
         Assert.isFalse(d.hasMessageListener(MockMessageType.Hello));
@@ -107,7 +121,8 @@ class MessageDispatcherTest {
     @Test
     public function testHasMessageListener():Void
     {
-        var listener:IMessage -> Void = m -> {};
+        var listener:IMessage -> Void = m ->
+        {};
         d.addMessageListener(MockMessageType.Hello, listener);
         Assert.isTrue(d.hasMessageListener(MockMessageType.Hello));
     }
