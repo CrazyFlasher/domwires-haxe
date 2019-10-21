@@ -10,7 +10,7 @@ class PoolModel
 	private var list:Array<Dynamic> = [];
 	private var _capacity:Int;
 
-	private var currentIndex:Int;
+	private var currentIndex:Int = 0;
 	private var factory:AppFactory;
 	private var isBusyFlagGetterName:String;
 
@@ -43,9 +43,12 @@ class PoolModel
 				currentIndex = 0;
 			}
 
-			if (isBusyFlagGetterName != null && Reflect.field(instance, isBusyFlagGetterName) == true)
+			if (isBusyFlagGetterName != null)
 			{
-				return get(className, createNewIfNeeded);
+				if (Reflect.getProperty(instance, isBusyFlagGetterName))
+				{
+					return get(className, createNewIfNeeded);
+				}
 			}
 		}
 
@@ -92,7 +95,7 @@ class PoolModel
 		{
 			instance = list[i];
 
-			if (Reflect.field(instance, isBusyFlagGetterName) == false)
+			if (!Reflect.getProperty(instance, isBusyFlagGetterName))
 			{
 				return false;
 			}
@@ -114,7 +117,7 @@ class PoolModel
 		{
 			instance = list[i];
 
-			if (Reflect.field(instance, isBusyFlagGetterName) == true)
+			if (Reflect.getProperty(instance, isBusyFlagGetterName))
 			{
 				count++;
 			}

@@ -168,7 +168,7 @@ class BubblingMessageTest
 
         var timePassed:Float = Timer.stamp() - time;
         trace("timePassed", timePassed);
-        Assert.isTrue(timePassed < 0.5);
+        Assert.isTrue(timePassed < 5.0);
     }
 
     @Test

@@ -4,7 +4,7 @@ class MockBusyPoolObject
 {
     public var isBusy(get, set):Bool;
 
-    private var _isBusy:Bool;
+    private var _isBusy:Bool = false;
 
     private function get_isBusy():Bool
     {

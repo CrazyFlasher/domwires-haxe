@@ -8,16 +8,16 @@
 -js build/js_test.js
 -debug
 
---next
+#--next
 
 ## Neko
--main TestMain
--lib munit
--lib hamcrest
--lib hexinject:1.0.0-alpha.7
--cp src
--cp test
--neko build/neko_test.n
--debug
+#-main TestMain
+#-lib munit
+#-lib hamcrest
+#-lib hexinject:1.0.0-alpha.7
+#-cp src
+#-cp test
+#-neko build/neko_test.n
+#-debug
 
---next
+#--next

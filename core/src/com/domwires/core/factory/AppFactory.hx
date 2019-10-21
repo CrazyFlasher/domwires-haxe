@@ -25,20 +25,6 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		super();
 	}
 
-	public function getInstanceWithClassName<T>(className:ClassName, ?name:MappingName, targetType:Class<Dynamic> = null,
-											 shouldThrowAnError:Bool = true, ignorePool:Bool = false):T
-	{
-		if (!ignorePool)
-		{
-			if (hasPoolForTypeByClassName(className))
-			{
-				return getFromPool(className);
-			}
-		}
-
-		return injector.getInstanceWithClassName(className, name, targetType, shouldThrowAnError);
-	}
-
 	public function getAllPoolItemsAreBusy<T>(type:ClassRef<T>):Bool
 	{
 		return getAllPoolItemsAreBusyByClassName(Type.getClassName(type));
@@ -85,20 +71,6 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 	public function getOrCreateNewInstance<T>(type:Class<T>):T
 	{
 		return injector.getOrCreateNewInstance(type);
-	}
-
-	public function getInstanceFromPool<T>(type:Class<T>):T
-	{
-		return getFromPool(Type.getClassName(type));
-	}
-
-	public function getInstanceFromPoolByClassName<T>(className:String):T
-	{
-		var obj:T = getFromPool(className, false);
-
-		if (obj == null)  throw Error.Custom("There are no objects in pool for " + className + "!");
-
-		return obj;
 	}
 
 	public function mapClassNameToType<T>(className:ClassName, type:Class<T>, ?name:MappingName):Void
@@ -175,7 +147,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 			{
 				for (i in 0...capacity)
 				{
-					getFromPool(className);
+					getFromPoolByClassName(className);
 				}
 			}
 		}
@@ -183,7 +155,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		return this;
 	}
 
-	private function getFromPool<T>(className:String, createNewIfNeeded:Bool = true):T
+	private function getFromPoolByClassName<T>(className:String, createNewIfNeeded:Bool = true):T
 	{
 		if (!pool.exists(className))
 		{
@@ -207,6 +179,8 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 	public function registerPool<T>(type:ClassRef<T>, capacity:Int = 5, instantiateNow:Bool = false,
 									isBusyFlagGetterName:String = null):IAppFactory
 	{
+		trace("Type.getClassName(type) " + Type.getClassName(type));
+
 		return registerPoolByClassName(Type.getClassName(type), capacity, instantiateNow, isBusyFlagGetterName);
 	}
 
@@ -290,7 +264,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 	{
 		if (!hasPoolForTypeByClassName(className)) throw Error.Custom("Pool '" + className + "' is not registered! Call registerPool.");
 
-		return pool.get(className).busyItemsCount;
+		return pool.get(className).capacity;
 	}
 
 	public function mapClassNameToSingleton<T>(className:ClassName, type:Class<T>, ?name:MappingName):Void
@@ -301,18 +275,43 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 	public function getInstance<T>(type:ClassRef<T>, ?name:MappingName, targetType:Class<Dynamic> = null,
 								   ignorePool:Bool = false):T
 	{
-
 		if (!ignorePool)
 		{
-			var className:String = Type.getClassName(type);
-
-			if (hasPoolForTypeByClassName(className))
+			if (hasPoolForType(type))
 			{
-				return getFromPool(className);
+				return getFromPoolByClassName(Type.getClassName(type));
 			}
 		}
 
-		return injector.getInstance(type, name, targetType);
+		var obj:T = injector.getInstance(type, name, targetType);
+		//TODO: it new instance, no need to double inject
+		if (Std.is(IInjectorAcceptor, obj))
+		{
+			injector.injectInto(cast obj);
+		}
+
+		return obj;
+	}
+
+	public function getInstanceWithClassName<T>(className:ClassName, ?name:MappingName, targetType:Class<Dynamic> = null,
+												shouldThrowAnError:Bool = true, ignorePool:Bool = false):T
+	{
+		if (!ignorePool)
+		{
+			if (hasPoolForTypeByClassName(className))
+			{
+				return getFromPoolByClassName(className);
+			}
+		}
+
+		var obj:T = injector.getInstanceWithClassName(className, name, targetType, shouldThrowAnError);
+		//TODO: it new instance, no need to double inject
+		if (Std.is(IInjectorAcceptor, obj))
+		{
+			injector.injectInto(cast obj);
+		}
+
+		return obj;
 	}
 
 	public function hasPoolForTypeByClassName(className:String):Bool

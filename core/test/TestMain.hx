@@ -38,10 +38,10 @@ class TestMain
 		//runner.addResultClient(new HTTPClient(new JUnitReportClient()));
 
 		runner.completionHandler = completionHandler;
-		js.Browser.window.setTimeout(function() {
-			js.Lib.debug(); // breakpoint here
+//		js.Browser.window.setTimeout(function() {
+//			js.Lib.debug(); // breakpoint here
 			runner.run(suites);
-		}, 50); // give me 5s to open devtools
+//		}, 50); // give me 5s to open devtools
 	}
 
 	/*

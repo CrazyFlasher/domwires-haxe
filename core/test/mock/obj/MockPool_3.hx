@@ -1,6 +1,9 @@
 package mock.obj;
 
-class MockPool_3 implements IMockPool_1
+import hex.di.IDependencyInjector;
+import hex.di.IInjectorContainer;
+
+class MockPool_3 implements IMockPool_1 implements IInjectorContainer
 {
     @Inject("v")
     private var v:Int = 0;
@@ -16,5 +19,9 @@ class MockPool_3 implements IMockPool_1
     private function get_value():Int
     {
         return v;
+    }
+
+    public function acceptInjector(i:IDependencyInjector):Void
+    {
     }
 }

@@ -220,10 +220,10 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 
 	private function mergeData(messageData:Dynamic, mappingData:Dynamic):Dynamic
 	{
-		if (messageData && !mappingData) return messageData;
-		if (!messageData && mappingData) return mappingData;
+		if (messageData != null && mappingData == null) return messageData;
+		if (messageData == null && mappingData != null) return mappingData;
 
-		if (messageData && mappingData)
+		if (messageData != null && mappingData != null)
 		{
 			for (i in Reflect.fields(mappingData))
 			{
@@ -275,6 +275,37 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 			}
 		}
 	}
+
+	/*private function getTypeName<T>(value:T):String
+	{
+		if (value == null) return "null";
+		return switch Type.typeof(value)
+		{
+			case Type.ValueType.TInt: "Int";
+			case Type.ValueType.TFloat: "Float";
+			case Type.ValueType.TBool: "Bool";
+			case Type.ValueType.TFunction: "Function";
+			case _:
+				if ((value is Array))
+				{
+					var a:Array<Dynamic> = cast value;
+					switch a.length
+					{
+						case 0:
+						case 1: return 'Array<${getTypeName(a[0])}>';
+						case _:
+							var t1 = getTypeName(a[0]);
+							for (i in 1...a.length)
+							{
+								var t2 = getTypeName(a[i]);
+								if (t2 != t1) return 'Array<Dynamic>';
+							}
+							return 'Array<${t1}>';
+					}
+				}
+				Type.getClassName(Type.getClass(value));
+		}
+	}*/
 
 	private function guardsAllow(guardList:Array<Class<Dynamic>>, data:Dynamic = null, opposite:Bool = false):Bool
 	{

@@ -46,15 +46,6 @@ interface IAppFactoryImmutable extends IDisposableImmutable
 	function hasPoolForTypeByClassName(className:String):Bool;
 
 	/**
-	 * Returns instance from pool.
-	 * @param type Type of instance to return
-	 * @return
-	 */
-	function getInstanceFromPool<T>(type:Class<T>):T;
-
-	function getInstanceFromPoolByClassName<T>(className:String):T;
-
-	/**
 	 * Returns pool capacity.
 	 * @param type
 	 * @return
