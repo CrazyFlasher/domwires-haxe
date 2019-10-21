@@ -14,8 +14,6 @@ class PoolModel
 	private var factory:AppFactory;
 	private var isBusyFlagGetterName:String;
 
-	private var _args:Array<Dynamic>;
-
 	@:allow(com.domwires.core.factory.AppFactory)
 	private function new(factory:AppFactory, capacity:Int, isBusyFlagGetterName:String)
 	{
@@ -25,21 +23,13 @@ class PoolModel
 	}
 
 	@:allow(com.domwires.core.factory.AppFactory)
-	private function get(type:Class<Dynamic>, args:Array<Dynamic> = null, createNewIfNeeded:Bool = true):Dynamic
+	private function get<T>(className:String, createNewIfNeeded:Bool = true):T
 	{
 		var instance:Dynamic;
 
-		if (args == null && _args != null)
-		{
-			args = _args;
-		} else
-		{
-			_args = args;
-		}
-
 		if (list.length < _capacity && createNewIfNeeded)
 		{
-			instance = factory.getInstance(type, args, null, true);
+			instance = factory.getInstanceWithClassName(className, null, null, true, true);
 
 			list.push(instance);
 		} else
@@ -55,7 +45,7 @@ class PoolModel
 
 			if (isBusyFlagGetterName != null && Reflect.field(instance, isBusyFlagGetterName) == true)
 			{
-				return get(type, args, createNewIfNeeded);
+				return get(className, createNewIfNeeded);
 			}
 		}
 

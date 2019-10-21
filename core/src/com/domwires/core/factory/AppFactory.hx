@@ -1,19 +1,24 @@
 package com.domwires.core.factory;
 
-import hex.di.IInjectorListener;
-import hex.di.IInjectorAcceptor;
-import hex.di.provider.IDependencyProvider;
-import haxe.io.Error;
-import hex.di.ClassRef;
-import hex.di.MappingName;
-import hex.di.ClassName;
 import com.domwires.core.common.AbstractDisposable;
+import haxe.ds.StringMap;
+import haxe.io.Error;
+import hex.di.ClassName;
+import hex.di.ClassRef;
 import hex.di.IDependencyInjector;
+import hex.di.IInjectorAcceptor;
+import hex.di.IInjectorListener;
 import hex.di.Injector;
+import hex.di.MappingName;
+import hex.di.provider.IDependencyProvider;
 
 class AppFactory extends AbstractDisposable implements IAppFactory
 {
 	private var injector:IDependencyInjector = new Injector();
+
+	private var pool:StringMap<PoolModel> = new StringMap<PoolModel>();
+
+	private var _safePool:Bool = true;
 
 	public function new()
 	{
@@ -21,14 +26,29 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 	}
 
 	public function getInstanceWithClassName<T>(className:ClassName, ?name:MappingName, targetType:Class<Dynamic> = null,
-											 shouldThrowAnError:Bool = true):T
+											 shouldThrowAnError:Bool = true, ignorePool:Bool = false):T
 	{
+		if (!ignorePool)
+		{
+			if (hasPoolForTypeByClassName(className))
+			{
+				return getFromPool(className);
+			}
+		}
+
 		return injector.getInstanceWithClassName(className, name, targetType, shouldThrowAnError);
 	}
 
 	public function getAllPoolItemsAreBusy<T>(type:ClassRef<T>):Bool
 	{
-		throw Error.Custom("Not implemented!");
+		return getAllPoolItemsAreBusyByClassName(Type.getClassName(type));
+	}
+
+	public function getAllPoolItemsAreBusyByClassName(className:String):Bool
+	{
+		if (!hasPoolForTypeByClassName(className)) throw Error.Custom("Pool " + className + "is not registered! Call registerPool.");
+
+		return pool.get(className).allItemsAreBusy;
 	}
 
 	public function clearMappings():IAppFactory
@@ -38,9 +58,18 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		return this;
 	}
 
-	public function increasePoolCapacity(type:Class<Dynamic>, additionalCapacity:Int):IAppFactory
+	public function increasePoolCapacity<T>(type:ClassRef<T>, additionalCapacity:Int):IAppFactory
 	{
-		throw Error.Custom("Not implemented!");
+		return increasePoolCapacityByClassName(Type.getClassName(type), additionalCapacity);
+	}
+
+	public function increasePoolCapacityByClassName(className:String, additionalCapacity:Int):IAppFactory
+	{
+		if (!hasPoolForTypeByClassName(className)) throw Error.Custom("Pool '" + className + "' is not registered! Call registerPool.");
+
+		pool.get(className).increaseCapacity(additionalCapacity);
+
+		return this;
 	}
 
 	public function instantiateUnmapped<T>(type:Class<T>):T
@@ -60,7 +89,16 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function getInstanceFromPool<T>(type:Class<T>):T
 	{
-		throw Error.Custom("Not implemented!");
+		return getFromPool(Type.getClassName(type));
+	}
+
+	public function getInstanceFromPoolByClassName<T>(className:String):T
+	{
+		var obj:T = getFromPool(className, false);
+
+		if (obj == null)  throw Error.Custom("There are no objects in pool for " + className + "!");
+
+		return obj;
 	}
 
 	public function mapClassNameToType<T>(className:ClassName, type:Class<T>, ?name:MappingName):Void
@@ -118,15 +156,75 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		injector.mapClassNameToValue(className, value, name);
 	}
 
-	public function registerPool<T>(type:ClassRef<T>, capacity:Int = 5, instantiateNow:Bool = false, constructorArgs:Dynamic = null,
+	public function registerPoolByClassName<T>(className:String, capacity:Int = 5, instantiateNow:Bool = false,
 									isBusyFlagGetterName:String = null):IAppFactory
 	{
-		throw Error.Custom("Not implemented!");
+		if (capacity == 0)
+		{
+			throw Error.Custom("Capacity should be > 0!");
+		}
+
+		if (pool.exists(className))
+		{
+			trace("Pool '" + className + "' already registered! Call unregisterPool before.");
+		}else
+		{
+			pool.set(className, new PoolModel(this, capacity, isBusyFlagGetterName));
+
+			if (instantiateNow)
+			{
+				for (i in 0...capacity)
+				{
+					getFromPool(className);
+				}
+			}
+		}
+
+		return this;
+	}
+
+	private function getFromPool<T>(className:String, createNewIfNeeded:Bool = true):T
+	{
+		if (!pool.exists(className))
+		{
+			throw Error.Custom("Pool '" + className + "' is not registered! Call registerPool.");
+		}
+
+		var poolModel:PoolModel = cast pool.get(className);
+
+		if (_safePool && getAllPoolItemsAreBusyByClassName(className))
+		{
+			trace("All pool items are busy for class '" + className + "'. Extending pool...");
+
+			increasePoolCapacityByClassName(className, 1);
+
+			trace("Pool capacity for '" + className + "' increased!");
+		}
+
+		return poolModel.get(className, createNewIfNeeded);
+	}
+
+	public function registerPool<T>(type:ClassRef<T>, capacity:Int = 5, instantiateNow:Bool = false,
+									isBusyFlagGetterName:String = null):IAppFactory
+	{
+		return registerPoolByClassName(Type.getClassName(type), capacity, instantiateNow, isBusyFlagGetterName);
 	}
 
 	public function unregisterPool<T>(type:Class<T>):IAppFactory
 	{
-		throw Error.Custom("Not implemented!");
+		return unregisterPoolByClassName(Type.getClassName(type));
+	}
+
+	public function unregisterPoolByClassName<T>(className:String):IAppFactory
+	{
+		if (pool.exists(className))
+		{
+			pool.get(className).dispose();
+
+			pool.remove(className);
+		}
+
+		return this;
 	}
 
 	public function clear():IAppFactory
@@ -144,7 +242,14 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function getPoolInstanceCount<T>(type:ClassRef<T>):Int
 	{
-		throw Error.Custom("Not implemented!");
+		return getPoolInstanceCountByClassName(Type.getClassName(type));
+	}
+
+	public function getPoolInstanceCountByClassName<T>(className:String):Int
+	{
+		if (!hasPoolForTypeByClassName(className)) throw Error.Custom("Pool '" + className + "' is not registered! Call registerPool.");
+
+		return pool.get(className).instanceCount;
 	}
 
 	public function mapToValue<T>(clazz:ClassRef<T>, value:T, ?name:MappingName):Void
@@ -159,17 +264,33 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function clearPools():IAppFactory
 	{
-		throw Error.Custom("Not implemented!");
+		for (poolModel in pool.iterator())
+		{
+			poolModel.dispose();
+		}
+
+		pool = new StringMap<PoolModel>();
+
+		return this;
 	}
 
 	public function setSafePool(value:Bool):IAppFactory
 	{
-		throw Error.Custom("Not implemented!");
+		_safePool = value;
+
+		return this;
 	}
 
 	public function getPoolCapacity<T>(type:ClassRef<T>):Int
 	{
-		throw Error.Custom("Not implemented!");
+		return getPoolCapacityByClassName(Type.getClassName(type));
+	}
+
+	public function getPoolCapacityByClassName<T>(className:String):Int
+	{
+		if (!hasPoolForTypeByClassName(className)) throw Error.Custom("Pool '" + className + "' is not registered! Call registerPool.");
+
+		return pool.get(className).busyItemsCount;
 	}
 
 	public function mapClassNameToSingleton<T>(className:ClassName, type:Class<T>, ?name:MappingName):Void
@@ -177,18 +298,42 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		injector.mapClassNameToSingleton(className, type, name);
 	}
 
-	public function getInstance<T>(type:ClassRef<T>, ?name:MappingName, targetType:Class<Dynamic> = null):T
+	public function getInstance<T>(type:ClassRef<T>, ?name:MappingName, targetType:Class<Dynamic> = null,
+								   ignorePool:Bool = false):T
 	{
+
+		if (!ignorePool)
+		{
+			var className:String = Type.getClassName(type);
+
+			if (hasPoolForTypeByClassName(className))
+			{
+				return getFromPool(className);
+			}
+		}
+
 		return injector.getInstance(type, name, targetType);
+	}
+
+	public function hasPoolForTypeByClassName(className:String):Bool
+	{
+		return pool.exists(className);
 	}
 
 	public function hasPoolForType<T>(type:ClassRef<T>):Bool
 	{
-		throw Error.Custom("Not implemented!");
+		return hasPoolForTypeByClassName(Type.getClassName(type));
 	}
 
 	public function getPoolBusyInstanceCount<T>(type:ClassRef<T>):Int
 	{
-		throw Error.Custom("Not implemented!");
+		return getPoolBusyInstanceCountByClassName(Type.getClassName(type));
+	}
+
+	public function getPoolBusyInstanceCountByClassName(className:String):Int
+	{
+		if (!hasPoolForTypeByClassName(className)) throw Error.Custom("Pool '" + className + "' is not registered! Call registerPool.");
+
+		return pool.get(className).busyItemsCount;
 	}
 }

@@ -45,8 +45,11 @@ interface IAppFactory extends IAppFactoryImmutable extends IDisposable
 	 * Can be any type. Use Array, if need to pass several args.
 	 * @return
 	 */
-	function registerPool<T>(type:ClassRef<T>, capacity:Int = 5, instantiateNow:Bool = false, constructorArgs:Dynamic = null,
+	function registerPool<T>(type:ClassRef<T>, capacity:Int = 5, instantiateNow:Bool = false,
 						  isBusyFlagGetterName:String = null):IAppFactory;
+
+	function registerPoolByClassName<T>(className:String, capacity:Int = 5, instantiateNow:Bool = false,
+							 isBusyFlagGetterName:String = null):IAppFactory;
 
 	/**
 	 * Unregisters and disposes pool for provided type.
@@ -54,6 +57,8 @@ interface IAppFactory extends IAppFactoryImmutable extends IDisposable
 	 * @return
 	 */
 	function unregisterPool<T>(type:ClassRef<T>):IAppFactory;
+
+	function unregisterPoolByClassName<T>(className:String):IAppFactory;
 
 	/**
 	 * Clears all pools of current <code>IAppFactory</code>.
@@ -79,7 +84,9 @@ interface IAppFactory extends IAppFactoryImmutable extends IDisposable
 	 * @param additionalCapacity
 	 * @return
 	 */
-	function increasePoolCapacity(type:Class<Dynamic>, additionalCapacity:Int):IAppFactory;
+	function increasePoolCapacity<T>(type:ClassRef<T>, additionalCapacity:Int):IAppFactory;
+
+	function increasePoolCapacityByClassName(className:String, additionalCapacity:Int):IAppFactory;
 
 	/**
 	 * Avoid stack overflow and increase pool capacity up to 1, if all pool items are busy. Default is true.
