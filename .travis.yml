@@ -4,7 +4,7 @@ language: haxe
 # Let's enable both linux and mac builds because why not?
 os:
   - linux
-#  - osx
+  - osx
 
 dist: xenial
 
