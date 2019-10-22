@@ -1,5 +1,8 @@
 -cp src
 -D doc-gen
+-lib hexinject:1.0.0-alpha.7
 -xml build/js.xml
 -js build/js_test.js
+--macro include('com.domwires')
 --no-output
+-cmd haxelib run dox -i build -o docs -ex hex -ex haxe -ex js -ex tink

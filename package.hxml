@@ -1,7 +1,8 @@
--cmd haxelib install munit
--cmd haxelib git hamcrest https://github.com/mikestead/hamcrest-haxe.git master src --always
--cmd haxelib install hexinject 1.0.0-alpha.7
--cmd haxelib install dox
+#-cmd haxelib install munit
+#-cmd haxelib install hexinject 1.0.0-alpha.7
+#-cmd haxelib install dox
 #-cmd haxelib run munit config
+-cmd haxelib git hamcrest https://github.com/mikestead/hamcrest-haxe.git master src --always
 -cmd haxelib run munit test test.hxml
-#docs.hxml
+-cmd haxe docs.hxml -xml build/js.xml
+-cmd haxelib run dox -i build -o docs -ex hex -ex haxe -ex js -ex tink

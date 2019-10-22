@@ -3,6 +3,7 @@
 -lib munit
 -lib hamcrest
 -lib hexinject:1.0.0-alpha.7
+-lib dox
 -cp src
 -cp test
 -js build/js_test.js
