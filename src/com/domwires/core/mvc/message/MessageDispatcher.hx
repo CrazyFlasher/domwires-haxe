@@ -121,7 +121,6 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
         {
             if (_messageMap.get(message.type) != null)
             {
-                var listener:IMessage -> Void;
                 for (listener in _messageMap.get(message.type))
                 {
                     listener(message);

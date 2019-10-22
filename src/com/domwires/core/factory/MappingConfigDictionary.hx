@@ -18,7 +18,6 @@ class MappingConfigDictionary
 	{
 		if (json != null)
 		{
-			var key:String;
 			for (key in Reflect.fields(json))
 			{
 				_map.set(key, new DependencyVo(Reflect.field(json, key)));

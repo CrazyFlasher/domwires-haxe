@@ -43,7 +43,6 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 	public function map1(messageType:EnumValue, commandClassList:Array<Class<Dynamic>>, data:Dynamic = null, once:Bool = false,
 						 stopOnExecute:Bool = false):MappingConfigList
 	{
-		var commandClass:Class<Dynamic>;
 		var mappingConfigList:MappingConfigList = new MappingConfigList();
 
 		for (commandClass in commandClassList)
@@ -58,7 +57,6 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 	public function map2(messageTypeList:Array<EnumValue>, commandClass:Class<Dynamic>, data:Dynamic = null, once:Bool = false,
 						 stopOnExecute:Bool = false):MappingConfigList
 	{
-		var messageType:EnumValue;
 		var mappingConfigList:MappingConfigList = new MappingConfigList();
 
 		for (messageType in messageTypeList)
@@ -73,8 +71,6 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 	public function map3(messageTypeList:Array<EnumValue>, commandClassList:Array<Class<Dynamic>>, data:Dynamic = null, once:Bool = false,
 						 stopOnExecute:Bool = false):MappingConfigList
 	{
-		var commandClass:Class<Dynamic>;
-		var messageType:EnumValue;
 		var mappingConfigList:MappingConfigList = new MappingConfigList();
 
 		for (commandClass in commandClassList)
@@ -94,7 +90,6 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 
 	private function mappingListContains(list:Array<MappingConfig>, commandClass:Class<Dynamic>, ignoreGuards:Bool = false):MappingConfig
 	{
-		var mappingVo:MappingConfig;
 		for (mappingVo in list)
 		{
 			if (mappingVo.commandClass == commandClass)
@@ -185,7 +180,6 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		var mappedToMessageCommands:Array<MappingConfig> = commandMap.get(messageType);
 		if (mappedToMessageCommands != null)
 		{
-			var mappingVo:MappingConfig;
 			var commandClass:Class<Dynamic>;
 			var injectionData:Dynamic;
 			for (mappingVo in mappedToMessageCommands)
@@ -309,7 +303,6 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 
 	private function guardsAllow(guardList:Array<Class<Dynamic>>, data:Dynamic = null, opposite:Bool = false):Bool
 	{
-		var guardClass:Class<Dynamic>;
 		var guards:IGuards;
 
 		var guardsAllow:Bool = true;

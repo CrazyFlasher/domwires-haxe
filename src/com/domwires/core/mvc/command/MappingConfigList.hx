@@ -39,8 +39,6 @@ class MappingConfigList
      */
     public function addGuardsNot(value:Class<Dynamic>):MappingConfigList
     {
-        var mappingConfig:MappingConfig;
-
         for (mappingConfig in list)
         {
             mappingConfig.addGuardsNot(value);

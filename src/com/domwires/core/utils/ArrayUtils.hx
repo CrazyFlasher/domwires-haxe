@@ -1,19 +1,27 @@
 package com.domwires.core.utils;
 
+import haxe.io.Error;
+
 class ArrayUtils
 {
-    public static function clear(array:Array<Dynamic>):Void
+    public static function clear<T>(array:Array<T>):Void
     {
-        if (array == null) return;
+        if (array == null) throw Error.Custom("Array is null!");
 
-        while (array.length > 0)
-        {
-            array.pop();
-        }
+        #if(js || flash)
+      	    untyped array.length = 0;
+        #else
+            while (array.length > 0)
+            {
+                array.pop();
+            }
+        #end
     }
 
-    public static function isLast(array:Array<Dynamic>, element:Dynamic):Bool
+    public static function isLast<T>(array:Array<T>, element:Dynamic):Bool
     {
-        return array.indexOf(element) == array.length - 1;
+        if (array == null) throw Error.Custom("Array is null!");
+
+        return array.length != 0 && array.indexOf(element) == array.length - 1;
     }
 }
