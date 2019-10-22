@@ -9,7 +9,7 @@
     "html5"
   ],
   "description": "MVC Framework",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.3",
   "releasenote": "Partially ported version of ActionScript 3 DomWires",
   "contributors": [
     "CrazyFlasher"
