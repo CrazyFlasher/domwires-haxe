@@ -73,6 +73,9 @@ install:
   - sudo luarocks install luv
   - sudo luarocks install environ
   - sudo luarocks install luautf8
-
+  -
+  # Install haxelibs
+  - haxelib install munit
+  - haxelib git hamcrest https://github.com/mikestead/hamcrest-haxe.git master src --always
 script:
   - haxe package.hxml
