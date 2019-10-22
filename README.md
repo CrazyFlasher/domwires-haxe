@@ -16,7 +16,7 @@ Flexible and extensible MVC framework ported from [ActionScript 3 version](https
 ***
 
 ### Minimum requirements
-* Haxe 4.0.0-rc5 or higher
+* Haxe 4.0.0-rc.5 or higher
 
 ***
 

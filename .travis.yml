@@ -10,7 +10,7 @@ dist: xenial
 
 # Test with Haxe 3.4.7 and Haxe development.
 haxe:
-  - "4.0.0-rc5"
+  - "4.0.0-rc.5"
 #  - development
 
 neko: "2.2.0"
