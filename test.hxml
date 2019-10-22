@@ -4,6 +4,7 @@
 -lib hamcrest
 -lib hexinject:1.0.0-alpha.7
 -lib dox
+-lib hxnodejs
 -cp src
 -cp test
 -js build/js_test.js

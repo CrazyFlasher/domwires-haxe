@@ -79,5 +79,6 @@ install:
   - haxelib git hamcrest https://github.com/mikestead/hamcrest-haxe.git master src --always
   - haxelib install hexinject 1.0.0-alpha.7
   - haxelib install dox
+  - haxelib install hxnodejs
 script:
   - haxe package.hxml
