@@ -1,6 +1,6 @@
 ###### Warning! This is a early alpha version. Use at your own risk :)
 
-## DomWires [![Build Status](https://travis-ci.org/CrazyFlasher/domwires-haxe.svg?branch=dev)](https://travis-ci.org/CrazyFlasher/domwires-haxe)
+## DomWires [![Build Status](https://travis-ci.org/CrazyFlasher/domwires-haxe.svg?branch=master)](https://travis-ci.org/CrazyFlasher/domwires-haxe)
 Flexible and extensible MVC framework ported from [ActionScript 3 version](https://github.com/CrazyFlasher/domwires-as3)
 
 ### Features
