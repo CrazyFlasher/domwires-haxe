@@ -7,7 +7,7 @@ class AbstractDisposable implements IDisposable
 {
     public var isDisposed(get, never):Bool;
 
-    private var _isDisposed:Bool;
+    private var _isDisposed:Bool = false;
 
     public function dispose():Void
     {
