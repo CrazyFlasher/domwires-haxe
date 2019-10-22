@@ -6,7 +6,6 @@
 -cp src
 -cp test
 -js build/js_test.js
--debug
 
 #--next
 

@@ -1,0 +1,5 @@
+-cp src
+-D doc-gen
+-xml build/js.xml
+-js build/js_test.js
+--no-output

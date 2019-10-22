@@ -24,6 +24,7 @@ class AbstractDisposable implements IDisposable
         return _isDisposed;
     }
 
+    @:dox(hide)
     public function acceptInjector(i:IDependencyInjector):Void
     {
     }
