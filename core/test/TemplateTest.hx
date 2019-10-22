@@ -24,7 +24,8 @@ class TemplateTest
 
 
     @Test
-    public function testDispose():Void
+    @Ignore
+    public function tempTest():Void
     {
     }
 }

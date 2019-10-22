@@ -179,8 +179,6 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 	public function registerPool<T>(type:ClassRef<T>, capacity:Int = 5, instantiateNow:Bool = false,
 									isBusyFlagGetterName:String = null):IAppFactory
 	{
-		trace("Type.getClassName(type) " + Type.getClassName(type));
-
 		return registerPoolByClassName(Type.getClassName(type), capacity, instantiateNow, isBusyFlagGetterName);
 	}
 
