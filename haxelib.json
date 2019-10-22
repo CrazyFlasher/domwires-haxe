@@ -1,0 +1,21 @@
+{
+  "name": "domwires-haxe",
+  "url": "https://github.com/CrazyFlasher/domwires-haxe",
+  "license": "MIT",
+  "tags": [
+    "mvc",
+    "framework",
+    "js",
+    "html5"
+  ],
+  "description": "MVC Framework",
+  "version": "1.0.0-alpha.1",
+  "releasenote": "Partially ported version if ActionScript 3 DomWires",
+  "contributors": [
+    "CrazyFlasher"
+  ],
+  "classPath": "core/src",
+  "dependencies": {
+    "hexinject": "1.0.0-alpha.7"
+  }
+}
