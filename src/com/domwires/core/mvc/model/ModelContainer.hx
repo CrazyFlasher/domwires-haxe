@@ -1,5 +1,6 @@
 package com.domwires.core.mvc.model;
 
+import haxe.ds.ReadOnlyArray;
 import com.domwires.core.mvc.hierarchy.HierarchyObjectContainer;
 import com.domwires.core.utils.ArrayUtils;
 
@@ -8,7 +9,7 @@ class ModelContainer extends HierarchyObjectContainer implements IModelContainer
 	public var numModels(get, never):Int;
 
 	public var modelList(get, never):Array<IModel>;
-	public var modelListImmutable(get, never):Array<IModelImmutable>;
+	public var modelListImmutable(get, never):ReadOnlyArray<IModelImmutable>;
 
 	private var _modelList:Array<IModel> = [];
 	private var _modelListImmutable:Array<IModelImmutable> = [];
@@ -59,7 +60,7 @@ class ModelContainer extends HierarchyObjectContainer implements IModelContainer
 		return _modelList;
 	}
 
-	private function get_modelListImmutable():Array<IModelImmutable>
+	private function get_modelListImmutable():ReadOnlyArray<IModelImmutable>
 		//better to return copy, but in sake of performance, we do that way.
 	{
 		return _modelListImmutable;

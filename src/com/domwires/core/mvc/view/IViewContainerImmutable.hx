@@ -1,5 +1,6 @@
 package com.domwires.core.mvc.view;
 
+import haxe.ds.ReadOnlyArray;
 import com.domwires.core.mvc.hierarchy.IHierarchyObjectContainerImmutable;
 
 /**
@@ -16,7 +17,7 @@ interface IViewContainerImmutable extends IHierarchyObjectContainerImmutable
 	/**
      * Returns list of views in current container.
      */
-	var viewListImmutable(get, never):Array<IViewImmutable>;
+	var viewListImmutable(get, never):ReadOnlyArray<IViewImmutable>;
 
 	/**
      * Returns true, if current container has provided view.

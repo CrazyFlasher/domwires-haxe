@@ -1,5 +1,6 @@
 package com.domwires.core.mvc.model;
 
+import haxe.ds.ReadOnlyArray;
 import com.domwires.core.mvc.hierarchy.IHierarchyObjectContainerImmutable;
 
 /**
@@ -16,7 +17,7 @@ interface IModelContainerImmutable extends IModelImmutable extends IHierarchyObj
 	/**
      * Returns list of models in current container.
      */
-	var modelListImmutable(get, never):Array<IModelImmutable>;
+	var modelListImmutable(get, never):ReadOnlyArray<IModelImmutable>;
 
 
 	/**

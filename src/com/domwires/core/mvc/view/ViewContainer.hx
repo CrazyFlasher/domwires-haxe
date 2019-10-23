@@ -1,5 +1,6 @@
 package com.domwires.core.mvc.view;
 
+import haxe.ds.ReadOnlyArray;
 import com.domwires.core.utils.ArrayUtils;
 import com.domwires.core.mvc.hierarchy.HierarchyObjectContainer;
 
@@ -8,7 +9,7 @@ class ViewContainer extends HierarchyObjectContainer implements IViewContainer
 	public var numViews(get, never):Int;
 
 	public var viewList(get, never):Array<IView>;
-	public var viewListImmutable(get, never):Array<IViewImmutable>;
+	public var viewListImmutable(get, never):ReadOnlyArray<IViewImmutable>;
 
 	private var _viewList:Array<IView> = [];
 	private var _viewListImmutable:Array<IViewImmutable> = [];
@@ -58,7 +59,7 @@ class ViewContainer extends HierarchyObjectContainer implements IViewContainer
 		return _viewList;
 	}
 
-    private function get_viewListImmutable():Array<IViewImmutable>
+    private function get_viewListImmutable():ReadOnlyArray<IViewImmutable>
     {
         return _viewListImmutable;
     }

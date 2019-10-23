@@ -1,5 +1,6 @@
 package com.domwires.core.mvc.hierarchy;
 
+import haxe.ds.ReadOnlyArray;
 import com.domwires.core.utils.ArrayUtils;
 import com.domwires.core.mvc.message.IMessage;
 import haxe.io.Error;
@@ -7,7 +8,7 @@ import haxe.io.Error;
 class HierarchyObjectContainer extends AbstractHierarchyObject implements IHierarchyObjectContainer
 {
     public var children(get, never):Array<IHierarchyObject>;
-    public var childrenImmutable(get, never):Array<IHierarchyObjectImmutable>;
+    public var childrenImmutable(get, never):ReadOnlyArray<IHierarchyObjectImmutable>;
 
     private var _childrenList:Array<IHierarchyObject> = [];
     private var _childrenListImmutable:Array<IHierarchyObjectImmutable> = [];
@@ -135,7 +136,7 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
         return _childrenList;
     }
 
-    private function get_childrenImmutable():Array<IHierarchyObjectImmutable>
+    private function get_childrenImmutable():ReadOnlyArray<IHierarchyObjectImmutable>
     {
         return _childrenListImmutable;
     }

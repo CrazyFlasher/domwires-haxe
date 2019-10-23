@@ -1,5 +1,6 @@
 package com.domwires.core.mvc.context;
 
+import haxe.ds.ReadOnlyArray;
 import com.domwires.core.factory.IAppFactory;
 import com.domwires.core.mvc.command.CommandMapper;
 import com.domwires.core.mvc.command.ICommandMapper;
@@ -25,11 +26,11 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
 {
     public var numModels(get, never):Int;
     public var modelList(get, never):Array<IModel>;
-    public var modelListImmutable(get, never):Array<IModelImmutable>;
+    public var modelListImmutable(get, never):ReadOnlyArray<IModelImmutable>;
 
     public var numViews(get, never):Int;
     public var viewList(get, never):Array<IView>;
-    public var viewListImmutable(get, never):Array<IViewImmutable>;
+    public var viewListImmutable(get, never):ReadOnlyArray<IViewImmutable>;
 
     @Inject
     private var factory:IAppFactory;
@@ -116,7 +117,7 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
         return modelContainer.modelList;
     }
 
-    private function get_modelListImmutable():Array<IModelImmutable>
+    private function get_modelListImmutable():ReadOnlyArray<IModelImmutable>
     {
         checkIfDisposed();
 
@@ -172,7 +173,7 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
         return viewContainer.viewList;
     }
 
-    private function get_viewListImmutable():Array<IViewImmutable>
+    private function get_viewListImmutable():ReadOnlyArray<IViewImmutable>
     {
         checkIfDisposed();
 
