@@ -22,6 +22,6 @@ class ArrayUtils
     {
         if (array == null) throw Error.Custom("Array is null!");
 
-        return array.length != 0 && array.indexOf(element) == array.length - 1;
+        return array.length != 0 && array.lastIndexOf(element) == array.length - 1;
     }
 }
