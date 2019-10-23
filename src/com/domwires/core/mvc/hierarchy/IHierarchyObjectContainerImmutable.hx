@@ -8,14 +8,13 @@ import haxe.ds.ReadOnlyArray;
 interface IHierarchyObjectContainerImmutable extends IHierarchyObjectImmutable
 {
     /**
-     * Returns all children of current container.
+     * @return all children of current container.
      */
     var childrenImmutable(get, never):ReadOnlyArray<IHierarchyObjectImmutable>;
 
     /**
-     * Returns true, if current container has provided child.
+     * @return true, if current container has provided child.
      * @param child
-     * @return
      */
     function contains(child:IHierarchyObjectImmutable):Bool;
 }

@@ -18,7 +18,6 @@ class MappingConfigList
     /**
      * @see com.domwires.core.mvc.command.MappingConfig
      * @param value
-     * @return
      */
     public function addGuards(value:Class<Dynamic>):MappingConfigList
     {
@@ -35,7 +34,6 @@ class MappingConfigList
     /**
      * @see com.domwires.core.mvc.command.MappingConfig
      * @param value
-     * @return
      */
     public function addGuardsNot(value:Class<Dynamic>):MappingConfigList
     {

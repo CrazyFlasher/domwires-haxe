@@ -8,9 +8,8 @@ import com.domwires.core.common.IDisposableImmutable;
 interface IMessageDispatcherImmutable extends IDisposableImmutable
 {
     /**
-     * Returns true if object listens for specific message. Otherwise returns false.
      * @param type  Message type
-     * @return
+     * @return true if object listens for specific message. Otherwise returns false.
      */
     function hasMessageListener(type:EnumValue):Bool;
 

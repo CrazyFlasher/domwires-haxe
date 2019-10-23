@@ -8,14 +8,13 @@ import com.domwires.core.mvc.hierarchy.IHierarchyObjectContainer;
 interface IViewContainer extends IViewContainerImmutable extends IView extends IHierarchyObjectContainer
 {
     /**
-     * Returns list of views in current container.
+     * @return list of views in current container.
      */
     var viewList(get, never):Array<IView>;
 
 	/**
      * Adds view to current container.
      * @param view
-     * @return
      */
 	function addView(view:IView):IViewContainer;
 
@@ -23,14 +22,12 @@ interface IViewContainer extends IViewContainerImmutable extends IView extends I
      * Removes view from current container.
      * @param view
      * @param dispose
-     * @return
      */
 	function removeView(view:IView, dispose:Bool = false):IViewContainer;
 
 	/**
      * Removes all views from current container.
      * @param dispose
-     * @return
      */
 	function removeAllViews(dispose:Bool = false):IViewContainer;
 }

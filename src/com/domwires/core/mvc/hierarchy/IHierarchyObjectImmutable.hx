@@ -8,7 +8,7 @@ import com.domwires.core.mvc.message.IMessageDispatcherImmutable;
 interface IHierarchyObjectImmutable extends IMessageDispatcherImmutable
 {
     /**
-     * Returns parent object.
+     * @return parent object.
      */
     var parent(get, never):IHierarchyObjectContainer;
 }

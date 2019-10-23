@@ -9,7 +9,7 @@ import com.domwires.core.mvc.message.IMessage;
 interface IHierarchyObjectContainer extends IHierarchyObjectContainerImmutable extends IHierarchyObject extends IBubbleMessageHandler
 {
     /**
-     * Returns all children of current container.
+     * @return all children of current container.
      */
     var children(get, never):Array<IHierarchyObject>;
 
@@ -17,7 +17,6 @@ interface IHierarchyObjectContainer extends IHierarchyObjectContainerImmutable e
      * Adds object to hierarchy. Object becomes a part of hierarchy branch.
      * @param child
      * @param index
-     * @return
      */
     function add(child:IHierarchyObject, index:Int = -1):IHierarchyObjectContainer;
 
@@ -25,14 +24,12 @@ interface IHierarchyObjectContainer extends IHierarchyObjectContainerImmutable e
      * Removes object from hierarchy.
      * @param child
      * @param dispose
-     * @return
      */
     function remove(child:IHierarchyObject, dispose:Bool = false):IHierarchyObjectContainer;
 
     /**
      * Removes all objects from hierarchy.
      * @param dispose
-     * @return
      */
     function removeAll(dispose:Bool = false):IHierarchyObjectContainer;
 
@@ -44,7 +41,6 @@ interface IHierarchyObjectContainer extends IHierarchyObjectContainerImmutable e
     /**
      * Sends message to children.
      * @param message
-     * @return
      */
     function dispatchMessageToChildren(message:IMessage):Void;
 }

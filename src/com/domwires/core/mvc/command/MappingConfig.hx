@@ -28,7 +28,6 @@ class MappingConfig
      * Class, that implements <code>IGuards</code> interface.
      * @see com.domwires.core.mvc.command.IGuards
      * @param value
-     * @return
      */
     public function addGuards(value:Class<Dynamic>):MappingConfig
     {
@@ -45,7 +44,6 @@ class MappingConfig
      * Opposite guards
      * @see addGuards
      * @param value
-     * @return
      */
     public function addGuardsNot(value:Class<Dynamic>):MappingConfig
     {

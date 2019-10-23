@@ -8,7 +8,7 @@ import hex.di.IInjectorContainer;
 interface IGuards extends IInjectorContainer
 {
     /**
-     * Returns true, if all conditions suit, and command can be executed.
+     * @return true, if all conditions suit, and command can be executed.
      */
     var allows(get, never):Bool;
 }

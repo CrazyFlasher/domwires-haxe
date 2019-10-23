@@ -20,7 +20,6 @@ interface ICommandMapper extends ICommandMapperImmutable extends IDisposable
      *			   overridden by <code>IMessage</code> data
      * @param once Messaged will be automatically unmapped, after command execution
      * @param stopOnExecute If true, <code>ICommandMapper</code> will stop executing other commands mapped to current message
-     * @return
      */
 	function map(messageType:EnumValue, commandClass:Class<Dynamic>, data:Dynamic = null, once:Bool = false,
 				 stopOnExecute:Bool = false):MappingConfig;
@@ -47,20 +46,17 @@ interface ICommandMapper extends ICommandMapperImmutable extends IDisposable
      * Unmaps message from command.
      * @param messageType
      * @param commandClass
-     * @return
      */
 	function unmap(messageType:EnumValue, commandClass:Class<Dynamic>):ICommandMapper;
 
 	/**
      * Clears all mappings.
-     * @return
      */
 	function clear():ICommandMapper;
 
 	/**
      * Unmaps all commands from specified message.
      * @param messageType
-     * @return
      */
 	function unmapAll(messageType:EnumValue):ICommandMapper;
 
@@ -85,7 +81,6 @@ interface ICommandMapper extends ICommandMapperImmutable extends IDisposable
 	 * be in priority. Otherwise mapping data will be replaced by message data (if has one).
 	 * By default is false, and mapping data will be replaced with message data (if has one).
 	 * @param value
-	 * @return
 	 */
 	function setMergeMessageDataAndMappingData(value:Bool):ICommandMapper;
 }

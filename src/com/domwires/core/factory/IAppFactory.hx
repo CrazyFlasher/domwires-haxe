@@ -43,7 +43,6 @@ interface IAppFactory extends IAppFactoryImmutable extends IDisposable
 	 * @param isBusyFlagGetterName The name of public getter. If specified, then this method will be called, to check if current
 	 * object can be re-used right now. If specified and returns true, then next item of pool will be checked.
 	 * Can be any type. Use Array, if need to pass several args.
-	 * @return
 	 */
 	function registerPool<T>(type:ClassRef<T>, capacity:Int = 5, instantiateNow:Bool = false,
 						  isBusyFlagGetterName:String = null):IAppFactory;
@@ -54,7 +53,6 @@ interface IAppFactory extends IAppFactoryImmutable extends IDisposable
 	/**
 	 * Unregisters and disposes pool for provided type.
 	 * @param type Type of object to register pool for
-	 * @return
 	 */
 	function unregisterPool<T>(type:ClassRef<T>):IAppFactory;
 
@@ -62,19 +60,16 @@ interface IAppFactory extends IAppFactoryImmutable extends IDisposable
 
 	/**
 	 * Clears all pools of current <code>IAppFactory</code>.
-	 * @return
 	 */
 	function clearPools():IAppFactory;
 
 	/**
 	 * Clears of mappings of current <code>IAppFactory</code>.
-	 * @return
 	 */
 	function clearMappings():IAppFactory;
 
 	/**
 	 * Clears of pools and mappings of current <code>IAppFactory</code>.
-	 * @return
 	 */
 	function clear():IAppFactory;
 
@@ -82,7 +77,6 @@ interface IAppFactory extends IAppFactoryImmutable extends IDisposable
 	 * Increases pool capacity/
 	 * @param type Type of pool
 	 * @param additionalCapacity
-	 * @return
 	 */
 	function increasePoolCapacity<T>(type:ClassRef<T>, additionalCapacity:Int):IAppFactory;
 
@@ -91,7 +85,6 @@ interface IAppFactory extends IAppFactoryImmutable extends IDisposable
 	/**
 	 * Avoid stack overflow and increase pool capacity up to 1, if all pool items are busy. Default is true.
 	 * @param value
-	 * @return
 	 */
 	function setSafePool(value:Bool):IAppFactory;
 }

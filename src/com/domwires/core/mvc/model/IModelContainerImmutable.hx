@@ -10,20 +10,19 @@ interface IModelContainerImmutable extends IModelImmutable extends IHierarchyObj
 {
 
 	/**
-     * Returns number of models in current container.
+     * @return number of models in current container.
      */
 	var numModels(get, never):Int;
 
 	/**
-     * Returns list of models in current container.
+     * @return list of models in current container.
      */
 	var modelListImmutable(get, never):ReadOnlyArray<IModelImmutable>;
 
 
 	/**
-     * Returns true, if current container has provided model.
      * @param model
-     * @return
+     * @return true, if current container has provided model.
      */
 	function containsModel(model:IModelImmutable):Bool;
 }

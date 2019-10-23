@@ -8,9 +8,8 @@ import com.domwires.core.common.IDisposableImmutable;
 interface ICommandMapperImmutable extends IDisposableImmutable
 {
 	/**
-     * Returns true, if there are mapping of command to current message.
      * @param messageType
-     * @return
+     * @return true, if there are mapping of command to current message.
      */
 	function hasMapping(messageType:EnumValue):Bool;
 }

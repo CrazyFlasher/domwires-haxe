@@ -37,18 +37,16 @@ interface IAppFactoryImmutable extends IDisposableImmutable
 	function hasMapping<T>(type:ClassRef<T>, ?name:MappingName):Bool;
 
 	/**
-	 * Returns true, if <code>IAppFactory</code> has registered pool for provided type.
 	 * @param type
-	 * @return
+	 * @return true, if <code>IAppFactory</code> has registered pool for provided type.
 	 */
 	function hasPoolForType<T>(type:ClassRef<T>):Bool;
 
 	function hasPoolForTypeByClassName(className:String):Bool;
 
 	/**
-	 * Returns pool capacity.
 	 * @param type
-	 * @return
+	 * @return pool capacity.
 	 */
 	function getPoolCapacity<T>(type:ClassRef<T>):Int;
 
@@ -64,18 +62,16 @@ interface IAppFactoryImmutable extends IDisposableImmutable
 	function getPoolInstanceCountByClassName<T>(className:String):Int;
 
 	/**
-	 * Returns true, if all pool items are busy.
 	 * @param type
-	 * @return
+	 * @return true, if all pool items are busy.
 	 */
 	function getAllPoolItemsAreBusy<T>(type:ClassRef<T>):Bool;
 
 	function getAllPoolItemsAreBusyByClassName(className:String):Bool;
 
 	/**
-	 * Returns count of busy object in pool
 	 * @param type
-	 * @return
+	 * @return count of busy object in pool
 	 */
 	function getPoolBusyInstanceCount<T>(type:ClassRef<T>):Int;
 

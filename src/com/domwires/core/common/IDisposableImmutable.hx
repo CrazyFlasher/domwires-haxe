@@ -7,7 +7,7 @@ interface IDisposableImmutable
 {
 
     /**
-     * Returns true/false if object has already been disposed.
+     * @return true if object has already been disposed.
      */
     var isDisposed(get, never):Bool;
 }

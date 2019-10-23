@@ -10,19 +10,18 @@ interface IViewContainerImmutable extends IHierarchyObjectContainerImmutable
 {
 
 	/**
-     * Returns number of views in current container.
+     * @return number of views in current container.
      */
 	var numViews(get, never):Int;
 
 	/**
-     * Returns list of views in current container.
+     * @return list of views in current container.
      */
 	var viewListImmutable(get, never):ReadOnlyArray<IViewImmutable>;
 
 	/**
-     * Returns true, if current container has provided view.
      * @param view
-     * @return
+     * @return true, if current container has provided view.
      */
 	function containsView(view:IViewImmutable):Bool;
 }

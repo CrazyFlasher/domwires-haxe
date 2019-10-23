@@ -24,7 +24,7 @@ class ContextConfigVo
     private var _forwardMessageFromModelsToModels:Bool;
 
     /**
-     * Returns true, if messages bubbled up from views should be forwarded to models.
+     * @return true, if messages bubbled up from views should be forwarded to models.
      */
     private function get_forwardMessageFromViewsToModels():Bool
     {
@@ -32,7 +32,7 @@ class ContextConfigVo
     }
 
     /**
-     * Returns true, if messages bubbled up from views should be forwarded to views.
+     * @return true, if messages bubbled up from views should be forwarded to views.
      */
     private function get_forwardMessageFromViewsToViews():Bool
     {
@@ -40,7 +40,7 @@ class ContextConfigVo
     }
 
     /**
-     * Returns true, if messages bubbled up from models should be forwarded to views.
+     * @return true, if messages bubbled up from models should be forwarded to views.
      */
     private function get_forwardMessageFromModelsToViews():Bool
     {
@@ -48,7 +48,7 @@ class ContextConfigVo
     }
 
     /**
-     * Returns true, if messages bubbled up from models should be forwarded to models.
+     * @return true, if messages bubbled up from models should be forwarded to models.
      */
     private function get_forwardMessageFromModelsToModels():Bool
     {
