@@ -100,7 +100,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function mapToType<T>(clazz:ClassRef<T>, type:Class<T>, ?name:MappingName):Void
 	{
-		injector.mapToType(clazz, type, name);
+		injector.mapToType(clazz, type);
 	}
 
 	public function hasMapping<T>(type:ClassRef<T>, ?name:MappingName):Bool
@@ -281,6 +281,37 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 			}
 		}
 
+		if (!hasMapping(type))
+		{
+			var className:String = Type.getClassName(type);
+
+			trace("'" + className + "' is not mapped to any type...");
+
+			var isClass:Bool = !isInterface(className);
+
+			if (isClass)
+			{
+				trace("Mapping '" + className + "' to itself.");
+				mapToType(type, type);
+			} else
+			{
+				var index:Int = className.lastIndexOf(".I");
+				var firstPart:String = className.substr(0, index);
+				var lastPart:String = className.substr(index + 2, className.length);
+
+				var defaultImplClassName:String = firstPart + "." + lastPart;
+				var clazz = Type.resolveClass(defaultImplClassName);
+				if (clazz == null)
+				{
+					throw Error.Custom("'" + className + "' is not mapped to any value and default implementation '" +
+						defaultImplClassName + "' not found!");
+				}
+
+				trace("Mapping to default implementation '" + defaultImplClassName + "'.");
+				mapToType(type, cast clazz);
+			}
+		}
+
 		var obj:T = injector.getInstance(type, name, targetType);
 		//TODO: it new instance, no need to double inject
 		if (Std.is(IInjectorAcceptor, obj))
@@ -289,6 +320,11 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		}
 
 		return obj;
+	}
+
+	private function isInterface(className:String):Bool
+	{
+		return className.lastIndexOf(".I") > -1;
 	}
 
 	public function getInstanceWithClassName<T>(className:ClassName, ?name:MappingName, targetType:Class<Dynamic> = null,

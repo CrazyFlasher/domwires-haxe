@@ -16,14 +16,12 @@ class ArrayUtilsTest
     @Before
     public function setup():Void
     {
-
     }
 
     @After
     public function tearDown():Void
     {
     }
-
 
     @Test
     public function testIsLast():Void

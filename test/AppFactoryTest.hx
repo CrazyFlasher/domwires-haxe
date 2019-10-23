@@ -1,5 +1,9 @@
 package ;
 
+import haxe.io.Error;
+import mock.obj.IMockLonelyInterface;
+import mock.obj.MockObj_2;
+import mock.obj.MockObj_2;
 import mock.obj.MockBusyPoolObject;
 import mock.obj.MockPool_4;
 import mock.obj.IMockPool_2;
@@ -268,5 +272,34 @@ class AppFactoryTest
 
         Assert.areEqual(factory.getPoolBusyInstanceCount(MockBusyPoolObject), 3);
         Assert.isTrue(factory.getAllPoolItemsAreBusy(MockBusyPoolObject));
+    }
+
+    @Test
+    public function testMapToItselfImplementation():Void
+    {
+        var obj:MockObj_2 = cast factory.getInstance(MockObj_2);
+        Assert.areEqual(obj.prop, "hello");
+    }
+
+    @Test
+    public function testMapToDefaultImplementation():Void
+    {
+        var obj:IMockPool_1 = cast factory.getInstance(IMockPool_1);
+    }
+
+    @TestDebug
+    public function testDefaultImplementationMissing():Void
+    {
+        var passed:Bool = false;
+
+        try
+        {
+            factory.getInstance(IMockLonelyInterface);
+        } catch (a:Dynamic)
+        {
+            passed = true;
+        }
+
+        Assert.isTrue(passed);
     }
 }

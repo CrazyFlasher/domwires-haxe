@@ -1,4 +1,5 @@
 package mock.obj;
+
 class MockVo
 {
     public var name:String;
