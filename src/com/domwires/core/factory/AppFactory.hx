@@ -100,7 +100,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function mapToType<T>(clazz:ClassRef<T>, type:Class<T>, ?name:MappingName):Void
 	{
-		injector.mapToType(clazz, type);
+		injector.mapToType(clazz, type, name);
 	}
 
 	public function hasMapping<T>(type:ClassRef<T>, ?name:MappingName):Bool
