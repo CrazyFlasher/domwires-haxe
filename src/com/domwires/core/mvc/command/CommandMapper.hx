@@ -3,14 +3,13 @@ package com.domwires.core.mvc.command;
 import com.domwires.core.common.AbstractDisposable;
 import com.domwires.core.factory.IAppFactory;
 import com.domwires.core.mvc.message.IMessage;
-import haxe.ds.EnumValueMap;
 
 class CommandMapper extends AbstractDisposable implements ICommandMapper
 {
 	@Inject
 	private var factory:IAppFactory;
 
-	private var commandMap:EnumValueMap<EnumValue, Array<MappingConfig>> = new EnumValueMap<EnumValue, Array<MappingConfig>>();
+	private var commandMap:Map<EnumValue, Array<MappingConfig>> = new Map<EnumValue, Array<MappingConfig>>();
 
 	private var _mergeMessageDataAndMappingData:Bool;
 
@@ -340,7 +339,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 
 	public function clear():ICommandMapper
 	{
-		commandMap = new EnumValueMap<EnumValue, Array<MappingConfig>>();
+		commandMap = new Map<EnumValue, Array<MappingConfig>>();
 
 		return this;
 	}
