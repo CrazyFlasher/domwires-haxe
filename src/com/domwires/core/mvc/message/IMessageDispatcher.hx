@@ -27,6 +27,6 @@ interface IMessageDispatcher extends IMessageDispatcherImmutable extends IDispos
      * @param data Optional data that will sent with message
      * @param bubbles If true, then message will bubble up to hierarchy
      */
-    function dispatchMessage(type:EnumValue, data:Dynamic = null, bubbles:Bool = false):Void;
+    function dispatchMessage(type:EnumValue, data:Dynamic = null, bubbles:Bool = true):Void;
 }
 

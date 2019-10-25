@@ -60,7 +60,7 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
         }
     }
 
-    public function dispatchMessage(type:EnumValue, data:Dynamic = null, bubbles:Bool = false):Void
+    public function dispatchMessage(type:EnumValue, data:Dynamic = null, bubbles:Bool = true):Void
     {
         if (isBubbling)
         {
