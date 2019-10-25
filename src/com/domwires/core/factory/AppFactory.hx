@@ -1,7 +1,6 @@
 package com.domwires.core.factory;
 
 import com.domwires.core.common.AbstractDisposable;
-import haxe.ds.StringMap;
 import haxe.io.Error;
 import hex.di.ClassName;
 import hex.di.ClassRef;
@@ -16,7 +15,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 {
 	private var injector:IDependencyInjector = new Injector();
 
-	private var pool:StringMap<PoolModel> = new StringMap<PoolModel>();
+	private var pool:Map<String, PoolModel> = new Map<String, PoolModel>();
 
 	private var _safePool:Bool = true;
 
@@ -241,7 +240,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 			poolModel.dispose();
 		}
 
-		pool = new StringMap<PoolModel>();
+		pool = new Map<String, PoolModel>();
 
 		return this;
 	}
