@@ -12,10 +12,14 @@ class MockCommand_2 extends AbstractCommand
     @Inject("vo")
     private var vo:MockVo;
 
+    @Inject("e")
+    private var e:EnumValue;
+
     override public function execute():Void
     {
         vo.age = 11;
         vo.name = "hi";
         vo.str = itemId;
+        vo.e = e;
     }
 }

@@ -2,10 +2,11 @@ package com.domwires.core.mvc.message;
 
 import com.domwires.core.common.AbstractDisposable;
 import com.domwires.core.mvc.message.IMessage;
+import haxe.ds.EnumValueMap;
 
 class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
 {
-    private var _messageMap:Map<EnumValue, Array<IMessage -> Void>>;
+    private var _messageMap:MessageMap;
     private var _message:Message;
 
     private var isBubbling:Bool;
@@ -14,7 +15,7 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
     {
         if (_messageMap == null)
         {
-            _messageMap = new Map<EnumValue, Array<IMessage -> Void>>();
+            _messageMap = new MessageMap();
         }
 
         var messageMapForType:Array<IMessage -> Void> = _messageMap.get(type);
@@ -88,7 +89,7 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
             var currentTarget:Dynamic = message._target;
             var bubbleUp:Bool;
 
-            while (currentTarget != null && currentTarget._parent != null)
+            while (currentTarget != null && Reflect.hasField(currentTarget, "_parent"))
             {
                 currentTarget = currentTarget._parent;
 
@@ -144,8 +145,7 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
         if (_message == null || forceReturnNew)
         {
             _message = new Message(type, data, bubbles);
-        }
-        else
+        } else
         {
             _message._type = type;
             _message._data = data;
@@ -173,5 +173,19 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
     public function new()
     {
         super();
+    }
+}
+
+private class MessageMap extends EnumValueMap<EnumValue, Array<IMessage -> Void>>
+{
+    override function compare(k1:EnumValue, k2:EnumValue):Int
+    {
+        var t1 = Type.getEnumName(Type.getEnum(k1));
+        var t2 = Type.getEnumName(Type.getEnum(k2));
+        if (t1 != t2)
+        {
+            return t1 < t2 ? -1 : 1;
+        }
+        return super.compare(k1, k2);
     }
 }

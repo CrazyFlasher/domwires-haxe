@@ -287,7 +287,7 @@ class AppFactoryTest
         var obj:IMockPool_1 = cast factory.getInstance(IMockPool_1);
     }
 
-    @TestDebug
+    @Test
     public function testDefaultImplementationMissing():Void
     {
         var passed:Bool = false;

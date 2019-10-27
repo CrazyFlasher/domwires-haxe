@@ -1,6 +1,5 @@
 package com.domwires.core.mvc.context;
 
-import mock.mvc.commands.MockCommand_13;
 import com.domwires.core.factory.AppFactory;
 import com.domwires.core.factory.IAppFactory;
 import com.domwires.core.mvc.context.config.ContextConfigVo;
@@ -8,7 +7,7 @@ import com.domwires.core.mvc.context.config.ContextConfigVoBuilder;
 import massive.munit.Assert;
 import mock.common.MockMessageType;
 import mock.mvc.commands.MockCommand_10;
-import mock.mvc.commands.MockCommand_12;
+import mock.mvc.commands.MockCommand_13;
 import mock.mvc.commands.MockCommand_14;
 import mock.mvc.commands.MockCommand_15;
 import mock.mvc.context.MockContext_1;
@@ -16,6 +15,7 @@ import mock.mvc.context.MockContext_2;
 import mock.mvc.context.MockContext_3;
 import mock.mvc.context.MockContext_5;
 import mock.mvc.context.MockContext_7;
+import mock.mvc.context.MockContext_8;
 import mock.mvc.message.MockMessage;
 import mock.mvc.models.MockModel_1;
 import mock.mvc.views.MockView_1;
@@ -132,5 +132,13 @@ class ContextTest
         c.map(MockMessageType.GoodBye, MockCommand_15);
         c.tryToExecuteCommand(new MockMessage(MockMessageType.GoodBye));
         Assert.areEqual(m.d, 0);
+    }
+
+    @Test
+    public function testCommandMappedToOtherMessageType():Void
+    {
+        var c:MockContext_8 = cast f.getInstance(MockContext_8);
+
+        Assert.areEqual(c.testModel.v, 0);
     }
 }

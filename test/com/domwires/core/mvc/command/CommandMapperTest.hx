@@ -1,5 +1,6 @@
 package com.domwires.core.mvc.command;
 
+import mock.mvc.commands.MockCommand_17;
 import mock.mvc.commands.MockCommand_2;
 import mock.mvc.commands.MockCommand_9;
 import mock.mvc.commands.MockCommand_8;
@@ -182,7 +183,8 @@ class CommandMapperTest
         var vo:MockVo = new MockVo();
         var itemId:String = "lol";
 
-        commandMapper.tryToExecuteCommand(new MockMessage(cast MockMessageType.GoodBye, {vo:vo, itemId:itemId}));
+        commandMapper.tryToExecuteCommand(new MockMessage(cast MockMessageType.GoodBye, {vo:vo, itemId:itemId, e:MockMessageType.Hello,
+            __e: "EnumValue"}));
 
         Assert.areEqual(vo.age, 11);
         Assert.areEqual(vo.name, "hi");
@@ -379,5 +381,16 @@ class CommandMapperTest
     {
 //        commandMapper.executeCommand(MockCommand_6); //TODO: need to be fixed
         commandMapper.executeCommand(MockCommand_7, {bool: false, __bool:"Bool", iint: 2, __iint: "Int"});
+    }
+
+    @Test
+    public function testMapEnumValue():Void
+    {
+        var e:EnumValue = MockMessageType.Hello;
+
+        factory.mapClassNameToValue("EnumValue", e, "e");
+        Assert.areEqual(e, factory.getInstanceWithClassName("EnumValue", "e"));
+
+        commandMapper.executeCommand(MockCommand_17, {e: MockMessageType.Hello, __e:"EnumValue"});
     }
 }

@@ -3,13 +3,14 @@ package com.domwires.core.mvc.command;
 import com.domwires.core.common.AbstractDisposable;
 import com.domwires.core.factory.IAppFactory;
 import com.domwires.core.mvc.message.IMessage;
+import haxe.ds.EnumValueMap;
 
 class CommandMapper extends AbstractDisposable implements ICommandMapper
 {
 	@Inject
 	private var factory:IAppFactory;
 
-	private var commandMap:Map<EnumValue, Array<MappingConfig>> = new Map<EnumValue, Array<MappingConfig>>();
+	private var commandMap:CommandMap = new CommandMap();
 
 	private var _mergeMessageDataAndMappingData:Bool;
 
@@ -177,6 +178,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 	{
 		var messageType:EnumValue = message.type;
 		var mappedToMessageCommands:Array<MappingConfig> = commandMap.get(messageType);
+
 		if (mappedToMessageCommands != null)
 		{
 			var commandClass:Class<Dynamic>;
@@ -339,7 +341,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 
 	public function clear():ICommandMapper
 	{
-		commandMap = new Map<EnumValue, Array<MappingConfig>>();
+		commandMap = new CommandMap();
 
 		return this;
 	}
@@ -349,5 +351,19 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		_mergeMessageDataAndMappingData = value;
 
 		return this;
+	}
+}
+
+private class CommandMap extends EnumValueMap<EnumValue, Array<MappingConfig>>
+{
+	override function compare(k1:EnumValue, k2:EnumValue):Int
+	{
+		var t1 = Type.getEnumName(Type.getEnum(k1));
+		var t2 = Type.getEnumName(Type.getEnum(k2));
+		if (t1 != t2)
+		{
+			return t1 < t2 ? -1 : 1;
+		}
+		return super.compare(k1, k2);
 	}
 }
