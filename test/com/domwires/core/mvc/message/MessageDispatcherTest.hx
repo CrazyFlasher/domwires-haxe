@@ -145,6 +145,38 @@ class MessageDispatcherTest
         Assert.isTrue(b);
     }
 
+    @Test
+    public function testPrioriy_1():Void
+    {
+        var x:Int = 0;
+
+        var listener_1:IMessage -> Void = m -> x += 1;
+        var listener_2:IMessage -> Void = m -> x *= 2;
+
+        d.addMessageListener(MockMessageType.Hello, listener_1, 0);
+        d.addMessageListener(MockMessageType.Hello, listener_2, 1);
+
+        d.dispatchMessage(MockMessageType.Hello);
+
+        Assert.areEqual(x, 1);
+    }
+
+    @Test
+    public function testPrioriy_2():Void
+    {
+        var x:Int = 0;
+
+        var listener_1:IMessage -> Void = m -> x += 1;
+        var listener_2:IMessage -> Void = m -> x *= 2;
+
+        d.addMessageListener(MockMessageType.Hello, listener_1, 1);
+        d.addMessageListener(MockMessageType.Hello, listener_2, 0);
+
+        d.dispatchMessage(MockMessageType.Hello);
+
+        Assert.areEqual(x, 2);
+    }
+
     //Expecting no errors
     /*@Test
     @Ignore

@@ -11,26 +11,50 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
 
     private var isBubbling:Bool;
 
-    public function addMessageListener(type:EnumValue, listener:IMessage -> Void):Void
+    public function addMessageListener(type:EnumValue, listener:IMessage -> Void, priority:Int = 0):Void
     {
         if (_messageMap == null)
         {
             _messageMap = new MessageMap();
         }
 
-        var messageMapForType:Array<IMessage -> Void> = _messageMap.get(type);
+        var messageMapForType:Array<Listener> = _messageMap.get(type);
+        var listenerWithPriority:Listener;
         if (messageMapForType == null)
         {
             messageMapForType = [];
             //To avoid check in this case, if vector contains element
-            messageMapForType.push(listener);
+            messageMapForType.push(new Listener(listener, priority));
 
             _messageMap.set(type, messageMapForType);
         } else
-        if (messageMapForType.indexOf(listener) == -1)
+        if (getListenerWithPriority(messageMapForType, listener) == null)
         {
-            messageMapForType.push(listener);
+            messageMapForType.push(new Listener(listener, priority));
+            sortOnPriority(messageMapForType);
         }
+    }
+
+    private function sortOnPriority(messageMapForType:Array<Listener>):Void
+    {
+        messageMapForType.sort((e_1:Listener, e_2:Listener) -> {
+            if (e_1.priority < e_2.priority) return 1;
+            if (e_1.priority > e_2.priority) return -1;
+            return 0;
+        });
+    }
+
+    private function getListenerWithPriority(messageMapForType:Array<Listener>, listener:IMessage -> Void):Listener
+    {
+        for (l in messageMapForType)
+        {
+            if (l.func == listener)
+            {
+                return l;
+            }
+        }
+
+        return null;
     }
 
     public function removeMessageListener(type:EnumValue, listener:IMessage -> Void):Void
@@ -39,10 +63,14 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
         {
             if (_messageMap.get(type) != null)
             {
-                _messageMap.get(type).remove(listener);
-                if (_messageMap.get(type).length == 0)
+                var l:Listener = getListenerWithPriority(_messageMap.get(type), listener);
+                if (l != null)
                 {
-                    _messageMap.remove(type);
+                    _messageMap.get(type).remove(l);
+                    if (_messageMap.get(type).length == 0)
+                    {
+                        _messageMap.remove(type);
+                    }
                 }
             }
         }
@@ -120,11 +148,13 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
     {
         if (_messageMap != null)
         {
-            if (_messageMap.get(message.type) != null)
+            var messageMapForType:Array<Listener> = _messageMap.get(message.type);
+
+            if (messageMapForType != null)
             {
-                for (listener in _messageMap.get(message.type))
+                for (listener in messageMapForType)
                 {
-                    listener(message);
+                    listener.func(message);
                 }
             }
         }
@@ -176,7 +206,33 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
     }
 }
 
-private class MessageMap extends EnumValueMap<EnumValue, Array<IMessage -> Void>>
+private class Listener
+{
+
+    public var func(get, never):IMessage -> Void;
+    public var priority(get, never):Int;
+
+    private var _func:IMessage -> Void;
+    private var _priority:Int;
+
+    public function new(func:IMessage -> Void, priority:Int = 0)
+    {
+        _func = func;
+        _priority = priority;
+    }
+
+    private function get_priority():Int
+    {
+        return _priority;
+    }
+
+    private function get_func():IMessage -> Void
+    {
+        return _func;
+    }
+}
+
+private class MessageMap extends EnumValueMap<EnumValue, Array<Listener>>
 {
     override function compare(k1:EnumValue, k2:EnumValue):Int
     {
