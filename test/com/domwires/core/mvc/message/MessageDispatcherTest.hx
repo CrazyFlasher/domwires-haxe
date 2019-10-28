@@ -146,7 +146,7 @@ class MessageDispatcherTest
     }
 
     @Test
-    public function testPrioriy_1():Void
+    public function testPriority_1():Void
     {
         var x:Int = 0;
 
@@ -162,7 +162,7 @@ class MessageDispatcherTest
     }
 
     @Test
-    public function testPrioriy_2():Void
+    public function testPriority_2():Void
     {
         var x:Int = 0;
 

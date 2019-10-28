@@ -1,26 +1,25 @@
 package com.domwires.core.mvc.command;
 
-import mock.mvc.commands.MockCommand_17;
-import mock.mvc.commands.MockCommand_2;
-import mock.mvc.commands.MockCommand_9;
-import mock.mvc.commands.MockCommand_8;
-import mock.mvc.commands.MockCommand_7;
-import mock.mvc.commands.MockCommand_6;
-import mock.mvc.commands.MockCommand_5;
-import mock.obj.MockVo_2;
-import mock.mvc.commands.MockCommand_4;
-import mock.mvc.commands.guards.MockAllowGuards_2;
-import mock.mvc.commands.guards.MockNotAllowGuards;
-import mock.mvc.commands.MockCommand_3;
-import mock.obj.MockVo;
-import mock.mvc.message.MockMessage;
+import mock.mvc.commands.MockCommand_18;
 import com.domwires.core.factory.AppFactory;
 import com.domwires.core.factory.IAppFactory;
 import massive.munit.Assert;
-import mock.mvc.commands.guards.MockAllowGuards;
-import mock.mvc.commands.MockCommand_1;
 import mock.common.MockMessageType;
+import mock.mvc.commands.guards.MockAllowGuards;
+import mock.mvc.commands.guards.MockAllowGuards_2;
+import mock.mvc.commands.guards.MockNotAllowGuards;
+import mock.mvc.commands.MockCommand_17;
+import mock.mvc.commands.MockCommand_1;
+import mock.mvc.commands.MockCommand_2;
+import mock.mvc.commands.MockCommand_3;
+import mock.mvc.commands.MockCommand_4;
+import mock.mvc.commands.MockCommand_5;
+import mock.mvc.commands.MockCommand_7;
+import mock.mvc.commands.MockCommand_8;
+import mock.mvc.message.MockMessage;
 import mock.obj.MockObj_1;
+import mock.obj.MockVo;
+import mock.obj.MockVo_2;
 
 class CommandMapperTest
 {
@@ -392,5 +391,19 @@ class CommandMapperTest
         Assert.areEqual(e, factory.getInstanceWithClassName("EnumValue", "e"));
 
         commandMapper.executeCommand(MockCommand_17, {e: MockMessageType.Hello, __e:"EnumValue"});
+    }
+
+    @TestDebug
+    public function testMapEnumValueWithoutTypeSpecified():Void
+    {
+        var e:EnumValue = MockMessageType.Hello;
+
+        commandMapper.executeCommand(MockCommand_18, {
+            i: 7,
+            f: 5.5,
+            s: "Anton",
+            b: true,
+            e: MockMessageType.Hello
+        });
     }
 }

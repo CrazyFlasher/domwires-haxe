@@ -261,12 +261,26 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 			}
 		} else
 		{
+			propertyType = TypeUtils.getTypeName(propertyValue);
+
 			if (map)
 			{
-				factory.mapToValue(Type.getClass(propertyValue), propertyValue, propertyName);
+				if (propertyType != null)
+				{
+					factory.mapClassNameToValue(propertyType, propertyValue, propertyName);
+				} else
+				{
+					factory.mapToValue(Type.getClass(propertyValue), propertyValue, propertyName);
+				}
 			} else
 			{
-				factory.unmap(Type.getClass(propertyValue), propertyName);
+				if (propertyType != null)
+				{
+					factory.unmapClassName(propertyType, propertyName);
+				} else
+				{
+					factory.unmap(Type.getClass(propertyValue), propertyName);
+				}
 			}
 		}
 	}
@@ -365,5 +379,22 @@ private class CommandMap extends EnumValueMap<EnumValue, Array<MappingConfig>>
 			return t1 < t2 ? -1 : 1;
 		}
 		return super.compare(k1, k2);
+	}
+}
+
+private class TypeUtils
+{
+	public static function getTypeName<T>(value:T):String
+	{
+		if (value == null) return null;
+		if (Reflect.isEnumValue(value)) return "EnumValue";
+		return switch Type.typeof(value)
+		{
+			case Type.ValueType.TInt: "Int";
+			case Type.ValueType.TFloat: "Float";
+			case Type.ValueType.TBool: "Bool";
+			case Type.ValueType.TFunction: "Function";
+			default: null;
+		}
 	}
 }
