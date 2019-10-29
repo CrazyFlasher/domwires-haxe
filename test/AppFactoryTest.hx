@@ -1,5 +1,6 @@
 package ;
 
+import hex.di.IInjectorContainer;
 import haxe.io.Error;
 import mock.obj.IMockLonelyInterface;
 import mock.obj.MockObj_2;
@@ -302,4 +303,42 @@ class AppFactoryTest
 
         Assert.isTrue(passed);
     }
+
+    @Test
+    public function testMapSamePropertyTwice()
+    {
+        factory.mapToType(I_2, Obj);
+
+        var obj:I_2 = cast factory.getInstance(I_2);
+        factory.mapToValue(I_2, obj, "a");
+        factory.mapToValue(I_1, obj, "b");
+
+        var container:ObjContainer = cast factory.getInstance(ObjContainer);
+
+        Assert.areEqual(container.a, container.b);
+    }
+}
+
+interface I_1 extends IInjectorContainer
+{
+
+}
+
+interface I_2 extends I_1
+{
+
+}
+
+class Obj implements I_2
+{
+
+}
+
+class ObjContainer
+{
+    @Inject("a")
+    public var a:I_2;
+
+    @Inject("b")
+    public var b:I_2;
 }

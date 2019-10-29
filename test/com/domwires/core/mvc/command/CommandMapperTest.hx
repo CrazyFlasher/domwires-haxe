@@ -393,7 +393,7 @@ class CommandMapperTest
         commandMapper.executeCommand(MockCommand_17, {e: MockMessageType.Hello, __e:"EnumValue"});
     }
 
-    @TestDebug
+    @Test
     public function testMapEnumValueWithoutTypeSpecified():Void
     {
         var e:EnumValue = MockMessageType.Hello;
