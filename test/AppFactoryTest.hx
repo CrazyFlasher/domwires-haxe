@@ -304,7 +304,7 @@ class AppFactoryTest
         Assert.isTrue(passed);
     }
 
-    @Test
+    @TestDebug
     public function testMapSamePropertyTwice()
     {
         factory.mapToType(I_2, Obj);
@@ -340,5 +340,5 @@ class ObjContainer
     public var a:I_2;
 
     @Inject("b")
-    public var b:I_2;
+    public var b:I_1;
 }
