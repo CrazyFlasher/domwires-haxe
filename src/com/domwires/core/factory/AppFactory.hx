@@ -302,8 +302,10 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 				var clazz = Type.resolveClass(defaultImplClassName);
 				if (clazz == null)
 				{
-					throw Error.Custom("'" + className + "' is not mapped to any value and default implementation '" +
-						defaultImplClassName + "' not found!");
+					var err:String = "'" + className + "' is not mapped to any value and default implementation '" +
+						defaultImplClassName + "' not found!";
+					trace(err);
+					throw Error.Custom(err);
 				}
 
 				trace("Mapping to default implementation '" + defaultImplClassName + "'.");
