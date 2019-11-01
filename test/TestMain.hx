@@ -55,7 +55,8 @@ class TestMain
 			#if flash
 				flash.external.ExternalInterface.call("testResult", successful);
 			#elseif js
-				js.Lib.eval("testResult(" + successful + ");");
+//				js.Lib.eval("testResult(" + successful + ");");
+				Sys.exit(successful ? 0 : 1);
 			#elseif sys
 				Sys.exit(successful ? 0 : 1);
 			#end

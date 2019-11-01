@@ -5,4 +5,3 @@
 -js build/js_test.js
 --macro include('com.domwires')
 --no-output
--cmd haxelib run dox -i build -o docs -ex "*" -in "^com\."
