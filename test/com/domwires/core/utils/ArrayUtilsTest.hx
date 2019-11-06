@@ -1,6 +1,7 @@
 package com.domwires.core.utils;
 
 import massive.munit.Assert;
+
 class ArrayUtilsTest
 {
     @BeforeClass
