@@ -6,19 +6,19 @@ package com.domwires.core.mvc.context.config;
 class ContextConfigVoBuilder
 {
     /**
-     * If bubbled up messages from views should be forwarded to models.
+     * If bubbled up messages from mediators should be forwarded to models.
      */
-    public var forwardMessageFromViewsToModels:Bool;
+    public var forwardMessageFromMediatorsToModels:Bool;
 
     /**
-     * If bubbled up messages from views should be forwarded to views.
+     * If bubbled up messages from mediators should be forwarded to mediators.
      */
-    public var forwardMessageFromViewsToViews:Bool = true;
+    public var forwardMessageFromMediatorsToMediators:Bool = true;
 
     /**
-     * If bubbled up messages from models be forwarded to views.
+     * If bubbled up messages from models be forwarded to mediators.
      */
-    public var forwardMessageFromModelsToViews:Bool = true;
+    public var forwardMessageFromModelsToMediators:Bool = true;
 
     /**
      * If bubbled up messages from models be forwarded to models.
@@ -34,9 +34,9 @@ class ContextConfigVoBuilder
         var config:ContextConfigVo = new ContextConfigVo();
 
         config._forwardMessageFromModelsToModels = forwardMessageFromModelsToModels;
-        config._forwardMessageFromModelsToViews = forwardMessageFromModelsToViews;
-        config._forwardMessageFromViewsToViews = forwardMessageFromViewsToViews;
-        config._forwardMessageFromViewsToModels = forwardMessageFromViewsToModels;
+        config._forwardMessageFromModelsToMediators = forwardMessageFromModelsToMediators;
+        config._forwardMessageFromMediatorsToMediators = forwardMessageFromMediatorsToMediators;
+        config._forwardMessageFromMediatorsToModels = forwardMessageFromMediatorsToModels;
 
         return config;
     }

@@ -5,7 +5,7 @@ Flexible and extensible MVC framework ported from [ActionScript 3 version](https
 
 ### Features
 * Splitting logic from visual part
-* Immutable interfaces are separated from mutable, for safe usage of read-only models (for example in views)
+* Immutable interfaces are separated from mutable, for safe usage of read-only models (for example in mediators)
 * Possibility to use many implementations for interface easily
 * Fast communication among components using [IMessageDispatcher](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/message/IMessageDispatcher.html)
 * Object instantiation with dependencies injections using cool [IAppFactory](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/factory/IAppFactory.html)

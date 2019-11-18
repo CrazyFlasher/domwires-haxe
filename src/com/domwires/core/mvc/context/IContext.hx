@@ -7,21 +7,21 @@ import com.domwires.core.mvc.context.IContextImmutable;
 import com.domwires.core.mvc.command.ICommandMapper;
 import com.domwires.core.mvc.message.IMessage;
 import com.domwires.core.mvc.model.IModelContainer;
-import com.domwires.core.mvc.view.IViewContainer;
+import com.domwires.core.mvc.mediator.IMediatorContainer;
 
 /**
- * Context contains models, views and services. Also implements <code>ICommandMapper</code>. You can map specific messages, that
+ * Context contains models, mediators and services. Also implements <code>ICommandMapper</code>. You can map specific messages, that
  * came out
  * from hierarchy, to <code>ICommand</code>s.
  */
-interface IContext extends IContextImmutable extends IModelContainer extends IViewContainer extends ICommandMapper
+interface IContext extends IContextImmutable extends IModelContainer extends IMediatorContainer extends ICommandMapper
 {
 
     /**
-     * Dispatches messages to views.
+     * Dispatches messages to mediators.
      * @param message
      */
-    function dispatchMessageToViews(message:IMessage):Void;
+    function dispatchMessageToMediators(message:IMessage):Void;
 
     /**
      * Dispatches message to models.

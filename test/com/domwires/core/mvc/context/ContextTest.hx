@@ -18,8 +18,8 @@ import mock.mvc.context.MockContext_7;
 import mock.mvc.context.MockContext_8;
 import mock.mvc.message.MockMessage;
 import mock.mvc.models.MockModel_1;
-import mock.mvc.views.MockView_1;
-import mock.mvc.views.MockView_4;
+import mock.mvc.mediators.MockMediator_1;
+import mock.mvc.mediators.MockMediator_4;
 import mock.obj.MockObj_1;
 
 class ContextTest
@@ -46,12 +46,12 @@ class ContextTest
         f.mapToValue(IAppFactory, f);
 
         var cb:ContextConfigVoBuilder = new ContextConfigVoBuilder();
-        cb.forwardMessageFromViewsToModels = true;
+        cb.forwardMessageFromMediatorsToModels = true;
         f.mapToValue(ContextConfigVo, cb.build());
 
         c = cast f.getInstance(IContext);
         c.addModel(cast f.instantiateUnmapped(MockModel_1));
-        c.addView(cast f.instantiateUnmapped(MockView_1));
+        c.addMediator(cast f.instantiateUnmapped(MockMediator_1));
     }
 
     @After
@@ -98,12 +98,12 @@ class ContextTest
     }
 
     @Test
-    public function testViewMessageBubbledOnceForChildContext():Void
+    public function testMediatorMessageBubbledOnceForChildContext():Void
     {
-        MockView_4.VAL = 0;
+        MockMediator_4.VAL = 0;
         var c:MockContext_5 = cast f.instantiateUnmapped(MockContext_5);
         Assert.areEqual(c.getModel().testVar, 1);
-        Assert.areEqual(MockView_4.VAL, 1);
+        Assert.areEqual(MockMediator_4.VAL, 1);
     }
 
     @Test

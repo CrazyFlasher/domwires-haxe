@@ -4,7 +4,7 @@ import com.domwires.core.common.IDisposable;
 import com.domwires.core.mvc.message.IMessageDispatcherImmutable;
 
 /**
- * Common message dispatcher. Can be used for listening and dispatching messages for views and models.
+ * Common message dispatcher. Can be used for listening and dispatching messages for mediators and models.
  * Bubbling feature in any objects (Not only DisplayObjects, like in EventDispatcher).
  */
 interface IMessageDispatcher extends IMessageDispatcherImmutable extends IDisposable

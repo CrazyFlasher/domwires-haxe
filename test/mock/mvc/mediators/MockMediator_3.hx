@@ -1,10 +1,10 @@
-package mock.mvc.views;
+package mock.mvc.mediators;
 
 import com.domwires.core.mvc.message.IMessage;
-import com.domwires.core.mvc.view.AbstractView;
+import com.domwires.core.mvc.mediator.AbstractMediator;
 import mock.common.MockMessageType;
 
-class MockView_3 extends AbstractView
+class MockMediator_3 extends AbstractMediator
 {
     @PostConstruct
     private function init():Void

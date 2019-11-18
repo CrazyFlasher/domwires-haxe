@@ -1,7 +1,7 @@
 package mock.mvc.context;
 
 import com.domwires.core.mvc.context.AbstractContext;
-import mock.mvc.views.MockView_4;
+import mock.mvc.mediators.MockMediator_4;
 
 class MockContext_6 extends AbstractContext
 {
@@ -9,6 +9,6 @@ class MockContext_6 extends AbstractContext
     {
         super.init();
 
-        addView(cast factory.instantiateUnmapped(MockView_4));
+        addMediator(cast factory.instantiateUnmapped(MockMediator_4));
     }
 }

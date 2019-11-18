@@ -6,45 +6,45 @@ package com.domwires.core.mvc.context.config;
  */
 class ContextConfigVo
 {
-    public var forwardMessageFromViewsToModels(get, never):Bool;
-    public var forwardMessageFromViewsToViews(get, never):Bool;
-    public var forwardMessageFromModelsToViews(get, never):Bool;
+    public var forwardMessageFromMediatorsToModels(get, never):Bool;
+    public var forwardMessageFromMediatorsToMediators(get, never):Bool;
+    public var forwardMessageFromModelsToMediators(get, never):Bool;
     public var forwardMessageFromModelsToModels(get, never):Bool;
 
     @:allow(com.domwires.core.mvc.context.config)
-    private var _forwardMessageFromViewsToModels:Bool;
+    private var _forwardMessageFromMediatorsToModels:Bool;
 
     @:allow(com.domwires.core.mvc.context.config)
-    private var _forwardMessageFromViewsToViews:Bool;
+    private var _forwardMessageFromMediatorsToMediators:Bool;
 
     @:allow(com.domwires.core.mvc.context.config)
-    private var _forwardMessageFromModelsToViews:Bool;
+    private var _forwardMessageFromModelsToMediators:Bool;
 
     @:allow(com.domwires.core.mvc.context.config)
     private var _forwardMessageFromModelsToModels:Bool;
 
     /**
-     * @return true, if messages bubbled up from views should be forwarded to models.
+     * @return true, if messages bubbled up from Mediators should be forwarded to models.
      */
-    private function get_forwardMessageFromViewsToModels():Bool
+    private function get_forwardMessageFromMediatorsToModels():Bool
     {
-        return _forwardMessageFromViewsToModels;
+        return _forwardMessageFromMediatorsToModels;
     }
 
     /**
-     * @return true, if messages bubbled up from views should be forwarded to views.
+     * @return true, if messages bubbled up from Mediators should be forwarded to Mediators.
      */
-    private function get_forwardMessageFromViewsToViews():Bool
+    private function get_forwardMessageFromMediatorsToMediators():Bool
     {
-        return _forwardMessageFromViewsToViews;
+        return _forwardMessageFromMediatorsToMediators;
     }
 
     /**
-     * @return true, if messages bubbled up from models should be forwarded to views.
+     * @return true, if messages bubbled up from models should be forwarded to Mediators.
      */
-    private function get_forwardMessageFromModelsToViews():Bool
+    private function get_forwardMessageFromModelsToMediators():Bool
     {
-        return _forwardMessageFromModelsToViews;
+        return _forwardMessageFromModelsToMediators;
     }
 
     /**

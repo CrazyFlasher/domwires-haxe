@@ -15,11 +15,11 @@ import com.domwires.core.mvc.model.IModel;
 import com.domwires.core.mvc.model.IModelContainer;
 import com.domwires.core.mvc.model.IModelImmutable;
 import com.domwires.core.mvc.model.ModelContainer;
-import com.domwires.core.mvc.view.AbstractView;
-import com.domwires.core.mvc.view.IView;
-import com.domwires.core.mvc.view.IViewContainer;
-import com.domwires.core.mvc.view.IViewImmutable;
-import com.domwires.core.mvc.view.ViewContainer;
+import com.domwires.core.mvc.mediator.AbstractMediator;
+import com.domwires.core.mvc.mediator.IMediator;
+import com.domwires.core.mvc.mediator.IMediatorContainer;
+import com.domwires.core.mvc.mediator.IMediatorImmutable;
+import com.domwires.core.mvc.mediator.MediatorContainer;
 import haxe.io.Error;
 
 class AbstractContext extends HierarchyObjectContainer implements IContext
@@ -28,9 +28,9 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
     public var modelList(get, never):Array<IModel>;
     public var modelListImmutable(get, never):ReadOnlyArray<IModelImmutable>;
 
-    public var numViews(get, never):Int;
-    public var viewList(get, never):Array<IView>;
-    public var viewListImmutable(get, never):ReadOnlyArray<IViewImmutable>;
+    public var numMediators(get, never):Int;
+    public var mediatorList(get, never):Array<IMediator>;
+    public var mediatorListImmutable(get, never):ReadOnlyArray<IMediatorImmutable>;
 
     @Inject
     private var factory:IAppFactory;
@@ -40,7 +40,7 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
     private var config:ContextConfigVo;
 
     private var modelContainer:IModelContainer;
-    private var viewContainer:IViewContainer;
+    private var mediatorContainer:IMediatorContainer;
 
     private var commandMapper:ICommandMapper;
 
@@ -62,8 +62,8 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
         modelContainer = cast factory.instantiateUnmapped(ModelContainer);
         add(modelContainer);
 
-        viewContainer = cast factory.instantiateUnmapped(ViewContainer);
-        add(viewContainer);
+        mediatorContainer = cast factory.instantiateUnmapped(MediatorContainer);
+        add(mediatorContainer);
 
         commandMapper = cast factory.instantiateUnmapped(CommandMapper);
     }
@@ -124,66 +124,66 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
         return modelContainer.modelListImmutable;
     }
 
-    public function addView(view:IView):IViewContainer
+    public function addMediator(mediator:IMediator):IMediatorContainer
     {
         checkIfDisposed();
 
-        viewContainer.addView(view);
-        cast (view, AbstractView).setParent(this);
+        mediatorContainer.addMediator(mediator);
+        cast (mediator, AbstractMediator).setParent(this);
 
         return this;
     }
 
-    public function removeView(view:IView, dispose:Bool = false):IViewContainer
+    public function removeMediator(mediator:IMediator, dispose:Bool = false):IMediatorContainer
     {
         checkIfDisposed();
 
-        viewContainer.removeView(view, dispose);
+        mediatorContainer.removeMediator(mediator, dispose);
 
         return this;
     }
 
-    public function removeAllViews(dispose:Bool = false):IViewContainer
+    public function removeAllMediators(dispose:Bool = false):IMediatorContainer
     {
         checkIfDisposed();
 
-        viewContainer.removeAllViews(dispose);
+        mediatorContainer.removeAllMediators(dispose);
 
         return this;
     }
 
-    private function get_numViews():Int
+    private function get_numMediators():Int
     {
         checkIfDisposed();
 
-        return viewContainer.numViews;
+        return mediatorContainer.numMediators;
     }
 
-    public function containsView(view:IViewImmutable):Bool
+    public function containsMediator(mediator:IMediatorImmutable):Bool
     {
         checkIfDisposed();
 
-        return viewContainer.containsView(view);
+        return mediatorContainer.containsMediator(mediator);
     }
 
-    private function get_viewList():Array<IView>
+    private function get_mediatorList():Array<IMediator>
     {
         checkIfDisposed();
 
-        return viewContainer.viewList;
+        return mediatorContainer.mediatorList;
     }
 
-    private function get_viewListImmutable():ReadOnlyArray<IViewImmutable>
+    private function get_mediatorListImmutable():ReadOnlyArray<IMediatorImmutable>
     {
         checkIfDisposed();
 
-        return viewContainer.viewListImmutable;
+        return mediatorContainer.mediatorListImmutable;
     }
 
     override public function dispose():Void
     {
         modelContainer.dispose();
-        viewContainer.dispose();
+        mediatorContainer.dispose();
         commandMapper.dispose();
 
         nullifyDependencies();
@@ -194,7 +194,7 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
     private function nullifyDependencies():Void
     {
         modelContainer = null;
-        viewContainer = null;
+        mediatorContainer = null;
         commandMapper = null;
     }
 
@@ -236,20 +236,20 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
             {
                 dispatchMessageToModels(message);
             }
-            if (config.forwardMessageFromModelsToViews)
+            if (config.forwardMessageFromModelsToMediators)
             {
-                dispatchMessageToViews(message);
+                dispatchMessageToMediators(message);
             }
         } else
-        if (Std.is(message.target, IView))
+        if (Std.is(message.target, IMediator))
         {
-            if (config.forwardMessageFromViewsToModels)
+            if (config.forwardMessageFromMediatorsToModels)
             {
                 dispatchMessageToModels(message);
             }
-            if (config.forwardMessageFromViewsToViews)
+            if (config.forwardMessageFromMediatorsToMediators)
             {
-                dispatchMessageToViews(message);
+                dispatchMessageToMediators(message);
             }
         }
     }
@@ -330,11 +330,11 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
         commandMapper.tryToExecuteCommand(message);
     }
 
-    public function dispatchMessageToViews(message:IMessage):Void
+    public function dispatchMessageToMediators(message:IMessage):Void
     {
         checkIfDisposed();
 
-        viewContainer.dispatchMessageToChildren(message);
+        mediatorContainer.dispatchMessageToChildren(message);
     }
 
     public function dispatchMessageToModels(message:IMessage):Void

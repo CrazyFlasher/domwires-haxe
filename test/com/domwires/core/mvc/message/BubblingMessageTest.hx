@@ -9,10 +9,10 @@ import com.domwires.core.mvc.context.AbstractContext;
 import mock.mvc.context.MockContext_1;
 import com.domwires.core.mvc.model.AbstractModel;
 import com.domwires.core.mvc.model.ModelContainer;
-import com.domwires.core.mvc.view.AbstractView;
+import com.domwires.core.mvc.mediator.AbstractMediator;
 import massive.munit.Assert;
 import mock.mvc.models.MockModel_1;
-import mock.mvc.views.MockView_1;
+import mock.mvc.mediators.MockMediator_1;
 
 class BubblingMessageTest
 {
@@ -25,7 +25,7 @@ class BubblingMessageTest
     private var mc2:ModelContainer;
     private var mc3:ModelContainer;
     private var mc4:ModelContainer;
-    private var v1:AbstractView;
+    private var v1:AbstractMediator;
 
     private var factory:IAppFactory;
 
@@ -66,7 +66,7 @@ class BubblingMessageTest
         mc3 = cast factory.instantiateUnmapped(ModelContainer);
         mc4 = cast factory.instantiateUnmapped(ModelContainer);
         m1 = cast factory.instantiateUnmapped(MockModel_1);
-        v1 = cast factory.instantiateUnmapped(MockView_1);
+        v1 = cast factory.instantiateUnmapped(MockMediator_1);
 
         mc2.addModel(m1);
         mc1.addModel(mc2);
@@ -76,7 +76,7 @@ class BubblingMessageTest
         c1.add(c2);
         c1.add(c3);
         c1.add(c4);
-        c1.addView(v1);
+        c1.addMediator(v1);
     }
 
     @After

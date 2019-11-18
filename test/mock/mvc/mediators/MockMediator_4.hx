@@ -1,10 +1,10 @@
-package mock.mvc.views;
+package mock.mvc.mediators;
 
 import com.domwires.core.mvc.message.IMessage;
-import com.domwires.core.mvc.view.AbstractView;
+import com.domwires.core.mvc.mediator.AbstractMediator;
 import mock.common.MockMessageType;
 
-class MockView_4 extends AbstractView
+class MockMediator_4 extends AbstractMediator
 {
     public static var VAL:Int;
 
@@ -16,6 +16,6 @@ class MockView_4 extends AbstractView
 
     private function onShalom(m:IMessage):Void
     {
-        MockView_4.VAL++;
+        MockMediator_4.VAL++;
     }
 }

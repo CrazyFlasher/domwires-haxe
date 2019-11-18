@@ -1,9 +1,9 @@
-package mock.mvc.views;
+package mock.mvc.mediators;
 
 import mock.common.MockMessageType;
-import com.domwires.core.mvc.view.AbstractView;
+import com.domwires.core.mvc.mediator.AbstractMediator;
 
-class MockView_2 extends AbstractView
+class MockMediator_2 extends AbstractMediator
 {
     public function dispatch():Void
     {

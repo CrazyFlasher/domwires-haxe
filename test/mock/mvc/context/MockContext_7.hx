@@ -5,22 +5,22 @@ import mock.mvc.commands.IMockCommand;
 import com.domwires.core.mvc.context.AbstractContext;
 import mock.common.MockMessageType;
 import mock.mvc.models.MockModel_2;
-import mock.mvc.views.MockView_2;
+import mock.mvc.mediators.MockMediator_2;
 
 class MockContext_7 extends AbstractContext
 {
     @Inject
     private var commandImpl:Class<Dynamic>;
 
-    private var testView:MockView_2;
+    private var testMediator:MockMediator_2;
     private var testModel:MockModel_2;
 
     override private function init():Void
     {
         super.init();
 
-        testView = cast factory.instantiateUnmapped(MockView_2);
-        addView(testView);
+        testMediator = cast factory.instantiateUnmapped(MockMediator_2);
+        addMediator(testMediator);
 
         testModel = cast factory.instantiateUnmapped(MockModel_2);
         addModel(testModel);
@@ -38,7 +38,7 @@ class MockContext_7 extends AbstractContext
 
     public function ready():Void
     {
-        testView.dispatch();
+        testMediator.dispatch();
     }
 
     override public function onMessageBubbled(message:IMessage):Bool
