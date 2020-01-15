@@ -16,6 +16,6 @@
   ],
   "classPath": "src",
   "dependencies": {
-    "hexinject": "git:https://github.com/CrazyFlasher/hexInject.git#0eeaf51805cbfdaca27ff84529f9607cdd6cea9f"
+    "hexinject": "git:https://github.com/CrazyFlasher/hexInject.git#73b59e0dccc6f181f3858ff7ee441283345abb1c"
   }
 }
