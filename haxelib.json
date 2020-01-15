@@ -9,13 +9,13 @@
     "html5"
   ],
   "description": "MVC Framework",
-  "version": "1.0.0-alpha.6",
-  "releasenote": "Partially ported version of ActionScript 3 DomWires",
+  "version": "1.0.0-alpha.7",
+  "releasenote": "Updated to forked hexInject",
   "contributors": [
     "CrazyFlasher"
   ],
   "classPath": "src",
   "dependencies": {
-    "hexinject": "1.0.0-alpha.7"
+    "hexinject": "git:https://github.com/CrazyFlasher/hexInject.git#0eeaf51805cbfdaca27ff84529f9607cdd6cea9f"
   }
 }
