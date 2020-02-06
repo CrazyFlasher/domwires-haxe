@@ -9,8 +9,8 @@
     "html5"
   ],
   "description": "MVC Framework",
-  "version": "1.0.0-alpha.8",
-  "releasenote": "Updated to forked hexInject",
+  "version": "1.0.0-alpha.9",
+  "releasenote": "Added contains static method to ArrayUtils",
   "contributors": [
     "CrazyFlasher"
   ],

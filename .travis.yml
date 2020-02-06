@@ -78,7 +78,6 @@ install:
   - haxelib install munit
   - haxelib git hamcrest https://github.com/mikestead/hamcrest-haxe.git master src --always
   - haxelib git hexinject https://github.com/CrazyFlasher/hexInject.git 73b59e0dccc6f181f3858ff7ee441283345abb1c
-  - haxelib install hexinject 1.0.0-alpha.7
   - haxelib install dox
   - haxelib install hxnodejs
 script:

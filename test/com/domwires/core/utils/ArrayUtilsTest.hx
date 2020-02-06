@@ -42,4 +42,17 @@ class ArrayUtilsTest
 
         Assert.areEqual(arr.length, 0);
     }
+
+    @Test
+    public function testContains():Void
+    {
+        var arr:Array<Int> = [1, 2, 3, 4, 4];
+
+        Assert.isTrue(ArrayUtils.contains(arr, 4));
+        Assert.isTrue(ArrayUtils.contains(arr, 2));
+        Assert.isTrue(ArrayUtils.contains(arr, 1));
+        Assert.isFalse(ArrayUtils.isLast(arr, 5));
+        Assert.isFalse(ArrayUtils.isLast(arr, -5));
+        Assert.isFalse(ArrayUtils.isLast(arr, -6));
+    }
 }

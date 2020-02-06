@@ -1,5 +1,6 @@
 package com.domwires.core.utils;
 
+import haxe.ds.ReadOnlyArray;
 import haxe.io.Error;
 
 class ArrayUtils
@@ -28,10 +29,17 @@ class ArrayUtils
     * @param element element to check
     * @return true, if element is the last
     **/
-    public static function isLast<T>(array:Array<T>, element:Dynamic):Bool
+    public static function isLast<T>(array:ReadOnlyArray<T>, element:Dynamic):Bool
     {
         if (array == null) throw Error.Custom("Array is null!");
 
         return array.length != 0 && array.lastIndexOf(element) == array.length - 1;
+    }
+
+    public static function contains<T>(array:ReadOnlyArray<T>, element:Dynamic):Bool
+    {
+        if (array == null) throw Error.Custom("Array is null!");
+
+        return array.length != 0 && array.indexOf(element) != -1;
     }
 }
