@@ -13,7 +13,7 @@ class MockContext_2 extends AbstractContext
     {
         super.init();
 
-        testModel = cast factory.instantiateUnmapped(MockModel_2);
+        testModel = factory.instantiateUnmapped(MockModel_2);
         addModel(testModel);
 
         factory.mapToValue(MockModel_2, testModel);

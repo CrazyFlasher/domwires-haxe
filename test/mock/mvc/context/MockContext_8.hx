@@ -15,7 +15,7 @@ class MockContext_8 extends AbstractContext
 
         map(MockMessageType.Hello, MockCommand_16);
 
-        testModel = cast factory.getInstance(MockModel_6);
+        testModel = factory.getInstance(MockModel_6);
 
         factory.mapToValue(MockModel_6, testModel);
 

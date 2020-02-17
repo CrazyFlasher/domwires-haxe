@@ -1,5 +1,6 @@
 package com.domwires.core.mvc.hierarchy;
 
+import mock.mvc.hierarchy.MockHierarchyObjectContainer;
 import com.domwires.core.mvc.message.IMessage;
 import massive.munit.Assert;
 import mock.common.MockMessageType;
@@ -29,7 +30,7 @@ class HierarchyObjectContainerTest
     {
         if (!hoc.isDisposed)
         {
-            hoc.disposeWithAllChildren();
+            hoc.dispose();
         }
     }
 
@@ -50,7 +51,8 @@ class HierarchyObjectContainerTest
     {
         Assert.areEqual(hoc.children.length, 0);
 
-        hoc.add(new MockHierarchyObject()).add(new MockHierarchyObject());
+        hoc.add(new MockHierarchyObject());
+        hoc.add(new MockHierarchyObject());
 
         Assert.areEqual(hoc.children.length, 2);
     }
@@ -60,8 +62,9 @@ class HierarchyObjectContainerTest
     {
         var ho_1:IHierarchyObject = new MockHierarchyObject();
         var ho_2:IHierarchyObject = new MockHierarchyObject();
-        hoc.add(ho_1).add(ho_2);
-        hoc.disposeWithAllChildren();
+        hoc.add(ho_1);
+        hoc.add(ho_2);
+        hoc.dispose();
 
         Assert.isTrue(hoc.isDisposed);
         Assert.isTrue(hoc.isDisposed);
@@ -77,13 +80,14 @@ class HierarchyObjectContainerTest
     {
         var ho_1:IHierarchyObject = new MockHierarchyObject();
         var ho_2:IHierarchyObject = new MockHierarchyObject();
-        hoc.add(ho_1).add(ho_2);
+        hoc.add(ho_1);
+        hoc.add(ho_2);
         hoc.dispose();
 
         Assert.isTrue(hoc.isDisposed);
         Assert.isNull(hoc.children);
-        Assert.isFalse(ho_1.isDisposed);
-        Assert.isFalse(ho_2.isDisposed);
+        Assert.isTrue(ho_1.isDisposed);
+        Assert.isTrue(ho_2.isDisposed);
     }
 
     /*@Test
@@ -107,7 +111,8 @@ class HierarchyObjectContainerTest
     {
         var ho_1:IHierarchyObject = new MockHierarchyObject();
         var ho_2:IHierarchyObject = new MockHierarchyObject();
-        hoc.add(ho_1).add(ho_2);
+        hoc.add(ho_1);
+        hoc.add(ho_2);
 
         Assert.areEqual(ho_1.parent, hoc);
         hoc.remove(ho_1);
@@ -129,7 +134,8 @@ class HierarchyObjectContainerTest
     @Test
     public function testRemoveAll():Void
     {
-        hoc.add(new MockHierarchyObject()).add(new MockHierarchyObject());
+        hoc.add(new MockHierarchyObject());
+        hoc.add(new MockHierarchyObject());
         hoc.removeAll();
         Assert.areEqual(hoc.children.length, 0);
     }
@@ -202,6 +208,15 @@ class HierarchyObjectContainerTest
         var ho_1:IHierarchyObject = new MockHierarchyObject();
         hoc.add(ho_1, 0);
         Assert.areEqual(ho_1.parent, hoc);
+    }
+
+    @Test
+    public function testOverridenDispose():Void
+    {
+        var hoc:MockHierarchyObjectContainer = new MockHierarchyObjectContainer();
+        this.hoc.add(hoc);
+        this.hoc.remove(hoc, true);
+        Assert.isTrue(hoc.getValue());
     }
 
     //Expects error

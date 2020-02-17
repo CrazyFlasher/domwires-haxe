@@ -2,12 +2,14 @@
 -main TestMain
 -lib munit
 -lib hamcrest
--lib hexinject:1.0.0-alpha.7
+-lib hexinject
 -lib dox
 -lib hxnodejs
 -cp src
 -cp test
 -js build/js_test.js
+-debug
+-D js-source-map
 
 #--next
 

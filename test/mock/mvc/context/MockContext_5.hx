@@ -21,10 +21,10 @@ class MockContext_5 extends AbstractContext
 
         super.init();
 
-        v = cast factory.instantiateUnmapped(MockMediator_3);
+        v = factory.instantiateUnmapped(MockMediator_3);
         addMediator(v);
 
-        m = cast factory.instantiateUnmapped(MockModel_4);
+        m = factory.instantiateUnmapped(MockModel_4);
         factory.mapToValue(MockModel_4, m);
         addModel(m);
 

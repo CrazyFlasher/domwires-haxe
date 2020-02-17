@@ -16,20 +16,26 @@ class ModelContainer extends HierarchyObjectContainer implements IModelContainer
 
 	public function addModel(model:IModel):IModelContainer
 	{
-		add(model);
+		var success:Bool = add(model);
 
-		_modelList.push(model);
-		_modelListImmutable.push(model);
+		if (success)
+		{
+			_modelList.push(model);
+			_modelListImmutable.push(model);
+		}
 
 		return this;
 	}
 
 	public function removeModel(model:IModel, dispose:Bool = false):IModelContainer
 	{
-		remove(model, dispose);
+		var success:Bool = remove(model, dispose);
 
-		_modelList.remove(model);
-		_modelListImmutable.remove(model);
+		if (success)
+		{
+			_modelList.remove(model);
+			_modelListImmutable.remove(model);
+		}
 
 		return this;
 	}

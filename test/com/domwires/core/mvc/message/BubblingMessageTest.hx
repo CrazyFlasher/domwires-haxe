@@ -57,16 +57,16 @@ class BubblingMessageTest
         factory = new AppFactory();
         factory.mapToValue(IAppFactory, factory);
 
-        c1 = cast factory.instantiateUnmapped(MockContext_1);
-        c2 = cast factory.instantiateUnmapped(MockContext_1);
-        c3 = cast factory.instantiateUnmapped(MockContext_1);
-        c4 = cast factory.instantiateUnmapped(MockContext_1);
-        mc1 = cast factory.instantiateUnmapped(ModelContainer);
-        mc2 = cast factory.instantiateUnmapped(ModelContainer);
-        mc3 = cast factory.instantiateUnmapped(ModelContainer);
-        mc4 = cast factory.instantiateUnmapped(ModelContainer);
-        m1 = cast factory.instantiateUnmapped(MockModel_1);
-        v1 = cast factory.instantiateUnmapped(MockMediator_1);
+        c1 = factory.instantiateUnmapped(MockContext_1);
+        c2 = factory.instantiateUnmapped(MockContext_1);
+        c3 = factory.instantiateUnmapped(MockContext_1);
+        c4 = factory.instantiateUnmapped(MockContext_1);
+        mc1 = factory.instantiateUnmapped(ModelContainer);
+        mc2 = factory.instantiateUnmapped(ModelContainer);
+        mc3 = factory.instantiateUnmapped(ModelContainer);
+        mc4 = factory.instantiateUnmapped(ModelContainer);
+        m1 = factory.instantiateUnmapped(MockModel_1);
+        v1 = factory.instantiateUnmapped(MockMediator_1);
 
         mc2.addModel(m1);
         mc1.addModel(mc2);
@@ -120,16 +120,16 @@ class BubblingMessageTest
 
         var successFunc:IMessage -> Void = m -> {};
 
-        var c1:IContext = cast factory.instantiateUnmapped(MockContext_1);
-        var c2:IContext = cast factory.instantiateUnmapped(MockContext_1);
-        var c3:IContext = cast factory.instantiateUnmapped(MockContext_1);
-        var c4:IContext = cast factory.instantiateUnmapped(MockContext_1);
-        var c5:IContext = cast factory.instantiateUnmapped(MockContext_1);
-        var c6:IContext = cast factory.instantiateUnmapped(MockContext_1);
-        var c7:IContext = cast factory.instantiateUnmapped(MockContext_1);
-        var c8:IContext = cast factory.instantiateUnmapped(MockContext_1);
-        var c9:IContext = cast factory.instantiateUnmapped(MockContext_1);
-        var c10:IContext = cast factory.instantiateUnmapped(MockContext_1);
+        var c1:IContext = factory.instantiateUnmapped(MockContext_1);
+        var c2:IContext = factory.instantiateUnmapped(MockContext_1);
+        var c3:IContext = factory.instantiateUnmapped(MockContext_1);
+        var c4:IContext = factory.instantiateUnmapped(MockContext_1);
+        var c5:IContext = factory.instantiateUnmapped(MockContext_1);
+        var c6:IContext = factory.instantiateUnmapped(MockContext_1);
+        var c7:IContext = factory.instantiateUnmapped(MockContext_1);
+        var c8:IContext = factory.instantiateUnmapped(MockContext_1);
+        var c9:IContext = factory.instantiateUnmapped(MockContext_1);
+        var c10:IContext = factory.instantiateUnmapped(MockContext_1);
 
         c1.addModel(
             c2.addModel(

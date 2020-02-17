@@ -13,8 +13,10 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
     private var _childrenList:Array<IHierarchyObject> = [];
     private var _childrenListImmutable:Array<IHierarchyObjectImmutable> = [];
 
-    public function add(child:IHierarchyObject, index:Int = -1):IHierarchyObjectContainer
+    public function add(child:IHierarchyObject, index:Int = -1):Bool
     {
+        var success:Bool = false;
+
         if (index != -1 && index > _childrenList.length)
         {
             throw Error.Custom("Invalid child index! Index shouldn't be bigger that children list length!");
@@ -31,6 +33,8 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
             }
             _childrenList.insert(index, child);
             _childrenListImmutable.insert(index, child);
+
+            success = true;
         }
 
         if (!contains)
@@ -48,11 +52,13 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
             cast(child, AbstractHierarchyObject).setParent(this);
         }
 
-        return this;
+        return success;
     }
 
-    public function remove(child:IHierarchyObject, dispose:Bool = false):IHierarchyObjectContainer
+    public function remove(child:IHierarchyObject, dispose:Bool = false):Bool
     {
+        var success:Bool = false;
+
         if (contains(child))
         {
             _childrenList.remove(child);
@@ -60,53 +66,42 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
 
             if (dispose)
             {
-                if (Std.is(child, IHierarchyObjectContainer))
-                {
-                    cast(child, IHierarchyObjectContainer).disposeWithAllChildren();
-                } else
-                {
-                    child.dispose();
-                }
+                child.dispose();
             } else
             {
                 cast(child, AbstractHierarchyObject).setParent(null);
             }
+
+            success = true;
         }
 
-        return this;
+        return success;
     }
 
     public function removeAll(dispose:Bool = false):IHierarchyObjectContainer
     {
-        for (child in _childrenList)
-        {
-            if (dispose)
-            {
-                if (Std.is(child, IHierarchyObjectContainer))
-                {
-                    cast(child, IHierarchyObjectContainer).disposeWithAllChildren();
-                } else
-                {
-                    child.dispose();
-                }
-            } else
-            {
-               cast(child, AbstractHierarchyObject).setParent(null);
-            }
-        }
-
         if (_childrenList != null)
         {
+            for (child in _childrenList)
+            {
+                if (dispose)
+                {
+                    child.dispose();
+                } else
+                {
+                   cast(child, AbstractHierarchyObject).setParent(null);
+                }
+            }
+
             ArrayUtils.clear(_childrenList);
             ArrayUtils.clear(_childrenListImmutable);
         }
-
         return this;
     }
 
     override public function dispose():Void
     {
-        removeAll();
+        removeAll(true);
 
         _childrenList = null;
         _childrenListImmutable = null;
@@ -119,16 +114,6 @@ class HierarchyObjectContainer extends AbstractHierarchyObject implements IHiera
         handleMessage(message);
 
         return true;
-    }
-
-    public function disposeWithAllChildren():Void
-    {
-        removeAll(true);
-
-        _childrenList = null;
-        _childrenListImmutable = null;
-
-        super.dispose();
     }
 
     private function get_children():Array<IHierarchyObject>

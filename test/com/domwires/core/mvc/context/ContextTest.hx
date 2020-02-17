@@ -49,9 +49,9 @@ class ContextTest
         cb.forwardMessageFromMediatorsToModels = true;
         f.mapToValue(ContextConfigVo, cb.build());
 
-        c = cast f.getInstance(IContext);
-        c.addModel(cast f.instantiateUnmapped(MockModel_1));
-        c.addMediator(cast f.instantiateUnmapped(MockMediator_1));
+        c = f.getInstance(IContext);
+        c.addModel(f.instantiateUnmapped(MockModel_1));
+        c.addMediator(f.instantiateUnmapped(MockMediator_1));
     }
 
     @After
@@ -59,14 +59,14 @@ class ContextTest
     {
         if (!c.isDisposed)
         {
-            c.disposeWithAllChildren();
+            c.dispose();
         }
     }
 
     @Test
     public function testDisposeWithAllChildren():Void
     {
-        c.disposeWithAllChildren();
+        c.dispose();
 
         Assert.isTrue(c.isDisposed);
     }

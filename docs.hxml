@@ -1,6 +1,6 @@
 -cp src
 -D doc-gen
--lib hexinject:1.0.0-alpha.7
+-lib hexinject
 -xml build/js.xml
 -js build/js_test.js
 --macro include('com.domwires')

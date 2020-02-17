@@ -9,6 +9,6 @@ class MockContext_6 extends AbstractContext
     {
         super.init();
 
-        addMediator(cast factory.instantiateUnmapped(MockMediator_4));
+        addMediator(factory.instantiateUnmapped(MockMediator_4));
     }
 }

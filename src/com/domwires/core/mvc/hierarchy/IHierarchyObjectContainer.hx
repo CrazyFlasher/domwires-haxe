@@ -17,26 +17,23 @@ interface IHierarchyObjectContainer extends IHierarchyObjectContainerImmutable e
      * Adds object to hierarchy. Object becomes a part of hierarchy branch.
      * @param child
      * @param index
+     * @return true if successfully added.
      */
-    function add(child:IHierarchyObject, index:Int = -1):IHierarchyObjectContainer;
+    function add(child:IHierarchyObject, index:Int = -1):Bool;
 
     /**
      * Removes object from hierarchy.
      * @param child
      * @param dispose
+     * @return true if successfully removed.
      */
-    function remove(child:IHierarchyObject, dispose:Bool = false):IHierarchyObjectContainer;
+    function remove(child:IHierarchyObject, dispose:Bool = false):Bool;
 
     /**
      * Removes all objects from hierarchy.
      * @param dispose
      */
     function removeAll(dispose:Bool = false):IHierarchyObjectContainer;
-
-    /**
-     * Disposes current container and its children.
-     */
-    function disposeWithAllChildren():Void;
 
     /**
      * Sends message to children.

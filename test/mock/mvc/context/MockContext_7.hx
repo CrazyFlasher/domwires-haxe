@@ -19,10 +19,10 @@ class MockContext_7 extends AbstractContext
     {
         super.init();
 
-        testMediator = cast factory.instantiateUnmapped(MockMediator_2);
+        testMediator = factory.instantiateUnmapped(MockMediator_2);
         addMediator(testMediator);
 
-        testModel = cast factory.instantiateUnmapped(MockModel_2);
+        testModel = factory.instantiateUnmapped(MockModel_2);
         addModel(testModel);
 
         factory.mapToType(IMockCommand, cast commandImpl);

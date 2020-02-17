@@ -158,7 +158,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 				factory.mapToValue(commandClass, Type.createInstance(commandClass, []));
 			}
 
-			var command:ICommand = cast factory.getInstance(commandClass);
+			var command:ICommand = factory.getInstance(commandClass);
 			factory.injectInto(command);
 
 			command.execute();
@@ -334,7 +334,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 				factory.mapToValue(guardClass, Type.createInstance(guardClass, []));
 			}
 
-			var guards:IGuards = cast factory.getInstance(guardClass);
+			var guards:IGuards = factory.getInstance(guardClass);
 			factory.injectInto(guards);
 
 			if (data != null)

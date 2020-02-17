@@ -44,7 +44,7 @@ class CommandMapperTest
         factory = new AppFactory();
         factory.mapToValue(IAppFactory, factory);
 
-        commandMapper = cast factory.instantiateUnmapped(CommandMapper);
+        commandMapper = factory.instantiateUnmapped(CommandMapper);
     }
 
     @After
@@ -61,7 +61,7 @@ class CommandMapperTest
         commandMapper.unmap(MockMessageType.GoodBye, MockCommand_1);
         Assert.isFalse(commandMapper.hasMapping(MockMessageType.GoodBye));
 
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
 
         commandMapper.tryToExecuteCommand(new MockMessage(MockMessageType.GoodBye));
@@ -122,7 +122,7 @@ class CommandMapperTest
     @Test
     public function testTryToExecuteCommand():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
 
         commandMapper.map(MockMessageType.Hello, MockCommand_1);
@@ -135,7 +135,7 @@ class CommandMapperTest
     @Test
     public function testManyEvents1Command():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
 
         commandMapper.map(cast MockMessageType.GoodBye, MockCommand_1);
@@ -156,7 +156,7 @@ class CommandMapperTest
     @Test
     public function testRemapModel():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
 
         commandMapper.map(cast MockMessageType.GoodBye, MockCommand_1);
@@ -166,7 +166,7 @@ class CommandMapperTest
 
         factory.unmap(MockObj_1);
 
-        var m2:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m2:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m2);
 
         commandMapper.tryToExecuteCommand(new MockMessage(cast MockMessageType.GoodBye));
@@ -193,7 +193,7 @@ class CommandMapperTest
     @Test
     public function testMapOnce():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
         commandMapper.map(cast MockMessageType.GoodBye, MockCommand_1, null, true);
         commandMapper.tryToExecuteCommand(new MockMessage(cast MockMessageType.GoodBye));
@@ -203,7 +203,7 @@ class CommandMapperTest
     @Test
     public function testMapWithData():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
         commandMapper.map(cast MockMessageType.GoodBye, MockCommand_3, {olo: 5, __olo: "Int"});
         commandMapper.tryToExecuteCommand(new MockMessage(cast MockMessageType.GoodBye));
@@ -215,7 +215,7 @@ class CommandMapperTest
     {
         commandMapper.setMergeMessageDataAndMappingData(true);
 
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
         commandMapper.map(cast MockMessageType.GoodBye, MockCommand_3, {olo: 5, __olo: "Int"});
         commandMapper.tryToExecuteCommand(new MockMessage(cast MockMessageType.GoodBye, {a: 1}));
@@ -225,7 +225,7 @@ class CommandMapperTest
     @Test
     public function testMessageDataOverridesMappedData():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
         commandMapper.map(cast MockMessageType.GoodBye, MockCommand_3, {olo: 5, __olo: "Int"});
         commandMapper.tryToExecuteCommand(new MockMessage(cast MockMessageType.GoodBye, {olo: 4, __olo: "Int"}));
@@ -235,7 +235,7 @@ class CommandMapperTest
     @Test
     public function testCoolGuards():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
         commandMapper.map(cast MockMessageType.GoodBye, MockCommand_3, {olo: 5, __olo: "Int"}).addGuards(MockAllowGuards);
         commandMapper.tryToExecuteCommand(new MockMessage(cast MockMessageType.GoodBye, {olo: 4, __olo: "Int"}));
@@ -245,7 +245,7 @@ class CommandMapperTest
     @Test
     public function testCoolOppositeGuards():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
         commandMapper.map(cast MockMessageType.GoodBye, MockCommand_3, {olo: 5, __olo: "Int"}).addGuardsNot(MockNotAllowGuards);
         commandMapper.tryToExecuteCommand(new MockMessage(cast MockMessageType.GoodBye, {olo: 4, __olo: "Int"}));
@@ -255,7 +255,7 @@ class CommandMapperTest
     @Test
     public function testNotCoolGuards():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
         commandMapper.map(cast MockMessageType.GoodBye, MockCommand_3, {olo: 5, __olo: "Int"}).addGuards(MockNotAllowGuards);
         commandMapper.tryToExecuteCommand(new MockMessage(cast MockMessageType.GoodBye, {olo: 4, __olo: "Int"}));
@@ -265,7 +265,7 @@ class CommandMapperTest
     @Test
     public function testNormalAndOppositeGuards():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
 
         commandMapper.map1(cast MockMessageType.GoodBye, [MockCommand_3], {olo: 5, __olo: "Int"})
@@ -281,7 +281,7 @@ class CommandMapperTest
     @Test
     public function testNotCoolOppositeGuards():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
         commandMapper.map(cast MockMessageType.GoodBye, MockCommand_3, {olo: 5, __olo: "Int"}).addGuardsNot(MockAllowGuards);
         commandMapper.tryToExecuteCommand(new MockMessage(cast MockMessageType.GoodBye, {olo: 4, __olo: "Int"}));
@@ -298,7 +298,7 @@ class CommandMapperTest
     @Test
     public function testMapWithDataUnmaps():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
         commandMapper.executeCommand(MockCommand_4, {olo: "lol"});
         Assert.areEqual(m.s, "lol");
@@ -319,7 +319,7 @@ class CommandMapperTest
     public function testExecuteWithVoGettersAsData():Void
     {
         //Expecting no errors
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
         var vo:MockVo_2 = new MockVo_2();
         vo.olo = "test";
@@ -330,7 +330,7 @@ class CommandMapperTest
     @Test
     public function testStopOnExecute():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
         factory.mapToValue(String, "test", "olo");
         commandMapper.map(cast MockMessageType.GoodBye, MockCommand_4, null, false, true);
@@ -342,7 +342,7 @@ class CommandMapperTest
     @Test
     public function testStopOnExecuteWithBatchMapping():Void
     {
-        var m:MockObj_1 = cast factory.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = factory.instantiateUnmapped(MockObj_1);
         factory.mapToValue(MockObj_1, m);
         factory.mapToValue(String, "test", "olo");
         commandMapper.map1(cast MockMessageType.GoodBye, [MockCommand_4, MockCommand_1], null, false, true);

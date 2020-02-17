@@ -59,13 +59,13 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
 
         factory.mapToValue(IAppFactory, factory);
 
-        modelContainer = cast factory.instantiateUnmapped(ModelContainer);
+        modelContainer = factory.instantiateUnmapped(ModelContainer);
         add(modelContainer);
 
-        mediatorContainer = cast factory.instantiateUnmapped(MediatorContainer);
+        mediatorContainer = factory.instantiateUnmapped(MediatorContainer);
         add(mediatorContainer);
 
-        commandMapper = cast factory.instantiateUnmapped(CommandMapper);
+        commandMapper = factory.instantiateUnmapped(CommandMapper);
     }
 
     public function addModel(model:IModel):IModelContainer
@@ -182,8 +182,6 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
 
     override public function dispose():Void
     {
-        modelContainer.dispose();
-        mediatorContainer.dispose();
         commandMapper.dispose();
 
         nullifyDependencies();
@@ -196,15 +194,6 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
         modelContainer = null;
         mediatorContainer = null;
         commandMapper = null;
-    }
-
-    override public function disposeWithAllChildren():Void
-    {
-        commandMapper.dispose();
-
-        nullifyDependencies();
-
-        super.disposeWithAllChildren();
     }
 
     /**

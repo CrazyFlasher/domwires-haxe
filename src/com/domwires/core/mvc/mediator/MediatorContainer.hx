@@ -16,20 +16,26 @@ class MediatorContainer extends HierarchyObjectContainer implements IMediatorCon
 
 	public function addMediator(mediator:IMediator):IMediatorContainer
 	{
-		add(mediator);
+		var success:Bool = add(mediator);
 
-		_mediatorList.push(mediator);
-		_mediatorListImmutable.push(mediator);
+		if (success)
+		{
+			_mediatorList.push(mediator);
+			_mediatorListImmutable.push(mediator);
+		}
 
 		return this;
 	}
 
 	public function removeMediator(mediator:IMediator, dispose:Bool = false):IMediatorContainer
 	{
-		remove(mediator, dispose);
+		var success:Bool = remove(mediator, dispose);
 
-		_mediatorList.remove(mediator);
-		_mediatorListImmutable.remove(mediator);
+		if (success)
+		{
+			_mediatorList.remove(mediator);
+			_mediatorListImmutable.remove(mediator);
+		}
 
 		return this;
 	}

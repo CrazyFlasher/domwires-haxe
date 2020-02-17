@@ -67,7 +67,7 @@ class AppFactoryTest
     {
         factory.mapToType(IMockType, MockType_2);
         factory.registerPool(IMockType);
-        var o:IMockType = cast factory.getInstance(IMockType);
+        var o:IMockType = factory.getInstance(IMockType);
         Assert.areEqual(o.a, 500);
         Assert.areEqual(o.b, 700);
     }
@@ -96,13 +96,13 @@ class AppFactoryTest
         factory.mapToType(IMockPool_1, MockPool_1);
         factory.registerPool(IMockPool_1);
 
-        var p:IMockPool_1 = cast factory.getInstance(IMockPool_1);
+        var p:IMockPool_1 = factory.getInstance(IMockPool_1);
         Assert.areEqual(p.value, 1);
 
         factory.mapToType(IMockPool_1, MockPool_2);
         factory.registerPool(IMockPool_1);
 
-        var p2:IMockPool_1 = cast factory.getInstance(IMockPool_1);
+        var p2:IMockPool_1 = factory.getInstance(IMockPool_1);
         Assert.areEqual(p2.value, 2);
     }
 
@@ -112,7 +112,7 @@ class AppFactoryTest
         factory.mapToType(IMockPool_1, MockPool_3);
         factory.registerPool(IMockPool_1);
         factory.mapClassNameToValue("Int", 5, "v");
-        var p1:IMockPool_1 = cast factory.getInstance(IMockPool_1);
+        var p1:IMockPool_1 = factory.getInstance(IMockPool_1);
         Assert.areEqual(p1.value,  6);
     }
 
@@ -121,7 +121,7 @@ class AppFactoryTest
     {
         factory.registerPool(IMockPool_2, 100);
 
-        var capacity:Int = cast factory.getPoolCapacity(IMockPool_2);
+        var capacity:Int = factory.getPoolCapacity(IMockPool_2);
 
         Assert.areEqual(capacity, 100);
     }
@@ -159,17 +159,17 @@ class AppFactoryTest
         factory.mapToType(IMockPool_2, MockPool_4);
         factory.registerPool(IMockPool_2, 2);
 
-        var instance_1:IMockPool_2 = cast factory.getInstance(IMockPool_2);
-        var instance_2:IMockPool_2 = cast factory.getInstance(IMockPool_2);
+        var instance_1:IMockPool_2 = factory.getInstance(IMockPool_2);
+        var instance_2:IMockPool_2 = factory.getInstance(IMockPool_2);
 
         var instanceFromPool:IMockPool_2;
-        instanceFromPool = cast factory.getInstance(IMockPool_2);
+        instanceFromPool = factory.getInstance(IMockPool_2);
         Assert.areEqual(instanceFromPool, instance_1);
 
-        instanceFromPool = cast factory.getInstance(IMockPool_2);
+        instanceFromPool = factory.getInstance(IMockPool_2);
         Assert.areEqual(instanceFromPool, instance_2);
 
-        instanceFromPool = cast factory.getInstance(IMockPool_2);
+        instanceFromPool = factory.getInstance(IMockPool_2);
         Assert.areEqual(instanceFromPool, instance_1);
     }
 
@@ -179,8 +179,8 @@ class AppFactoryTest
         factory.mapToType(IMockPool_1, MockPool_1);
         factory.registerPool(IMockPool_1, 2, true);
 
-        var o1:IMockPool_1 = cast factory.getInstance(IMockPool_1);
-        var o2:IMockPool_1 = cast factory.getInstance(IMockPool_1);
+        var o1:IMockPool_1 = factory.getInstance(IMockPool_1);
+        var o2:IMockPool_1 = factory.getInstance(IMockPool_1);
 
         Assert.areNotEqual(o1, o2);
     }
@@ -191,12 +191,12 @@ class AppFactoryTest
         factory.mapToType(MockBusyPoolObject, MockBusyPoolObject);
         factory.registerPool(MockBusyPoolObject, 2, true, "isBusy");
 
-        var o1:MockBusyPoolObject = cast factory.getInstance(MockBusyPoolObject);
+        var o1:MockBusyPoolObject = factory.getInstance(MockBusyPoolObject);
         o1.isBusy = true;
 
         factory.getInstance(MockBusyPoolObject);
 
-        var o2:MockBusyPoolObject = cast factory.getInstance(MockBusyPoolObject);
+        var o2:MockBusyPoolObject = factory.getInstance(MockBusyPoolObject);
         Assert.isFalse(o2.isBusy);
         Assert.areNotEqual(o1, o2);
     }
@@ -209,12 +209,12 @@ class AppFactoryTest
 
         Assert.isFalse(factory.getAllPoolItemsAreBusy(MockBusyPoolObject));
 
-        var o1:MockBusyPoolObject = cast factory.getInstance(MockBusyPoolObject);
+        var o1:MockBusyPoolObject = factory.getInstance(MockBusyPoolObject);
         o1.isBusy = true;
 
         Assert.isFalse(factory.getAllPoolItemsAreBusy(MockBusyPoolObject));
 
-        var o2:MockBusyPoolObject = cast factory.getInstance(MockBusyPoolObject);
+        var o2:MockBusyPoolObject = factory.getInstance(MockBusyPoolObject);
         o2.isBusy = true;
 
         Assert.isTrue(factory.getAllPoolItemsAreBusy(MockBusyPoolObject));
@@ -223,7 +223,7 @@ class AppFactoryTest
 
         Assert.isFalse(factory.getAllPoolItemsAreBusy(MockBusyPoolObject));
 
-        var o3:MockBusyPoolObject = cast factory.getInstance(MockBusyPoolObject);
+        var o3:MockBusyPoolObject = factory.getInstance(MockBusyPoolObject);
         o3.isBusy = true;
 
         Assert.isTrue(factory.getAllPoolItemsAreBusy(MockBusyPoolObject));
@@ -237,9 +237,9 @@ class AppFactoryTest
 
         Assert.isFalse(factory.getAllPoolItemsAreBusy(MockBusyPoolObject));
 
-        var o1:MockBusyPoolObject = cast factory.getInstance(MockBusyPoolObject);
+        var o1:MockBusyPoolObject = factory.getInstance(MockBusyPoolObject);
         o1.isBusy = true;
-        var o2:MockBusyPoolObject = cast factory.getInstance(MockBusyPoolObject);
+        var o2:MockBusyPoolObject = factory.getInstance(MockBusyPoolObject);
         o2.isBusy = true;
 
         Assert.isTrue(factory.getAllPoolItemsAreBusy(MockBusyPoolObject));
@@ -253,11 +253,11 @@ class AppFactoryTest
         factory.mapToType(MockBusyPoolObject, MockBusyPoolObject);
         factory.registerPool(MockBusyPoolObject, 3, true, "isBusy");
 
-        var o1:MockBusyPoolObject = cast factory.getInstance(MockBusyPoolObject);
+        var o1:MockBusyPoolObject = factory.getInstance(MockBusyPoolObject);
         o1.isBusy = true;
-        var o2:MockBusyPoolObject = cast factory.getInstance(MockBusyPoolObject);
+        var o2:MockBusyPoolObject = factory.getInstance(MockBusyPoolObject);
         o2.isBusy = true;
-        var o3:MockBusyPoolObject = cast factory.getInstance(MockBusyPoolObject);
+        var o3:MockBusyPoolObject = factory.getInstance(MockBusyPoolObject);
         o3.isBusy = true;
 
         Assert.isTrue(factory.getAllPoolItemsAreBusy(MockBusyPoolObject));
@@ -266,7 +266,7 @@ class AppFactoryTest
 
         Assert.areEqual(factory.getPoolBusyInstanceCount(MockBusyPoolObject), 2);
 
-        var o4:MockBusyPoolObject = cast factory.getInstance(MockBusyPoolObject);
+        var o4:MockBusyPoolObject = factory.getInstance(MockBusyPoolObject);
         o4.isBusy = true;
 
         Assert.areEqual(o4, o2);
@@ -278,14 +278,14 @@ class AppFactoryTest
     @Test
     public function testMapToItselfImplementation():Void
     {
-        var obj:MockObj_2 = cast factory.getInstance(MockObj_2);
+        var obj:MockObj_2 = factory.getInstance(MockObj_2);
         Assert.areEqual(obj.prop, "hello");
     }
 
     @Test
     public function testMapToDefaultImplementation():Void
     {
-        var obj:IMockPool_1 = cast factory.getInstance(IMockPool_1);
+        var obj:IMockPool_1 = factory.getInstance(IMockPool_1);
     }
 
     @Test
@@ -304,16 +304,16 @@ class AppFactoryTest
         Assert.isTrue(passed);
     }
 
-    @TestDebug
+    @Test
     public function testMapSamePropertyTwice()
     {
         factory.mapToType(I_2, Obj);
 
-        var obj:I_2 = cast factory.getInstance(I_2);
+        var obj:I_2 = factory.getInstance(I_2);
         factory.mapToValue(I_2, obj, "a");
         factory.mapToValue(I_1, obj, "b");
 
-        var container:ObjContainer = cast factory.getInstance(ObjContainer);
+        var container:ObjContainer =  factory.getInstance(ObjContainer);
 
         Assert.areEqual(container.a, container.b);
     }
