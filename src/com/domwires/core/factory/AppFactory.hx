@@ -329,7 +329,11 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	private function isInterface(className:String):Bool
 	{
-		return className.lastIndexOf(".I") > -1;
+		var index:Int = className.lastIndexOf(".I");
+		if (index == -1) return false;
+
+		var nextChar:String = className.charAt(index + 2);
+		return nextChar.toUpperCase() == nextChar;
 	}
 
 	public function getInstanceWithClassName<T>(className:ClassName, ?name:MappingName, targetType:Class<Dynamic> = null,

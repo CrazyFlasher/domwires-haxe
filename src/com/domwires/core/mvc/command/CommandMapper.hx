@@ -166,6 +166,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 				factory.injectInto(command);
 			} else
 			{
+				trace("Warning: command is not IInjectorAcceptor: " + commandClass);
 				command = factory.getInstance(commandClass);
 				factory.injectInto(command);
 			}
