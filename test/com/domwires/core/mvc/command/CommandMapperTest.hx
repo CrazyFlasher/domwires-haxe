@@ -1,5 +1,7 @@
 package com.domwires.core.mvc.command;
 
+import mock.mvc.commands.MockCommand_19;
+import mock.mvc.models.MockModel_2;
 import mock.mvc.commands.MockCommand_18;
 import com.domwires.core.factory.AppFactory;
 import com.domwires.core.factory.IAppFactory;
@@ -405,5 +407,46 @@ class CommandMapperTest
             b: true,
             e: MockMessageType.Hello
         });
+    }
+
+    @Test
+    public function testCommandIsSingleton1():Void
+    {
+        var model:MockModel_2 = factory.getInstance(MockModel_2);
+        factory.mapToValue(MockModel_2, model);
+
+        commandMapper.executeCommand(MockCommand_19);
+        commandMapper.executeCommand(MockCommand_19);
+        commandMapper.executeCommand(MockCommand_19);
+
+        Assert.areEqual(model.testVar, 3);
+    }
+
+    @Test
+    public function testCommandIsSingleton2():Void
+    {
+        factory.mapToType(MockCommand_19, mock.mvc.commands.ex.MockCommand_19);
+
+        var model:MockModel_2 = factory.getInstance(MockModel_2);
+        factory.mapToValue(MockModel_2, model);
+
+        commandMapper.executeCommand(MockCommand_19);
+        commandMapper.executeCommand(MockCommand_19);
+        commandMapper.executeCommand(MockCommand_19);
+
+        Assert.areEqual(model.testVar, 3);
+    }
+
+    @Test
+    public function testCommandIsSingleton3():Void
+    {
+        factory.mapToType(MockCommand_19, mock.mvc.commands.ex.MockCommand_19);
+
+        var model:MockModel_2 = factory.getInstance(MockModel_2);
+        factory.mapToValue(MockModel_2, model);
+
+        commandMapper.executeCommand(MockCommand_19);
+
+        Assert.areEqual(model.testVar, 1);
     }
 }

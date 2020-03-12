@@ -13,6 +13,10 @@ import hex.di.provider.IDependencyProvider;
 
 class AppFactory extends AbstractDisposable implements IAppFactory
 {
+    //TODO: check reserved names while mapping. Move them to map
+    @:allow(com.domwires.core.mvc.command.CommandMapper)
+    private static inline var RESERVED_CMD:String = "__$cmd__";
+
 	private var injector:IDependencyInjector = new Injector();
 
 	private var pool:Map<String, PoolModel> = new Map<String, PoolModel>();

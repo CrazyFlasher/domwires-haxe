@@ -74,8 +74,8 @@ class ContextTest
     @Test
     public function testExecuteCommandFromBubbledMessage():Void
     {
-        var c1:MockContext_2 = cast f.instantiateUnmapped(MockContext_2);
-        var c2:MockContext_3 = cast f.instantiateUnmapped(MockContext_3);
+        var c1:MockContext_2 = f.instantiateUnmapped(MockContext_2);
+        var c2:MockContext_3 = f.instantiateUnmapped(MockContext_3);
         c.addModel(c1);
         c.addModel(c2);
 
@@ -87,8 +87,8 @@ class ContextTest
     @Test
     public function testBubbledMessageNotRedirectedToContextItCameFrom():Void
     {
-        var c1:MockContext_2 = cast f.instantiateUnmapped(MockContext_2);
-        var c2:MockContext_3 = cast f.instantiateUnmapped(MockContext_3);
+        var c1:MockContext_2 = f.instantiateUnmapped(MockContext_2);
+        var c2:MockContext_3 = f.instantiateUnmapped(MockContext_3);
         c.addModel(c1);
         c.addModel(c2);
 
@@ -101,7 +101,7 @@ class ContextTest
     public function testMediatorMessageBubbledOnceForChildContext():Void
     {
         MockMediator_4.VAL = 0;
-        var c:MockContext_5 = cast f.instantiateUnmapped(MockContext_5);
+        var c:MockContext_5 = f.instantiateUnmapped(MockContext_5);
         Assert.areEqual(c.getModel().testVar, 1);
         Assert.areEqual(MockMediator_4.VAL, 1);
     }
@@ -112,12 +112,12 @@ class ContextTest
         var f:IAppFactory = new AppFactory();
         f.mapToValue(IAppFactory, f);
         f.mapClassNameToValue("Class<Dynamic>", MockCommand_10);
-        var c:MockContext_7 = cast f.instantiateUnmapped(MockContext_7);
+        var c:MockContext_7 = f.instantiateUnmapped(MockContext_7);
         c.ready();
         Assert.areEqual(c.getTestModel().testVar, 1);
 
         f.mapClassNameToValue("Class<Dynamic>", MockCommand_13);
-        var c2:MockContext_7 = cast f.instantiateUnmapped(MockContext_7);
+        var c2:MockContext_7 = f.instantiateUnmapped(MockContext_7);
         c2.ready();
         Assert.areEqual(c2.getTestModel().testVar, 2);
     }
@@ -125,7 +125,7 @@ class ContextTest
     @Test
     public function testStopOnExecute():Void
     {
-        var m:MockObj_1 = cast f.instantiateUnmapped(MockObj_1);
+        var m:MockObj_1 = f.instantiateUnmapped(MockObj_1);
         f.mapToValue(MockObj_1, m);
         f.mapToValue(String, "test", "olo");
         c.map(MockMessageType.GoodBye, MockCommand_14, null, false, true);
@@ -137,7 +137,7 @@ class ContextTest
     @Test
     public function testCommandMappedToOtherMessageType():Void
     {
-        var c:MockContext_8 = cast f.getInstance(MockContext_8);
+        var c:MockContext_8 = f.getInstance(MockContext_8);
 
         Assert.areEqual(c.testModel.v, 0);
     }

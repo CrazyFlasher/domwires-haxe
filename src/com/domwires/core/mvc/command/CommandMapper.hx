@@ -1,5 +1,7 @@
 package com.domwires.core.mvc.command;
 
+import hex.di.IInjectorAcceptor;
+import com.domwires.core.factory.AppFactory;
 import com.domwires.core.common.AbstractDisposable;
 import com.domwires.core.factory.IAppFactory;
 import com.domwires.core.mvc.message.IMessage;
@@ -153,13 +155,20 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 				mapValues(data, true);
 			}
 
-			if (!factory.hasMapping(commandClass))
+			if (!factory.hasMapping(commandClass, AppFactory.RESERVED_CMD))
 			{
-				factory.mapToValue(commandClass, Type.createInstance(commandClass, []));
+				factory.mapToValue(commandClass, Type.createInstance(commandClass, []), AppFactory.RESERVED_CMD);
 			}
 
-			var command:ICommand = factory.getInstance(commandClass);
-			factory.injectInto(command);
+			var command:ICommand = factory.getInstance(commandClass, AppFactory.RESERVED_CMD);
+			if (Std.is(command, IInjectorAcceptor))
+			{
+				factory.injectInto(command);
+			} else
+			{
+				command = factory.getInstance(commandClass);
+				factory.injectInto(command);
+			}
 
 			command.execute();
 
