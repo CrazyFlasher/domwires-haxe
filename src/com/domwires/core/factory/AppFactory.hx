@@ -1,5 +1,6 @@
 package com.domwires.core.factory;
 
+import Type;
 import com.domwires.core.common.AbstractDisposable;
 import haxe.io.Error;
 import hex.di.ClassName;
@@ -13,11 +14,7 @@ import hex.di.provider.IDependencyProvider;
 
 class AppFactory extends AbstractDisposable implements IAppFactory
 {
-    //TODO: check reserved names while mapping. Move them to map
-    @:allow(com.domwires.core.mvc.command.CommandMapper)
-    private static inline var RESERVED_CMD:String = "__$cmd__";
-
-	private var injector:IDependencyInjector = new Injector();
+	private var injector:Injector = new Injector();
 
 	private var pool:Map<String, PoolModel> = new Map<String, PoolModel>();
 
@@ -68,7 +65,8 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function unmap<T>(type:ClassRef<T>, ?name:MappingName):Void
 	{
-		injector.unmap(type, name);
+//		injector.unmap(type, name);
+		unmapClassName(Type.getClassName(type), name);
 	}
 
 	public function getOrCreateNewInstance<T>(type:Class<T>):T
@@ -78,7 +76,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function mapClassNameToType<T>(className:ClassName, type:Class<T>, ?name:MappingName):Void
 	{
-		injector.mapClassNameToValue(className, type, name);
+		injector.mapClassNameToType(className, type, name);
 	}
 
 	public function hasDirectMapping<T>(type:ClassRef<T>, ?name:MappingName):Bool
@@ -229,7 +227,8 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 	public function mapToValue<T>(clazz:ClassRef<T>, value:T, ?name:MappingName):Void
 	{
-		injector.mapToValue(clazz, value, name);
+//		injector.mapToValue(clazz, value, name);
+		mapClassNameToValue(Type.getClassName(clazz), value, name);
 	}
 
 	public function unmapClassName(className:ClassName, ?name:MappingName):Void
@@ -284,37 +283,9 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 			}
 		}
 
-		if (!hasMapping(type))
+		if (name == null && !hasMapping(type))
 		{
-			var className:String = Type.getClassName(type);
-
-			trace("'" + className + "' is not mapped to any type...");
-
-			var isClass:Bool = !isInterface(className);
-
-			if (isClass)
-			{
-				trace("Mapping '" + className + "' to itself.");
-				mapToType(type, type);
-			} else
-			{
-				var index:Int = className.lastIndexOf(".I");
-				var firstPart:String = className.substr(0, index);
-				var lastPart:String = className.substr(index + 2, className.length);
-
-				var defaultImplClassName:String = firstPart + "." + lastPart;
-				var clazz = Type.resolveClass(defaultImplClassName);
-				if (clazz == null)
-				{
-					var err:String = "'" + className + "' is not mapped to any value and default implementation '" +
-						defaultImplClassName + "' not found!";
-					trace(err);
-					throw Error.Custom(err);
-				}
-
-				trace("Mapping to default implementation '" + defaultImplClassName + "'.");
-				mapToType(type, cast clazz);
-			}
+			tryToMapToDefault(type);
 		}
 
 		var obj:T = injector.getInstance(type, name, targetType);
@@ -325,6 +296,46 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		}
 
 		return obj;
+	}
+
+	private function tryToMapToDefault<T>(?type:ClassRef<T>, ?className:String):Void
+	{
+		if (className == null)
+		{
+			className = Type.getClassName(type);
+		}
+		if (type == null)
+		{
+			type = cast Type.resolveClass(className);
+		}
+
+		trace("'" + className + "' is not mapped to any type...");
+
+		var isClass:Bool = !isInterface(className);
+
+		if (isClass)
+		{
+			trace("Mapping '" + className + "' to itself.");
+			mapToType(type, type);
+		} else
+		{
+			var index:Int = className.lastIndexOf(".I");
+			var firstPart:String = className.substr(0, index);
+			var lastPart:String = className.substr(index + 2, className.length);
+
+			var defaultImplClassName:String = firstPart + "." + lastPart;
+			var clazz = Type.resolveClass(defaultImplClassName);
+			if (clazz == null)
+			{
+				var err:String = "'" + className + "' is not mapped to any value and default implementation '" +
+				defaultImplClassName + "' not found!";
+				trace(err);
+				throw Error.Custom(err);
+			}
+
+			trace("Mapping to default implementation '" + defaultImplClassName + "'.");
+			mapToType(type, cast clazz);
+		}
 	}
 
 	private function isInterface(className:String):Bool
@@ -345,6 +356,11 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 			{
 				return getFromPoolByClassName(className);
 			}
+		}
+
+		if (name == null && !hasMapping(Type.resolveClass(className)))
+		{
+			tryToMapToDefault(null, className);
 		}
 
 		var obj:T = injector.getInstanceWithClassName(className, name, targetType, shouldThrowAnError);

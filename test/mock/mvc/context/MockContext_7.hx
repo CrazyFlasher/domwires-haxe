@@ -25,10 +25,10 @@ class MockContext_7 extends AbstractContext
         testModel = factory.instantiateUnmapped(MockModel_2);
         addModel(testModel);
 
-        factory.mapToType(IMockCommand, cast commandImpl);
+//        factory.mapToType(IMockCommand, cast commandImpl);
         factory.mapToValue(MockModel_2, testModel);
 
-        map(MockMessageType.Hello, IMockCommand);
+        map(MockMessageType.Hello, commandImpl);
     }
 
     public function getTestModel():MockModel_2

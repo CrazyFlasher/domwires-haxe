@@ -16,10 +16,10 @@ import mock.mvc.context.MockContext_3;
 import mock.mvc.context.MockContext_5;
 import mock.mvc.context.MockContext_7;
 import mock.mvc.context.MockContext_8;
-import mock.mvc.message.MockMessage;
-import mock.mvc.models.MockModel_1;
 import mock.mvc.mediators.MockMediator_1;
 import mock.mvc.mediators.MockMediator_4;
+import mock.mvc.message.MockMessage;
+import mock.mvc.models.MockModel_1;
 import mock.obj.MockObj_1;
 
 class ContextTest
@@ -110,15 +110,17 @@ class ContextTest
     public function testMapToInterface():Void
     {
         var f:IAppFactory = new AppFactory();
-        f.mapToValue(IAppFactory, f);
+        f.mapToValue(IAppFactory, new AppFactory());
         f.mapClassNameToValue("Class<Dynamic>", MockCommand_10);
-        var c:MockContext_7 = f.instantiateUnmapped(MockContext_7);
+        var c:MockContext_7 = f.getInstance(MockContext_7);
         c.ready();
-        Assert.areEqual(c.getTestModel().testVar, 1);
 
         f.mapClassNameToValue("Class<Dynamic>", MockCommand_13);
-        var c2:MockContext_7 = f.instantiateUnmapped(MockContext_7);
+        var c2:MockContext_7 = f.getInstance(MockContext_7);
         c2.ready();
+
+        Assert.areNotEqual(c2, c);
+        Assert.areEqual(c.getTestModel().testVar, 1);
         Assert.areEqual(c2.getTestModel().testVar, 2);
     }
 

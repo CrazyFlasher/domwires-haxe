@@ -10,9 +10,10 @@ class MockCommand_19 extends AbstractCommand implements IMockCommand
 
     private var id:Int = 0;
 
-    @PostConstruct
-    private function init():Void
+    override public function execute():Void
     {
+        super.execute();
+
         id++;
 
         trace(id);

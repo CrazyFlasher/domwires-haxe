@@ -155,21 +155,13 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 				mapValues(data, true);
 			}
 
-			if (!factory.hasMapping(commandClass, AppFactory.RESERVED_CMD))
+			if (!factory.hasPoolForType(commandClass))
 			{
-				factory.mapToValue(commandClass, Type.createInstance(commandClass, []), AppFactory.RESERVED_CMD);
+				factory.registerPool(commandClass, 1);
 			}
 
-			var command:ICommand = factory.getInstance(commandClass, AppFactory.RESERVED_CMD);
-			if (Std.is(command, IInjectorAcceptor))
-			{
-				factory.injectInto(command);
-			} else
-			{
-				trace("Warning: command is not IInjectorAcceptor: " + commandClass);
-				command = factory.getInstance(commandClass);
-				factory.injectInto(command);
-			}
+			var command:ICommand = factory.getInstance(commandClass);
+			factory.injectInto(command);
 
 			command.execute();
 
