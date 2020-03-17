@@ -275,7 +275,7 @@ class AppFactoryTest
         Assert.isTrue(factory.getAllPoolItemsAreBusy(MockBusyPoolObject));
     }
 
-    @TestDebug
+    @Test
     public function testAutoExtendPool():Void
     {
         factory.mapToType(MockBusyPoolObject, MockBusyPoolObject);
