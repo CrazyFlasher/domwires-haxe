@@ -275,6 +275,24 @@ class AppFactoryTest
         Assert.isTrue(factory.getAllPoolItemsAreBusy(MockBusyPoolObject));
     }
 
+    @TestDebug
+    public function testAutoExtendPool():Void
+    {
+        factory.mapToType(MockBusyPoolObject, MockBusyPoolObject);
+        factory.registerPool(MockBusyPoolObject, 1, true, "isBusy");
+
+        var o:MockBusyPoolObject = factory.getInstance(MockBusyPoolObject);
+        o.isBusy = true;
+
+        for (i in 0...2)
+        {
+            o = factory.getInstance(MockBusyPoolObject);
+            o.isBusy = true;
+        }
+
+        Assert.areEqual(factory.getPoolCapacity(MockBusyPoolObject), 3);
+    }
+
     @Test
     public function testMapToItselfImplementation():Void
     {
@@ -305,7 +323,7 @@ class AppFactoryTest
     }
 
     @Test
-    public function testMapSamePropertyTwice()
+    public function testMapSamePropertyTwice():Void
     {
         factory.mapToType(I_2, Obj);
 
