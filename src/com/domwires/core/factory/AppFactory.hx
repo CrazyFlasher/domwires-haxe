@@ -130,7 +130,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 	}
 
 	public function registerPoolByClassName<T>(className:String, capacity:Int = 5, instantiateNow:Bool = false,
-									isBusyFlagGetterName:String = null):IAppFactory
+											   isBusyFlagGetterName:String = null):IAppFactory
 	{
 		if (capacity == 0)
 		{
@@ -140,7 +140,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		if (pool.exists(className))
 		{
 			trace("Pool '" + className + "' already registered! Call unregisterPool before.");
-		}else
+		} else
 		{
 			pool.set(className, new PoolModel(this, capacity, isBusyFlagGetterName));
 
@@ -393,5 +393,49 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		if (!hasPoolForTypeByClassName(className)) throw Error.Custom("Pool '" + className + "' is not registered! Call registerPool.");
 
 		return pool.get(className).busyItemsCount;
+	}
+
+	public function appendMappingConfig(config:Map<String, DependencyVo>):IAppFactory
+	{
+		var c:Class<Dynamic>;
+		var name:String;
+		var interfaceDefinition:String;
+		var d:DependencyVo;
+		var splitted:Array<String>;
+
+		for (interfaceDefinition in config.keys())
+		{
+			name = null;
+			d = config.get(interfaceDefinition);
+
+			splitted = interfaceDefinition.split("$");
+			if (splitted.length > 1)
+			{
+				name = splitted[1];
+				interfaceDefinition = splitted[0];
+			}
+
+			if (d.value != null)
+			{
+				mapClassNameToValue(interfaceDefinition, d.value, name);
+			} else
+			{
+				if (d.implementation != null)
+				{
+					c = Type.resolveClass(d.implementation);
+
+					trace("Mapping '" + interfaceDefinition + "' to '" + c + "'");
+
+					mapClassNameToType(interfaceDefinition, c, name);
+				}
+
+				if (d.newInstance)
+				{
+					mapClassNameToValue(interfaceDefinition, getInstanceWithClassName(interfaceDefinition), name);
+				}
+			}
+		}
+
+		return this;
 	}
 }

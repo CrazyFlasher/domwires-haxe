@@ -84,5 +84,12 @@ interface IAppFactory extends IAppFactoryImmutable extends IDisposable
 	 * @param value
 	 */
     function setSafePool(value:Bool):IAppFactory;
+
+    /**
+     * Will create type mapping, value mappings and inject dependencies, using config data.
+     * @param config map of <code>DependencyVo</code>
+     * @return
+     */
+    function appendMappingConfig(config:Map<String, DependencyVo>):IAppFactory;
 }
 

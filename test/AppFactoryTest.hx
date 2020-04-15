@@ -1,5 +1,7 @@
 package ;
 
+import mock.mvc.models.ISuperCoolModel;
+import com.domwires.core.factory.MappingConfigDictionary;
 import hex.di.IInjectorContainer;
 import haxe.io.Error;
 import mock.obj.IMockLonelyInterface;
@@ -334,6 +336,50 @@ class AppFactoryTest
         var container:ObjContainer =  factory.getInstance(ObjContainer);
 
         Assert.areEqual(container.a, container.b);
+    }
+
+    @TestDebug
+    public function testMappingViaConfig():Void
+    {
+        var json:Dynamic =
+        {
+            "mock.mvc.models.IDefault$def": {
+                implementation: "mock.mvc.models.Default",
+                newInstance:true
+            },
+            "mock.mvc.models.ISuperCoolModel": {
+                implementation: "mock.mvc.models.SuperCoolModel"
+            },
+            "Int$coolValue": {
+                value:7
+            },
+            "Bool$myBool": {
+                value: false
+            },
+            "Int": {
+                value:5
+            },
+            "Dynamic$obj": {
+                value:{
+                    firstName:"nikita",
+                    lastName:"dzigurda"
+                }
+            },
+            "Array<String>": {
+                value:["botan","sjava"]
+            }
+        };
+
+        var config:MappingConfigDictionary = new MappingConfigDictionary(json);
+
+        factory.appendMappingConfig(config.map);
+        var m:ISuperCoolModel = factory.getInstance(ISuperCoolModel);
+        Assert.areEqual(m.getCoolValue, 7);
+        Assert.areEqual(m.getMyBool, false);
+        Assert.areEqual(m.value, 5);
+        Assert.areEqual(m.def.result, 123);
+        Assert.areEqual(m.object.firstName, "nikita");
+        Assert.areEqual(m.array[1], "sjava");
     }
 }
 
