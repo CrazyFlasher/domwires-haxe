@@ -272,7 +272,15 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 					factory.mapClassNameToValue(propertyType, propertyValue, propertyName);
 				} else
 				{
-					factory.mapToValue(Type.getClass(propertyValue), propertyValue, propertyName);
+					propertyType = Type.getClass(propertyValue);
+
+					if (propertyType == null)
+					{
+						factory.mapClassNameToValue("Dynamic", propertyValue, propertyName);
+					} else
+					{
+						factory.mapToValue(propertyType, propertyValue, propertyName);
+					}
 				}
 			} else
 			{
@@ -281,7 +289,21 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 					factory.unmapClassName(propertyType, propertyName);
 				} else
 				{
-					factory.unmap(Type.getClass(propertyValue), propertyName);
+					propertyType = Type.getClass(propertyValue);
+
+					if (propertyType == null)
+					{
+						try
+						{
+							factory.unmapClassName("Dynamic", propertyName);
+						} catch (e:Dynamic)
+						{
+							factory.unmapClassName("Bool", propertyName);
+						}
+					} else
+					{
+						factory.unmap(propertyType, propertyName);
+					}
 				}
 			}
 		}
