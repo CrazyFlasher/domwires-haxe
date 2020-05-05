@@ -388,7 +388,7 @@ factory.mapToType(SingleWinVo, GameSingleWinVo);
 factory.getInstance(SingleWinVo);
 ```
 
-#### 7. Immutability
+#### 8. Immutability
 DomWires recommends to follow immutability paradigm. So mediators have access only to immutable interfaces of hierarchy components. But
  feel free to mutate them via commands. To handle this way, it’s better to have separate factories for different types of components. At
   least to have separate factory for context components (do not use internal context factory, that is used for injecting stuff to commands and guards).
