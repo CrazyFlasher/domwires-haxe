@@ -17,12 +17,20 @@ Flexible and extensible MVC framework ported from [ActionScript 3 version](https
 
 #### 1. Hierarchy and components communication
 ![Diagramm](http://188.166.108.195/projects/domwires-haxe/dw.png)
-On diagram we have main [IContext](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/context/IContext.html) in the center with 2 child contexts. Lets take a look at right [IContext](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/context/IContext.html).
+
+On diagram we have main [IContext](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/context/IContext.html) in the center with 2 child contexts. 
+
+Lets take a look at right [IContext](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/context/IContext.html).
+
 Right [IContext](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/context/IContext.html) is mapped to AppContext implementation. You can see its hierarchy on the screen:
 [IModelContainer](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/model/IModelContainer.html) with 2 child models, [IUIMediator](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/mediator/IMediator.html) with IButtonView and [IScreenMediator](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/mediator/IMediator.html) with 3 views.
+
 [IContext](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/context/IContext.html) and its children all extend [IMessageDispatcher](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/message/IMessageDispatcher.html) and can listen or dispatch [IMessage](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/message/IMessage.html).
+
 All messages in model hierarchy and from mediators bubble up to [IContext](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/context/IContext.html). Also bubbled-up messages can be forwarded to parent contexts (by default forwarding message from child context to parent is disabled).
+
 Also in default [IContext](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/context/IContext.html) configuration messages from models will be forwarded to mediators, messages from mediators will be forwarded to models and mediators.
+
 [IContext](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/context/IContext.html) extends [ICommandMapper](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/command/ICommandMapper.html) and can map received messages (from model and mediators) to commands.
 
 ##### Creating context with default configuration
