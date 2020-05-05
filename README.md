@@ -16,6 +16,7 @@ Flexible and extensible MVC framework ported from [ActionScript 3 version](https
 ***
 
 #### 1. Hierarchy and components communication
+![Diagramm](http://188.166.108.195/projects/domwires-haxe/dw.png)
 On diagram we have main [IContext](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/context/IContext.html) in the center with 2 child contexts. Lets take a look at right [IContext](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/context/IContext.html).
 Right [IContext](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/context/IContext.html) is mapped to AppContext implementation. You can see its hierarchy on the screen:
 [IModelContainer](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/model/IModelContainer.html) with 2 child models, [IUIMediator](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/mediator/IMediator.html) with IButtonView and [IScreenMediator](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/mediator/IMediator.html) with 3 views.
