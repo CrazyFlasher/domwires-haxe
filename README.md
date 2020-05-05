@@ -1,6 +1,8 @@
 ## DomWires [![Build Status](https://travis-ci.org/CrazyFlasher/domwires-haxe.svg?branch=master)](https://travis-ci.org/CrazyFlasher/domwires-haxe)
 Flexible and extensible MVC framework ported from [ActionScript 3 version](https://github.com/CrazyFlasher/domwires-as3)
 
+`haxelib install DomWires 1.0.0-alpha.13`
+
 ### Features
 * Splitting logic from visual part
 * Immutable interfaces are separated from mutable, for safe usage of read-only models (for example in mediators)
