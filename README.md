@@ -157,8 +157,48 @@ var obj2:IMyObj = factory.getInstance(IMyObj);
 ```
 
 ##### Apply mapping at runtime via configuration
-You can easily specify mappings via JSON config.
-[See "testMappingViaConfig" test as an example](https://github.com/CrazyFlasher/domwires-haxe/blob/7660a5335e94c37d56bd97fe7ea8acb2b707d1de/test/AppFactoryTest.hx#L342).
+```json
+{
+    "mock.mvc.models.IDefault$def": {
+        "implementation": "mock.mvc.models.Default",
+        "newInstance": true
+    },
+    "mock.mvc.models.ISuperCoolModel": {
+        "implementation": "mock.mvc.models.SuperCoolModel"
+    },
+    "Int$coolValue": {
+        "value": 7
+    },
+    "Bool$myBool": {
+        "value": false
+    },
+    "Int": {
+        "value": 5
+    },
+    "Dynamic$obj": {
+        "value": {
+            "firstName": "nikita",
+            "lastName":"dzigurda"
+        }
+    },
+    "Array<String>": {
+        "value": ["botan","sjava"]
+    }
+}
+```
+```haxe
+var config:MappingConfigDictionary = new MappingConfigDictionary(json);
+
+factory.appendMappingConfig(config.map);
+var m:ISuperCoolModel = factory.getInstance(ISuperCoolModel);
+
+Assert.areEqual(m.getCoolValue, 7);
+Assert.areEqual(m.getMyBool, false);
+Assert.areEqual(m.value, 5);
+Assert.areEqual(m.def.result, 123);
+Assert.areEqual(m.object.firstName, "nikita");
+Assert.areEqual(m.array[1], "sjava");
+```
 
 ##### Default value of interface
 If no mapping is specified, [IAppFactory](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/factory/IAppFactory.html) will try to find default implementation on the interface.
