@@ -184,7 +184,9 @@ class AppFactoryTest
         var o1:IMockPool_1 = factory.getInstance(IMockPool_1);
         var o2:IMockPool_1 = factory.getInstance(IMockPool_1);
 
-        Assert.areNotEqual(o1, o2);
+        //TODO: munit issue
+        //Assert.areNotEqual(o1, o2);
+        Assert.isFalse(o1 == o2);
     }
 
     @Test
