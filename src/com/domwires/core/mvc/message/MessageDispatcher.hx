@@ -117,7 +117,11 @@ class MessageDispatcher extends AbstractDisposable implements IMessageDispatcher
             var currentTarget:Dynamic = message._target;
             var bubbleUp:Bool;
 
+            #if cpp
+            while (currentTarget != null && currentTarget._parent != null)
+            #else
             while (currentTarget != null && Reflect.hasField(currentTarget, "_parent"))
+            #end
             {
                 currentTarget = currentTarget._parent;
 
