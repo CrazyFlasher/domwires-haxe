@@ -1,7 +1,7 @@
 ## DomWires [![Build Status](https://travis-ci.org/CrazyFlasher/domwires-haxe.svg?branch=master)](https://travis-ci.org/CrazyFlasher/domwires-haxe)
 Flexible and extensible MVC framework for projects written in [Haxe](https://haxe.org/).
 
-`haxelib install DomWires 1.0.0-alpha.13`
+`haxelib install DomWires 1.0.0-alpha.14`
 
 ### Features
 * Splitting logic from visual part
