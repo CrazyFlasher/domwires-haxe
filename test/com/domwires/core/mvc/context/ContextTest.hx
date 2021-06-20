@@ -1,5 +1,6 @@
 package com.domwires.core.mvc.context;
 
+import com.domwires.core.mvc.command.ICommand;
 import com.domwires.core.factory.AppFactory;
 import com.domwires.core.factory.IAppFactory;
 import com.domwires.core.mvc.context.config.ContextConfigVo;
@@ -111,11 +112,11 @@ class ContextTest
     {
         var f:IAppFactory = new AppFactory();
         f.mapToValue(IAppFactory, new AppFactory());
-        f.mapClassNameToValue("Class<Dynamic>", MockCommand_10);
+        f.mapClassNameToValue("Class<com.domwires.core.mvc.command.ICommand>", MockCommand_10);
         var c:MockContext_7 = f.getInstance(MockContext_7);
         c.ready();
 
-        f.mapClassNameToValue("Class<Dynamic>", MockCommand_13);
+        f.mapClassNameToValue("Class<com.domwires.core.mvc.command.ICommand>", MockCommand_13);
         var c2:MockContext_7 = f.getInstance(MockContext_7);
         c2.ready();
 
