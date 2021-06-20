@@ -19,7 +19,7 @@ class MappingConfigList
      * @see com.domwires.core.mvc.command.MappingConfig
      * @param value
      */
-    public function addGuards(value:Class<Dynamic>):MappingConfigList
+    public function addGuards(value:Class<IGuards>):MappingConfigList
     {
         var mappingConfig:MappingConfig;
 
@@ -35,7 +35,7 @@ class MappingConfigList
      * @see com.domwires.core.mvc.command.MappingConfig
      * @param value
      */
-    public function addGuardsNot(value:Class<Dynamic>):MappingConfigList
+    public function addGuardsNot(value:Class<IGuards>):MappingConfigList
     {
         for (mappingConfig in list)
         {

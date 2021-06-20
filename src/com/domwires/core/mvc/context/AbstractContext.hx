@@ -1,5 +1,7 @@
 package com.domwires.core.mvc.context;
 
+import com.domwires.core.mvc.command.IGuards;
+import com.domwires.core.mvc.command.ICommand;
 import haxe.ds.ReadOnlyArray;
 import com.domwires.core.factory.IAppFactory;
 import com.domwires.core.mvc.command.CommandMapper;
@@ -250,14 +252,14 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
         tryToExecuteCommand(message);
     }
 
-    public function map(messageType:EnumValue, commandClass:Class<Dynamic>, data:Dynamic = null, once:Bool = false, stopOnExecute:Bool = false):MappingConfig
+    public function map(messageType:EnumValue, commandClass:Class<ICommand>, data:Dynamic = null, once:Bool = false, stopOnExecute:Bool = false):MappingConfig
     {
         checkIfDisposed();
 
         return commandMapper.map(messageType, commandClass, data, once, stopOnExecute);
     }
 
-    public function map1(messageType:EnumValue, commandClassList:Array<Class<Dynamic>>, data:Dynamic = null,
+    public function map1(messageType:EnumValue, commandClassList:Array<Class<ICommand>>, data:Dynamic = null,
                          once:Bool = false, stopOnExecute:Bool = false):MappingConfigList
     {
         checkIfDisposed();
@@ -265,7 +267,7 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
         return commandMapper.map1(messageType, commandClassList, data, once, stopOnExecute);
     }
 
-    public function map2(messageTypeList:Array<EnumValue>, commandClass:Class<Dynamic>,
+    public function map2(messageTypeList:Array<EnumValue>, commandClass:Class<ICommand>,
                          data:Dynamic = null, once:Bool = false, stopOnExecute:Bool = false):MappingConfigList
     {
         checkIfDisposed();
@@ -273,7 +275,7 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
         return commandMapper.map2(messageTypeList, commandClass, data, once, stopOnExecute);
     }
 
-    public function map3(messageTypeList:Array<EnumValue>, commandClassList:Array<Class<Dynamic>>,
+    public function map3(messageTypeList:Array<EnumValue>, commandClassList:Array<Class<ICommand>>,
                          data:Dynamic = null, once:Bool = false, stopOnExecute:Bool = false):MappingConfigList
     {
         checkIfDisposed();
@@ -281,7 +283,7 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
         return commandMapper.map3(messageTypeList, commandClassList, data, once, stopOnExecute);
     }
 
-    public function unmap(messageType:EnumValue, commandClass:Class<Dynamic>):ICommandMapper
+    public function unmap(messageType:EnumValue, commandClass:Class<ICommand>):ICommandMapper
     {
         checkIfDisposed();
 
@@ -333,7 +335,7 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
         modelContainer.dispatchMessageToChildren(message);
     }
 
-    public function executeCommand(commandClass:Class<Dynamic>, data:Dynamic = null, guardList:Array<Class<Dynamic>> = null, guardNotList:Array<Class<Dynamic>> = null):Bool
+    public function executeCommand(commandClass:Class<ICommand>, data:Dynamic = null, guardList:Array<Class<IGuards>> = null, guardNotList:Array<Class<IGuards>> = null):Bool
     {
         checkIfDisposed();
 

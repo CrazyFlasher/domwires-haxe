@@ -22,7 +22,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		factory.mapToValue(ICommandMapper, this);
 	}
 
-	public function map(messageType:EnumValue, commandClass:Class<Dynamic>, data:Dynamic = null, once:Bool = false,
+	public function map(messageType:EnumValue, commandClass:Class<ICommand>, data:Dynamic = null, once:Bool = false,
 						stopOnExecute:Bool = false):MappingConfig
 	{
 		var mappingConfig:MappingConfig = new MappingConfig(commandClass, data, once, stopOnExecute);
@@ -42,7 +42,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		return mappingConfig;
 	}
 
-	public function map1(messageType:EnumValue, commandClassList:Array<Class<Dynamic>>, data:Dynamic = null, once:Bool = false,
+	public function map1(messageType:EnumValue, commandClassList:Array<Class<ICommand>>, data:Dynamic = null, once:Bool = false,
 						 stopOnExecute:Bool = false):MappingConfigList
 	{
 		var mappingConfigList:MappingConfigList = new MappingConfigList();
@@ -56,7 +56,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		return mappingConfigList;
 	}
 
-	public function map2(messageTypeList:Array<EnumValue>, commandClass:Class<Dynamic>, data:Dynamic = null, once:Bool = false,
+	public function map2(messageTypeList:Array<EnumValue>, commandClass:Class<ICommand>, data:Dynamic = null, once:Bool = false,
 						 stopOnExecute:Bool = false):MappingConfigList
 	{
 		var mappingConfigList:MappingConfigList = new MappingConfigList();
@@ -70,7 +70,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		return mappingConfigList;
 	}
 
-	public function map3(messageTypeList:Array<EnumValue>, commandClassList:Array<Class<Dynamic>>, data:Dynamic = null, once:Bool = false,
+	public function map3(messageTypeList:Array<EnumValue>, commandClassList:Array<Class<ICommand>>, data:Dynamic = null, once:Bool = false,
 						 stopOnExecute:Bool = false):MappingConfigList
 	{
 		var mappingConfigList:MappingConfigList = new MappingConfigList();
@@ -90,7 +90,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		return mappingConfigList;
 	}
 
-	private function mappingListContains(list:Array<MappingConfig>, commandClass:Class<Dynamic>, ignoreGuards:Bool = false):MappingConfig
+	private function mappingListContains(list:Array<MappingConfig>, commandClass:Class<ICommand>, ignoreGuards:Bool = false):MappingConfig
 	{
 		for (mappingVo in list)
 		{
@@ -104,7 +104,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		return null;
 	}
 
-	public function unmap(messageType:EnumValue, commandClass:Class<Dynamic>):ICommandMapper
+	public function unmap(messageType:EnumValue, commandClass:Class<ICommand>):ICommandMapper
 	{
 		var list:Array<MappingConfig> = commandMap.get(messageType);
 		if (list != null)
@@ -142,8 +142,8 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		return this;
 	}
 
-	public function executeCommand(commandClass:Class<Dynamic>, data:Dynamic = null, guardList:Array<Class<Dynamic>> = null,
-								   guardNotList:Array<Class<Dynamic>> = null):Bool
+	public function executeCommand(commandClass:Class<ICommand>, data:Dynamic = null, guardList:Array<Class<IGuards>> = null,
+								   guardNotList:Array<Class<IGuards>> = null):Bool
 	{
 		if (
 			(guardList == null || (guardList != null && guardsAllow(guardList, data))) &&
@@ -183,7 +183,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 
 		if (mappedToMessageCommands != null)
 		{
-			var commandClass:Class<Dynamic>;
+			var commandClass:Class<ICommand>;
 			var injectionData:Dynamic;
 			for (mappingVo in mappedToMessageCommands)
 			{
@@ -340,7 +340,7 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		}
 	}*/
 
-	private function guardsAllow(guardList:Array<Class<Dynamic>>, data:Dynamic = null, opposite:Bool = false):Bool
+	private function guardsAllow(guardList:Array<Class<IGuards>>, data:Dynamic = null, opposite:Bool = false):Bool
 	{
 		var guards:IGuards;
 

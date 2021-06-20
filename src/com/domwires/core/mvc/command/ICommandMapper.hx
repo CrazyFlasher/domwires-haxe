@@ -21,25 +21,25 @@ interface ICommandMapper extends ICommandMapperImmutable extends IDisposable
      * @param once Messaged will be automatically unmapped, after command execution
      * @param stopOnExecute If true, <code>ICommandMapper</code> will stop executing other commands mapped to current message
      */
-	function map(messageType:EnumValue, commandClass:Class<Dynamic>, data:Dynamic = null, once:Bool = false,
+	function map(messageType:EnumValue, commandClass:Class<ICommand>, data:Dynamic = null, once:Bool = false,
 				 stopOnExecute:Bool = false):MappingConfig;
 
 	/**
      * @see #map
      */
-	function map1(messageType:EnumValue, commandClassList:Array<Class<Dynamic>>, data:Dynamic = null, once:Bool = false,
+	function map1(messageType:EnumValue, commandClassList:Array<Class<ICommand>>, data:Dynamic = null, once:Bool = false,
 				  stopOnExecute:Bool = false):MappingConfigList;
 
 	/**
      * @see #map
      */
-	function map2(messageTypeList:Array<EnumValue>, commandClass:Class<Dynamic>, data:Dynamic = null, once:Bool = false,
+	function map2(messageTypeList:Array<EnumValue>, commandClass:Class<ICommand>, data:Dynamic = null, once:Bool = false,
 				  stopOnExecute:Bool = false):MappingConfigList;
 
 	/**
      * @see #map
      */
-	function map3(messageTypeList:Array<EnumValue>, commandClassList:Array<Class<Dynamic>>, data:Dynamic = null, once:Bool = false,
+	function map3(messageTypeList:Array<EnumValue>, commandClassList:Array<Class<ICommand>>, data:Dynamic = null, once:Bool = false,
 				  stopOnExecute:Bool = false):MappingConfigList;
 
 	/**
@@ -47,7 +47,7 @@ interface ICommandMapper extends ICommandMapperImmutable extends IDisposable
      * @param messageType
      * @param commandClass
      */
-	function unmap(messageType:EnumValue, commandClass:Class<Dynamic>):ICommandMapper;
+	function unmap(messageType:EnumValue, commandClass:Class<ICommand>):ICommandMapper;
 
 	/**
      * Clears all mappings.
@@ -73,8 +73,8 @@ interface ICommandMapper extends ICommandMapperImmutable extends IDisposable
      * @param guardList List of guards, that will allow or not command execution
      * @param guardNotList List of opposite guards
      */
-	function executeCommand(commandClass:Class<Dynamic>, data:Dynamic = null, guardList:Array<Class<Dynamic>> = null,
-							guardNotList:Array<Class<Dynamic>> = null):Bool;
+	function executeCommand(commandClass:Class<ICommand>, data:Dynamic = null, guardList:Array<Class<IGuards>> = null,
+							guardNotList:Array<Class<IGuards>> = null):Bool;
 
 	/**
 	 * If true, then message data object will be merged with mapping data object. Mapping data will
