@@ -142,8 +142,8 @@ class CommandMapper extends AbstractDisposable implements ICommandMapper
 		return this;
 	}
 
-	public function executeCommand(commandClass:Class<ICommand>, data:Dynamic = null, guardList:Array<Class<IGuards>> = null,
-								   guardNotList:Array<Class<IGuards>> = null):Bool
+	public function executeCommand(commandClass:Class<ICommand>, ?data:Dynamic, ?guardList:Array<Class<IGuards>>,
+								   ?guardNotList:Array<Class<IGuards>>):Bool
 	{
 		if (
 			(guardList == null || (guardList != null && guardsAllow(guardList, data))) &&

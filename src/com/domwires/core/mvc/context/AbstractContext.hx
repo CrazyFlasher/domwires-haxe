@@ -335,7 +335,8 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
         modelContainer.dispatchMessageToChildren(message);
     }
 
-    public function executeCommand(commandClass:Class<ICommand>, data:Dynamic = null, guardList:Array<Class<IGuards>> = null, guardNotList:Array<Class<IGuards>> = null):Bool
+    public function executeCommand(commandClass:Class<ICommand>, ?data:Dynamic, ?guardList:Array<Class<IGuards>>,
+                                   ?guardNotList:Array<Class<IGuards>>):Bool
     {
         checkIfDisposed();
 

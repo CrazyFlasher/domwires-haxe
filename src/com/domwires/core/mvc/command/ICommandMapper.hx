@@ -73,8 +73,8 @@ interface ICommandMapper extends ICommandMapperImmutable extends IDisposable
      * @param guardList List of guards, that will allow or not command execution
      * @param guardNotList List of opposite guards
      */
-	function executeCommand(commandClass:Class<ICommand>, data:Dynamic = null, guardList:Array<Class<IGuards>> = null,
-							guardNotList:Array<Class<IGuards>> = null):Bool;
+	function executeCommand(commandClass:Class<ICommand>, ?data:Dynamic, ?guardList:Array<Class<IGuards>>,
+							?guardNotList:Array<Class<IGuards>>):Bool;
 
 	/**
 	 * If true, then message data object will be merged with mapping data object. Mapping data will
