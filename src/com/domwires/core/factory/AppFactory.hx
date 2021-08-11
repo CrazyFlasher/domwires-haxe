@@ -290,7 +290,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 		var obj:T = injector.getInstance(type, name, targetType);
 		//TODO: it new instance, no need to double inject
-		if (Std.is(IInjectorAcceptor, obj))
+		if (Std.isOfType(obj, IInjectorAcceptor))
 		{
 			injector.injectInto(cast obj);
 		}
@@ -365,7 +365,7 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 		var obj:T = injector.getInstanceWithClassName(className, name, targetType, shouldThrowAnError);
 		//TODO: it new instance, no need to double inject
-		if (Std.is(IInjectorAcceptor, obj))
+		if (Std.isOfType(obj, IInjectorAcceptor))
 		{
 			injector.injectInto(cast obj);
 		}

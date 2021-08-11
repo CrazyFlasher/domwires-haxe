@@ -561,7 +561,7 @@ class CurrentStateIsDisabledGuards extends AbstractGuards
 ***
 
 ### Minimum requirements
-* Haxe 4.0.1 or higher
+* Haxe 4.2.3 or higher
 
 ***
 

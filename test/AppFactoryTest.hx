@@ -372,11 +372,18 @@ class AppFactoryTest
             }
         };
 
-        var config:MappingConfigDictionary = new MappingConfigDictionary(json);
+        var jsonOverride:Dynamic =
+        {
+            "Int$coolValue": {
+                value:5
+            }
+        };
 
-        factory.appendMappingConfig(config.map);
+        factory.appendMappingConfig(new MappingConfigDictionary(json).map);
+        factory.appendMappingConfig(new MappingConfigDictionary(jsonOverride).map);
+
         var m:ISuperCoolModel = factory.getInstance(ISuperCoolModel);
-        Assert.areEqual(m.getCoolValue, 7);
+        Assert.areEqual(m.getCoolValue, 5);
         Assert.areEqual(m.getMyBool, false);
         Assert.areEqual(m.value, 5);
         Assert.areEqual(m.def.result, 123);
