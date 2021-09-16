@@ -280,11 +280,19 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 	public function getInstance<T>(type:ClassRef<T>, ?name:MappingName, targetType:Class<Dynamic> = null,
 								   ignorePool:Bool = false):T
 	{
+		var obj:T;
+
 		if (!ignorePool)
 		{
 			if (hasPoolForType(type))
 			{
-				return getFromPoolByClassName(Type.getClassName(type));
+				obj = getFromPoolByClassName(Type.getClassName(type));
+				if (Std.isOfType(obj, IInjectorAcceptor))
+				{
+					injector.injectInto(cast obj);
+				}
+
+				return obj;
 			}
 		}
 
@@ -293,12 +301,12 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 			tryToMapToDefault(type);
 		}
 
-		var obj:T = injector.getInstance(type, name, targetType);
+		obj = injector.getInstance(type, name, targetType);
 		//TODO: it new instance, no need to double inject
-		if (Std.isOfType(obj, IInjectorAcceptor))
-		{
-			injector.injectInto(cast obj);
-		}
+//		if (Std.isOfType(obj, IInjectorAcceptor))
+//		{
+//			injector.injectInto(cast obj);
+//		}
 
 		return obj;
 	}
@@ -370,10 +378,10 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 
 		var obj:T = injector.getInstanceWithClassName(className, name, targetType, shouldThrowAnError);
 		//TODO: it new instance, no need to double inject
-		if (Std.isOfType(obj, IInjectorAcceptor))
-		{
-			injector.injectInto(cast obj);
-		}
+//		if (Std.isOfType(obj, IInjectorAcceptor))
+//		{
+//			injector.injectInto(cast obj);
+//		}
 
 		return obj;
 	}

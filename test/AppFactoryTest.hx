@@ -1,25 +1,23 @@
 package ;
 
-import mock.mvc.models.MockModel_7;
-import mock.mvc.opa.MockTypeDef;
-import mock.mvc.models.ISuperCoolModel;
-import com.domwires.core.factory.MappingConfigDictionary;
-import hex.di.IInjectorContainer;
-import haxe.io.Error;
-import mock.obj.IMockLonelyInterface;
-import mock.obj.MockObj_2;
-import mock.obj.MockObj_2;
-import mock.obj.MockBusyPoolObject;
-import mock.obj.MockPool_4;
-import mock.obj.IMockPool_2;
-import mock.obj.MockPool_3;
-import mock.obj.MockPool_2;
-import mock.obj.MockPool_1;
-import mock.obj.IMockPool_1;
-import massive.munit.Assert;
-import mock.obj.IMockType;
 import com.domwires.core.factory.AppFactory;
 import com.domwires.core.factory.IAppFactory;
+import com.domwires.core.factory.MappingConfigDictionary;
+import hex.di.IInjectorContainer;
+import massive.munit.Assert;
+import mock.mvc.models.ISuperCoolModel;
+import mock.mvc.models.MockModel_7;
+import mock.mvc.opa.MockTypeDef;
+import mock.obj.IMockLonelyInterface;
+import mock.obj.IMockPool_1;
+import mock.obj.IMockPool_2;
+import mock.obj.IMockType;
+import mock.obj.MockBusyPoolObject;
+import mock.obj.MockObj_2;
+import mock.obj.MockPool_1;
+import mock.obj.MockPool_2;
+import mock.obj.MockPool_3;
+import mock.obj.MockPool_4;
 
 class AppFactoryTest
 {
@@ -416,6 +414,42 @@ class AppFactoryTest
 
         Assert.isTrue(factory.hasMappingForClassName("Abstract<Dynamic>", "testDynamic"));
     }
+
+    @Test
+    public function testPostConstructOnce():Void
+    {
+        var a:A = factory.getInstance(A);
+
+        Assert.areEqual(a.a, 1);
+    }
+
+    @Test
+    public function testInjectNewDependenciesToPoolObject():Void
+    {
+        factory.mapToType(IMockPool_1, MockPool_3);
+        factory.registerPool(IMockPool_1, 1);
+
+        factory.mapClassNameToValue("Int", 5, "v");
+        var p1:IMockPool_1 = factory.getInstance(IMockPool_1);
+        Assert.areEqual(p1.value,  6);
+
+        factory.mapClassNameToValue("Int", 6, "v");
+        var p2:IMockPool_1 = factory.getInstance(IMockPool_1);
+        factory.injectInto(p2);
+        Assert.areEqual(p2.value,  7);
+
+        Assert.isTrue(p1 == p2);
+    }
+
+    @Test
+    public function testPoolItemPostConstructTwice():Void
+    {
+        factory.registerPool(MockPool_3, 1);
+
+        factory.mapClassNameToValue("Int", 0, "v");
+        var p1:MockPool_3 = factory.getInstance(MockPool_3);
+        Assert.areEqual(p1.pcTimes,  2);
+    }
 }
 
 interface I_1 extends IInjectorContainer
@@ -440,4 +474,17 @@ class ObjContainer
 
     @Inject("b")
     public var b:I_1;
+}
+
+class A implements IInjectorContainer
+{
+    public var a:Int = 0;
+
+    @PostConstruct
+    private function init():Void
+    {
+        trace("init!");
+
+        a++;
+    }
 }
