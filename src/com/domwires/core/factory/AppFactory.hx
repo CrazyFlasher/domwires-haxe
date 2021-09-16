@@ -109,6 +109,11 @@ class AppFactory extends AbstractDisposable implements IAppFactory
 		return injector.hasMapping(type, name);
 	}
 
+    public function hasMappingForClassName<T>(className:ClassName, ?name:MappingName):Bool
+    {
+        return injector.hasMappingForClassName(className, name);
+    }
+
 	public function injectInto(target:IInjectorAcceptor):Void
 	{
 		injector.injectInto(target);

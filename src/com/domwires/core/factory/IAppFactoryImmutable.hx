@@ -33,6 +33,8 @@ interface IAppFactoryImmutable extends IDisposableImmutable
 
     function hasMapping<T>(type:ClassRef<T>, ?name:MappingName):Bool;
 
+    function hasMappingForClassName<T>(className:ClassName, ?name:MappingName):Bool;
+
     /**
 	 * @param type
 	 * @return true, if <code>IAppFactory</code> has registered pool for provided type.

@@ -1,5 +1,7 @@
 package ;
 
+import mock.mvc.models.MockModel_7;
+import mock.mvc.opa.MockTypeDef;
 import mock.mvc.models.ISuperCoolModel;
 import com.domwires.core.factory.MappingConfigDictionary;
 import hex.di.IInjectorContainer;
@@ -340,7 +342,7 @@ class AppFactoryTest
         Assert.areEqual(container.a, container.b);
     }
 
-    @TestDebug
+    @Test
     public function testMappingViaConfig():Void
     {
         var json:Dynamic =
@@ -389,6 +391,30 @@ class AppFactoryTest
         Assert.areEqual(m.def.result, 123);
         Assert.areEqual(m.object.firstName, "nikita");
         Assert.areEqual(m.array[1], "sjava");
+    }
+
+    @Test
+    public function testMappingTypeDef():Void
+    {
+        var td:MockTypeDef = {a: "asd", b: 2};
+        var i:Int = 7;
+
+        //TODO: package name shouldn't contain "*typedef*" string. Why? HZ! Should be investigated.
+        factory.mapClassNameToValue("mock.mvc.opa.MockTypeDef", td);
+        factory.mapClassNameToValue("Int", i);
+
+        var m:MockModel_7 = factory.getInstance(MockModel_7);
+        Assert.areEqual(m.getTd().a, "asd");
+        Assert.areEqual(m.getI(), 7);
+    }
+
+    @Test
+    public function testHasMappingForClassName():Void
+    {
+        var d:Dynamic = {};
+        factory.mapClassNameToValue("Abstract<Dynamic>", d, "testDynamic");
+
+        Assert.isTrue(factory.hasMappingForClassName("Abstract<Dynamic>", "testDynamic"));
     }
 }
 

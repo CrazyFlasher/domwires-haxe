@@ -8,7 +8,6 @@ os:
 
 dist: xenial
 
-# Test with Haxe 3.4.7 and Haxe development.
 haxe:
   - "4.2.2"
 #  - development
@@ -77,7 +76,7 @@ install:
   # Install haxelibs
   - haxelib install munit
   - haxelib git hamcrest https://github.com/mikestead/hamcrest-haxe.git master src --always
-  - haxelib git hexinject https://github.com/CrazyFlasher/hexInject.git 73b59e0dccc6f181f3858ff7ee441283345abb1c
+  - haxelib git hexinject https://github.com/CrazyFlasher/hexInject.git 74344becbb0d4318ca99e9502a7f849bcea3003f
   - haxelib install dox
   - haxelib install hxnodejs
 script:
