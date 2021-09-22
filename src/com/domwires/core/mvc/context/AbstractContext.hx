@@ -1,5 +1,6 @@
 package com.domwires.core.mvc.context;
 
+import com.domwires.core.factory.AppFactory;
 import com.domwires.core.mvc.command.IGuards;
 import com.domwires.core.mvc.command.ICommand;
 import haxe.ds.ReadOnlyArray;
@@ -34,11 +35,10 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
     public var mediatorList(get, never):Array<IMediator>;
     public var mediatorListImmutable(get, never):ReadOnlyArray<IMediatorImmutable>;
 
-    @Inject
+    @Inject @Optional
     private var factory:IAppFactory;
 
-    @Inject
-    @Optional
+    @Inject @Optional
     private var config:ContextConfigVo;
 
     private var modelContainer:IModelContainer;
@@ -57,6 +57,11 @@ class AbstractContext extends HierarchyObjectContainer implements IContext
         if (config == null)
         {
             config = new ContextConfigVoBuilder().build();
+        }
+
+        if (factory == null)
+        {
+            factory = new AppFactory();
         }
 
         factory.mapToValue(IAppFactory, factory);
