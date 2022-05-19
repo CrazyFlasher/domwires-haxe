@@ -423,7 +423,7 @@ class CommandMapperTest
     }
 
     @Test
-    public function testCommandIsSingleton2():Void
+    public function testCommandIsSingleton2():Voidasdasds
     {
         factory.mapToType(MockCommand_19, mock.mvc.commands.ex.MockCommand_19);
 
