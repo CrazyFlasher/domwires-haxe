@@ -410,7 +410,7 @@ class CommandMapperTest
     }
 
     @Test
-    public function testCommandIsSingleton1():Voidasdsadsad
+    public function testCommandIsSingleton1():Void
     {
         var model:MockModel_2 = factory.getInstance(MockModel_2);
         factory.mapToValue(MockModel_2, model);

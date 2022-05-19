@@ -2,7 +2,7 @@
 Flexible and extensible MVC framework for projects written in [Haxe](https://haxe.org/).
 
 `haxelib install DomWires 1.0.0-alpha.17`
-sadasdsadsadasd
+
 ### Features
 * Splitting logic from visual part
 * Immutable interfaces are separated from mutable, for safe usage of read-only models (for example in mediators)
