@@ -422,7 +422,7 @@ class CommandMapperTest
         Assert.areEqual(model.testVar, 3);
     }
 
-    @Test
+    @Testasdasd
     public function testCommandIsSingleton2():Voidasdasdsasdasdasdasasdasd
     {
         factory.mapToType(MockCommand_19, mock.mvc.commands.ex.MockCommand_19);
