@@ -15,7 +15,7 @@ Flexible and extensible MVC framework for projects written in [Haxe](https://hax
 
 ***
 
-#### 1. Hierarchy and components communication
+#### 1. Hierarchy and components communicationasd
 ![Diagramm](http://188.166.108.195/projects/domwires-haxe/dw.png)
 
 On diagram we have main [IContext](http://188.166.108.195/projects/domwires-haxe/docs/com/domwires/core/mvc/context/IContext.html) in the center with 2 child contexts. 
